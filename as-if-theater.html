@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상상극장 : as if 가정법 과거</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --curtain: #201643;
+    --curtain-deep: #140d2b;
+    --spotlight: #F4B942;
+    --spotlight-soft: #FFE7A8;
+    --magic-pink: #FF6FA5;
+    --stage-cream: #FBF6ED;
+    --stage-line: #DCD2E0;
+    --real-blue: #4C7CF0;
+    --pretend-pink: #FF6FA5;
+    --ok-green: #2FB380;
+    --bad-red: #E24C4C;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 50% 0%, rgba(244,185,66,0.15), transparent 55%),
+      var(--curtain-deep);
+    font-family:'Noto Sans KR', sans-serif;
+    color:#2B2140;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .display{font-family:'Fredoka', 'Noto Sans KR', sans-serif;}
+
+  /* ---------- HERO / CURTAIN ---------- */
+  .hero{
+    position:relative;
+    padding:52px 20px 60px;
+    text-align:center;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.10), transparent 60%),
+      linear-gradient(180deg, var(--curtain) 0%, var(--curtain-deep) 100%);
+  }
+  .curtain-fold{
+    position:absolute; top:0; bottom:0; width:14%;
+    background:linear-gradient(180deg, rgba(0,0,0,0.28), rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.28));
+    opacity:0.55;
+  }
+  .spotlight-ring{
+    width:120px;height:120px;border-radius:50%;
+    margin:0 auto 18px;
+    background:radial-gradient(circle, var(--spotlight-soft) 0%, var(--spotlight) 55%, transparent 72%);
+    display:flex;align-items:center;justify-content:center;
+    font-size:52px;
+    box-shadow:0 0 60px 10px rgba(244,185,66,0.35);
+    animation:pulse 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.06);}
+  }
+  .eyebrow{
+    color:var(--spotlight-soft);
+    letter-spacing:0.28em;
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+  .hero h1{
+    font-family:'Fredoka',sans-serif;
+    color:#fff;
+    font-size:clamp(28px,7vw,42px);
+    margin:10px 0 6px;
+    font-weight:700;
+  }
+  .hero h1 span{color:var(--spotlight);}
+  .hero p.sub{
+    color:#D9CFEF;
+    font-size:15px;
+    max-width:420px;
+    margin:0 auto;
+    line-height:1.6;
+  }
+
+  /* ---------- STAGE (content) ---------- */
+  .stage{
+    max-width:640px;
+    margin:-30px auto 0;
+    background:var(--stage-cream);
+    border-radius:26px 26px 0 0;
+    padding:30px 20px 10px;
+    position:relative;
+    box-shadow:0 -10px 40px rgba(0,0,0,0.25);
+  }
+  section{margin-bottom:38px;}
+  .section-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--curtain);
+    color:var(--spotlight-soft);
+    font-family:'Fredoka',sans-serif;
+    font-size:13px;font-weight:600;
+    padding:6px 14px;border-radius:999px;
+    margin-bottom:12px;
+  }
+  h2.title{
+    font-family:'Fredoka',sans-serif;
+    font-size:22px;
+    color:var(--curtain);
+    margin:0 0 14px;
+  }
+
+  /* ---------- EXPLANATION ---------- */
+  .rule-box{
+    background:linear-gradient(135deg, var(--curtain) 0%, #3B2A6E 100%);
+    color:#fff;
+    border-radius:18px;
+    padding:20px 20px;
+    text-align:center;
+    margin-bottom:16px;
+  }
+  .rule-box .formula{
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(17px,5vw,21px);
+    font-weight:600;
+    color:var(--spotlight-soft);
+    line-height:1.7;
+  }
+  .rule-box .formula small{
+    display:block;color:#C9BEE6;font-size:13px;font-weight:400;margin-top:4px;
+  }
+  .kid-explain{
+    background:#fff;
+    border:2px dashed var(--stage-line);
+    border-radius:16px;
+    padding:16px 18px;
+    font-size:15px;
+    line-height:1.75;
+    color:#4A3F63;
+  }
+  .kid-explain b{color:var(--magic-pink);}
+
+  .vs-wrap{
+    display:flex; gap:10px; margin-top:16px;
+    flex-wrap:wrap;
+  }
+  .vs-card{
+    flex:1; min-width:140px;
+    border-radius:14px;
+    padding:14px;
+  }
+  .vs-card.real{background:#EAF0FF; border:2px solid var(--real-blue);}
+  .vs-card.pretend{background:#FFEAF2; border:2px solid var(--pretend-pink);}
+  .vs-label{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;font-size:13px;
+    margin-bottom:6px;
+  }
+  .vs-card.real .vs-label{color:var(--real-blue);}
+  .vs-card.pretend .vs-label{color:var(--pretend-pink);}
+  .vs-en{font-size:14px;font-weight:500;margin-bottom:3px;}
+  .vs-kr{font-size:13px;color:#6B6280;}
+
+  /* ---------- EXAMPLE CARDS ---------- */
+  .ex-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 16px 14px;
+    margin-bottom:12px;
+    border-left:5px solid var(--spotlight);
+    box-shadow:0 2px 10px rgba(32,22,67,0.06);
+  }
+  .ex-card.cf{border-left-color:var(--magic-pink);}
+  .ex-en{
+    font-size:15.5px; font-weight:500; color:#241A3D;
+    line-height:1.5;
+  }
+  .ex-en .asif{
+    color:var(--magic-pink); font-weight:700;
+  }
+  .ex-kr{
+    font-size:13.5px; color:#7A7191; margin-top:5px;
+  }
+  .speak-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:10px;
+    background:var(--stage-cream);
+    border:1.5px solid var(--stage-line);
+    color:var(--curtain);
+    font-family:'Fredoka',sans-serif;
+    font-size:12.5px; font-weight:600;
+    padding:6px 12px; border-radius:999px;
+    cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .speak-btn:hover{background:var(--spotlight-soft); transform:translateY(-1px);}
+  .speak-btn:active{transform:scale(0.96);}
+
+  /* ---------- PRACTICE: sentence builder ---------- */
+  .quiz-card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 3px 14px rgba(32,22,67,0.07);
+  }
+  .quiz-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:26px;height:26px;border-radius:50%;
+    background:var(--curtain); color:var(--spotlight-soft);
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:13px;
+    margin-right:8px;
+  }
+  .quiz-prompt{font-size:14.5px; color:#3A3153; margin-bottom:12px; line-height:1.6;}
+  .quiz-prompt .fixed-part{color:#241A3D; font-weight:500;}
+
+  .answer-slot{
+    min-height:46px;
+    background:var(--stage-cream);
+    border:2px solid var(--stage-line);
+    border-radius:12px;
+    padding:8px;
+    display:flex; flex-wrap:wrap; gap:6px;
+    margin-bottom:10px;
+    transition:border-color .15s;
+  }
+  .answer-slot.correct{border-color:var(--ok-green); background:#EAFBF3;}
+  .answer-slot.incorrect{border-color:var(--bad-red); background:#FDECEC;}
+  .word-chip{
+    background:#fff;
+    border:1.5px solid var(--stage-line);
+    padding:6px 12px;
+    border-radius:9px;
+    font-size:14px; font-weight:500;
+    cursor:pointer;
+    user-select:none;
+    transition:transform .1s;
+  }
+  .word-chip:active{transform:scale(0.94);}
+  .bank{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .bank .word-chip.placed{opacity:0.3; pointer-events:none;}
+  .bank .word-chip{background:var(--spotlight-soft); border-color:var(--spotlight);}
+
+  .quiz-controls{display:flex; gap:8px; margin-bottom:6px;}
+  .btn{
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:13px;
+    border:none; border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .btn-check{background:var(--curtain); color:#fff;}
+  .btn-reset{background:#EFEAF7; color:var(--curtain);}
+  .btn:active{transform:scale(0.96);}
+
+  .feedback{
+    font-size:13.5px; border-radius:10px; padding:10px 12px; margin-top:8px;
+    display:none; line-height:1.6;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:#EAFBF3; color:#1D7A55; border:1px solid #B9E9D3;}
+  .feedback.no{background:#FDECEC; color:#B23434; border:1px solid #F5C6C6;}
+  .feedback .kr{color:#7A7191; margin-top:4px;}
+  .feedback .exp{color:#4A3F63; margin-top:6px; font-size:12.5px; background:rgba(255,255,255,0.6); padding:8px; border-radius:8px;}
+
+  /* ---------- Grammar check (error fix) ---------- */
+  .story-box{
+    background:#fff;
+    border-radius:16px; padding:18px; font-size:14.5px; line-height:1.85; color:#3A3153;
+    border:2px solid var(--stage-line);
+  }
+  .story-box .target{
+    background:rgba(255,111,165,0.18);
+    border-bottom:2px dashed var(--magic-pink);
+    padding:1px 3px; border-radius:4px; cursor:pointer;
+    font-weight:600;
+  }
+  .story-box .target.marked{
+    background:rgba(47,179,128,0.22);
+    border-bottom-color:var(--ok-green);
+  }
+  .gc-input-row{display:flex; gap:8px; margin-top:14px;}
+  .gc-input-row input{
+    flex:1; border:2px solid var(--stage-line); border-radius:10px;
+    padding:10px 12px; font-size:14px; font-family:'Noto Sans KR',sans-serif;
+  }
+  .gc-input-row input:focus{outline:none; border-color:var(--spotlight);}
+
+  /* ---------- Speaking practice ---------- */
+  .speak-grid{display:flex; flex-direction:column; gap:10px;}
+  .speak-card{
+    background:linear-gradient(135deg,#fff, #FFF7EA);
+    border:2px solid var(--spotlight-soft);
+    border-radius:16px; padding:14px 16px;
+  }
+  .speak-card .role{
+    font-family:'Fredoka',sans-serif; font-size:12px; color:var(--magic-pink); font-weight:600;
+    margin-bottom:5px;
+  }
+  .speak-card .en{font-size:15px; font-weight:600; color:#241A3D;}
+  .speak-card .kr{font-size:13px; color:#7A7191; margin-top:3px;}
+
+  /* score badge */
+  .score-pill{
+    position:sticky; top:10px; z-index:5;
+    display:flex; justify-content:center; margin-bottom:18px;
+  }
+  .score-pill span{
+    background:var(--curtain); color:var(--spotlight-soft);
+    font-family:'Fredoka',sans-serif; font-weight:600; font-size:13px;
+    padding:7px 16px; border-radius:999px; box-shadow:0 4px 14px rgba(0,0,0,0.25);
+  }
+
+  footer{
+    text-align:center; color:#8B82A3; font-size:12px; padding:24px 20px 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="curtain-fold" style="left:0;"></div>
+  <div class="curtain-fold" style="right:0;"></div>
+  <div class="eyebrow">Imagination Grammar Theater</div>
+  <div class="spotlight-ring">🎭</div>
+  <h1>마치 <span>~인 것처럼!</span></h1>
+  <p class="sub">as if 가정법 과거 — 사실이 아닌 걸 상상해서 말하는 마법의 문장을 배워봐요.</p>
+</div>
+
+<div class="stage">
+
+  <!-- 1. 쉬운 설명 -->
+  <section>
+    <span class="section-tag">✨ 오늘의 마법 규칙</span>
+    <h2 class="title">as if 는 무슨 뜻일까?</h2>
+
+    <div class="rule-box">
+      <div class="formula">
+        as if + 주어 + 동사의 과거형
+        <small>(be동사는 무조건 <b>were</b>!)</small>
+      </div>
+    </div>
+
+    <div class="kid-explain">
+      <b>as if</b>는 우리말로 <b>"마치 ~인 것처럼"</b>이라는 뜻이에요.<br><br>
+      진짜로 그런 게 <b>아닌데</b>, 마치 그런 것처럼 <b>상상해서 흉내</b> 낼 때 사용해요.
+      예를 들어 내가 슈퍼히어로가 <b>아닌데도</b> "나는 마치 슈퍼히어로인 것처럼 뛰었다!"라고 말하는 것과 같아요. 🦸<br><br>
+      그래서 as if 뒤에는 <b>과거형 동사</b>를 쓰고, be동사는 주어가 무엇이든 항상 <b>were</b>를 써요. (진짜 과거를 말하는 게 아니라, "상상"이라는 신호예요!)
+    </div>
+
+    <div class="vs-wrap">
+      <div class="vs-card real">
+        <div class="vs-label">😐 진짜 사실</div>
+        <div class="vs-en">I am not a little kid.</div>
+        <div class="vs-kr">나는 어린아이가 아니다.</div>
+      </div>
+      <div class="vs-card pretend">
+        <div class="vs-label">🎭 상상 문장 (as if)</div>
+        <div class="vs-en">Mom talks to me <b>as if I were</b> a little kid.</div>
+        <div class="vs-kr">엄마는 마치 내가 어린아이인 것처럼 이야기한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Point 1 예문 -->
+  <section>
+    <span class="section-tag">📖 Point 1 · 교과서 예문</span>
+    <h2 class="title">이렇게 써요</h2>
+
+    <div class="ex-card" data-speak="My mom talks to me as if I were a little kid.">
+      <div class="ex-en">My mom talks to me <span class="asif">as if</span> I were a little kid.</div>
+      <div class="ex-kr">엄마는 마치 내가 어린아이인 것처럼 나에게 이야기한다.</div>
+      <button class="speak-btn" onclick="speak(this)">🔊 따라 말하기</button>
+    </div>
+
+    <div class="ex-card" data-speak="He acts as if he knew her well, but they have just met.">
+      <div class="ex-en">He acts <span class="asif">as if</span> he knew her well, but they have just met.</div>
+      <div class="ex-kr">그는 마치 그녀를 잘 아는 것처럼 행동하지만, 그들은 방금 만났다.</div>
+      <button class="speak-btn" onclick="speak(this)">🔊 따라 말하기</button>
+    </div>
+
+    <div class="ex-card" data-speak="Her nephew takes care of the ordinary plants as if they were rare ones.">
+      <div class="ex-en">Her nephew takes care of the ordinary plants <span class="asif">as if</span> they were rare ones.</div>
+      <div class="ex-kr">그녀의 조카는 마치 평범한 식물들을 희귀한 식물들인 것처럼 돌본다.</div>
+      <button class="speak-btn" onclick="speak(this)">🔊 따라 말하기</button>
+    </div>
+
+    <div class="ex-card cf" data-speak="He pretended as if he had seen the movie before.">
+      <div class="ex-en"><i>cf.</i> He pretended <span class="asif">as if</span> he had seen the movie before.</div>
+      <div class="ex-kr">그는 마치 그가 이전에 이 영화를 봤던 것처럼 굴었다.</div>
+      <div class="ex-kr" style="margin-top:6px; color:var(--magic-pink); font-weight:600;">💡 더 과거의 일을 상상할 땐 had + p.p. (had seen)를 써요 — as if 가정법 과거완료</div>
+      <button class="speak-btn" onclick="speak(this)">🔊 따라 말하기</button>
+    </div>
+
+    <div class="ex-card" data-speak="Then, they carefully roll the seed away as if it were antelope dung.">
+      <div class="ex-en">Then, they carefully roll the seed away <span class="asif">as if</span> it were antelope dung.</div>
+      <div class="ex-kr">그런 다음, 그들은 마치 그것이 영양의 똥인 것처럼 조심스럽게 씨앗을 굴려서 옮긴다.</div>
+      <button class="speak-btn" onclick="speak(this)">🔊 따라 말하기</button>
+    </div>
+  </section>
+
+  <!-- 3. 문장 만들기 연습 -->
+  <section>
+    <span class="section-tag">🧩 연습문제 · 단어 배열</span>
+    <h2 class="title">단어를 눌러서 문장을 완성해요</h2>
+    <div id="builder-quizzes"></div>
+  </section>
+
+  <!-- 4. Grammar Check -->
+  <section>
+    <span class="section-tag">🔍 오류 찾기</span>
+    <h2 class="title">틀린 부분을 찾아 고쳐보세요</h2>
+    <div class="story-box" id="story-box">
+      After their argument at dinner, the house was unusually quiet. She avoided
+      looking at him <span class="target" id="gc-target" onclick="markTarget()">as if he was a stranger</span>,
+      and she walked quickly past him without saying a word.
+    </div>
+    <div class="gc-input-row">
+      <input type="text" id="gc-answer" placeholder="고친 부분을 영어로 써보세요 (예: as if he ___ a stranger)">
+      <button class="btn btn-check" onclick="checkGrammar()">확인</button>
+    </div>
+    <div class="feedback" id="gc-feedback"></div>
+  </section>
+
+  <!-- 5. 스피킹 연습 -->
+  <section>
+    <span class="section-tag">🎤 스피킹 연습</span>
+    <h2 class="title">소리 내어 말해봐요</h2>
+    <div class="speak-grid">
+      <div class="speak-card" data-speak="I feel as if I could fly today!">
+        <div class="role">기분을 말할 때</div>
+        <div class="en">I feel <b>as if</b> I could fly today!</div>
+        <div class="kr">나는 마치 오늘 날 수 있을 것 같은 기분이야!</div>
+        <button class="speak-btn" onclick="speak(this)">🔊 말해보기</button>
+      </div>
+      <div class="speak-card" data-speak="He talks as if he were the smartest person in the class.">
+        <div class="role">친구를 놀릴 때(장난)</div>
+        <div class="en">He talks <b>as if</b> he were the smartest person in the class.</div>
+        <div class="kr">그는 마치 반에서 제일 똑똑한 사람인 것처럼 말해.</div>
+        <button class="speak-btn" onclick="speak(this)">🔊 말해보기</button>
+      </div>
+      <div class="speak-card" data-speak="My dog looks at me as if it understood every word.">
+        <div class="role">반려동물 이야기</div>
+        <div class="en">My dog looks at me <b>as if</b> it understood every word.</div>
+        <div class="kr">우리 강아지는 마치 내 말을 다 알아듣는 것처럼 나를 쳐다봐.</div>
+        <button class="speak-btn" onclick="speak(this)">🔊 말해보기</button>
+      </div>
+      <div class="speak-card" data-speak="She sang as if no one were watching.">
+        <div class="role">유명한 표현</div>
+        <div class="en">She sang <b>as if</b> no one were watching.</div>
+        <div class="kr">그녀는 마치 아무도 보고 있지 않은 것처럼 노래했다.</div>
+        <button class="speak-btn" onclick="speak(this)">🔊 말해보기</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="score-pill" style="position:static;">
+    <span id="score-text">✅ 맞은 개수: 0 / 5</span>
+  </div>
+
+  <footer>🎭 Imagination Grammar Theater · as if 가정법 과거 연습 앱</footer>
+</div>
+
+<script>
+// ---------- Text to speech ----------
+function speak(el){
+  const text = el.closest('[data-speak]').getAttribute('data-speak');
+  if('speechSynthesis' in window){
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.92;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+
+// ---------- Score tracking ----------
+let correctCount = 0;
+const totalItems = 5; // 4 builder quizzes + 1 grammar check
+const solved = new Set();
+function updateScore(id){
+  solved.add(id);
+  document.getElementById('score-text').textContent = `✅ 맞은 개수: ${correctCount} / ${totalItems}`;
+}
+
+// ---------- Builder quiz data ----------
+const quizzes = [
+  {
+    id: 'q1',
+    before: 'She is frowning at me',
+    after: '.',
+    words: ['as', 'if', 'I', 'did', 'something', 'terrible'],
+    answer: ['as', 'if', 'I', 'did', 'something', 'terrible'],
+    kr: '그녀는 마치 내가 끔찍한 일을 하는 것처럼 나를 노려봤다.',
+    exp: '가정법 과거에 쓰이는 as if 뒤에는 과거시제의 완전한 절이 와야 해요. 그래서 as if I did something terrible이 알맞아요.'
+  },
+  {
+    id: 'q2',
+    before: 'I feel',
+    after: 'because the town looks exactly the same.',
+    words: ['as', 'if', 'I', 'never', 'left'],
+    answer: ['as', 'if', 'I', 'never', 'left'],
+    kr: '그 마을이 정확히 똑같아 보이기 때문에 나는 마치 내가 떠나지 않은 것처럼 느껴진다.',
+    exp: 'as if 뒤에는 과거시제의 완전한 절이 와야 하므로 as if I never left가 알맞아요.'
+  },
+  {
+    id: 'q3',
+    before: 'He is speaking in front of the scholars',
+    after: 'in the subject matter.',
+    words: ['as', 'if', 'he', 'were', 'an', 'expert'],
+    answer: ['as', 'if', 'he', 'were', 'an', 'expert'],
+    kr: '그는 학자들 앞에서 마치 그가 그 주제의 전문가인 것처럼 말하고 있다.',
+    exp: '가정법 과거의 be동사는 주어와 상관없이 were를 써요. 그래서 as if he were an expert가 알맞아요.'
+  },
+  {
+    id: 'q4',
+    before: 'The secretary behaved',
+    after: ', but she was quite shocked at the corporate scandal.',
+    words: ['as', 'if', 'nothing', 'had', 'happened'],
+    answer: ['as', 'if', 'nothing', 'had', 'happened'],
+    kr: '그 비서는 마치 아무 일도 없었던 것처럼 행동했지만, 그녀는 그 기업 스캔들에 꽤 충격을 받았다.',
+    exp: '더 이전에 일어난 일을 상상할 때는 과거완료(had + p.p.)를 써요. as if nothing had happened가 알맞아요.'
+  }
+];
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function renderQuizzes(){
+  const container = document.getElementById('builder-quizzes');
+  quizzes.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    const shuffled = shuffle(q.words);
+
+    card.innerHTML = `
+      <div class="quiz-prompt">
+        <span class="quiz-num">${idx+1}</span>
+        <span class="fixed-part">${q.before}</span>
+        <span style="color:#B7AFCE;"> ( ______ ) </span>
+        <span class="fixed-part">${q.after}</span>
+      </div>
+      <div class="answer-slot" id="${q.id}-slot"></div>
+      <div class="bank" id="${q.id}-bank"></div>
+      <div class="quiz-controls">
+        <button class="btn btn-check" onclick="checkBuilder('${q.id}')">확인하기</button>
+        <button class="btn btn-reset" onclick="resetBuilder('${q.id}')">다시하기</button>
+      </div>
+      <div class="feedback" id="${q.id}-fb"></div>
+    `;
+    container.appendChild(card);
+
+    const bank = card.querySelector(`#${q.id}-bank`);
+    shuffled.forEach((w, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'word-chip';
+      chip.textContent = w;
+      chip.dataset.word = w;
+      chip.dataset.used = 'false';
+      chip.onclick = () => placeWord(q.id, chip);
+      bank.appendChild(chip);
+    });
+  });
+}
+
+function placeWord(qid, chip){
+  if(chip.dataset.used === 'true') return;
+  const slot = document.getElementById(`${qid}-slot`);
+  const placedChip = document.createElement('span');
+  placedChip.className = 'word-chip';
+  placedChip.textContent = chip.textContent;
+  placedChip.onclick = () => {
+    slot.removeChild(placedChip);
+    chip.dataset.used = 'false';
+    chip.classList.remove('placed');
+    slot.classList.remove('correct','incorrect');
+    document.getElementById(`${qid}-fb`).classList.remove('show');
+  };
+  slot.appendChild(placedChip);
+  chip.dataset.used = 'true';
+  chip.classList.add('placed');
+}
+
+function resetBuilder(qid){
+  const slot = document.getElementById(`${qid}-slot`);
+  slot.innerHTML = '';
+  slot.classList.remove('correct','incorrect');
+  const bank = document.getElementById(`${qid}-bank`);
+  [...bank.children].forEach(c => { c.dataset.used='false'; c.classList.remove('placed'); });
+  document.getElementById(`${qid}-fb`).classList.remove('show');
+}
+
+function checkBuilder(qid){
+  const q = quizzes.find(x => x.id === qid);
+  const slot = document.getElementById(`${qid}-slot`);
+  const current = [...slot.children].map(c => c.textContent);
+  const fb = document.getElementById(`${qid}-fb`);
+  const isCorrect = current.length === q.answer.length && current.every((w,i) => w === q.answer[i]);
+
+  fb.classList.add('show');
+  if(isCorrect){
+    slot.classList.remove('incorrect');
+    slot.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = `🎉 정답이에요! <b>${q.before} ${q.answer.join(' ')} ${q.after}</b>
+      <div class="kr">${q.kr}</div>
+      <div class="exp">${q.exp}</div>`;
+    if(!solved.has(qid)){ correctCount++; updateScore(qid); }
+  }else{
+    slot.classList.remove('correct');
+    slot.classList.add('incorrect');
+    fb.className = 'feedback show no';
+    fb.innerHTML = `🤔 다시 생각해봐요! as if 뒤 순서를 잘 살펴보세요.`;
+  }
+}
+
+renderQuizzes();
+
+// ---------- Grammar check ----------
+let gcMarked = false;
+function markTarget(){
+  gcMarked = true;
+  document.getElementById('gc-target').classList.add('marked');
+}
+function checkGrammar(){
+  const val = document.getElementById('gc-answer').value.trim().toLowerCase();
+  const fb = document.getElementById('gc-feedback');
+  fb.classList.add('show');
+  const isCorrect = val.includes('were') && val.includes('as if') && val.includes('stranger');
+  if(isCorrect){
+    fb.className = 'feedback show ok';
+    fb.innerHTML = `🎉 정답! "as if he <b>was</b> a stranger" → "as if he <b>were</b> a stranger"
+      <div class="kr">그녀는 마치 그가 낯선 사람인 것처럼 그를 쳐다보는 것을 피했다.</div>
+      <div class="exp">가정법 과거의 as if 뒤에서 be동사는 주어에 상관없이 항상 were를 써요. was는 틀린 표현이에요!</div>`;
+    if(!solved.has('gc')){ correctCount++; updateScore('gc'); }
+  }else{
+    fb.className = 'feedback show no';
+    fb.innerHTML = `🤔 힌트: 초록색으로 표시한 부분에서 be동사가 잘못됐어요. was를 뭐로 바꿔야 할까요?`;
+  }
+}
+</script>
+
+</body>
+</html>
