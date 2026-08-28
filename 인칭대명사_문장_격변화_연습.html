@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>문장 속 격변화 연습</title>
+<style>
+  :root{
+    --bg:#1b1f30;
+    --bg2:#242a42;
+    --card:#2b3150;
+    --ink:#f2f0ea;
+    --ink-dim:#a9aec7;
+    --sub:#7fd8c4;
+    --pos:#f2b880;
+    --obj:#c6a4f7;
+    --poss:#f4a3b6;
+    --amber:#f2b880;
+    --good:#7fd8a0;
+    --bad:#f28080;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;
+    -webkit-tap-highlight-color:transparent;overscroll-behavior:none;}
+  #app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:20px 18px 32px;}
+  .screen{display:none;flex:1;flex-direction:column;}
+  .screen.active{display:flex;}
+
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--sub);font-weight:700;margin-bottom:10px;}
+  h1{font-size:26px;line-height:1.3;margin:0 0 12px;font-weight:800;}
+  .lead{color:var(--ink-dim);font-size:15px;line-height:1.6;margin-bottom:24px;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:30px;}
+  .stat-cell{background:var(--bg2);border-radius:12px;padding:12px 4px;text-align:center;}
+  .stat-cell .n{font-weight:800;font-size:18px;}
+  .stat-cell .l{font-size:10px;color:var(--ink-dim);margin-top:2px;}
+  .stat-cell.c-sub .n{color:var(--sub);}
+  .stat-cell.c-pos .n{color:var(--pos);}
+  .stat-cell.c-obj .n{color:var(--obj);}
+  .stat-cell.c-poss .n{color:var(--poss);}
+
+  .btn{border:none;border-radius:16px;padding:16px 20px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .btn-primary{background:var(--amber);color:#231506;}
+  .btn-primary:active{transform:scale(.98);}
+  .btn-ghost{background:transparent;border:1px solid #3d4468;color:var(--ink);}
+  .btn:disabled{opacity:.4;}
+  .spacer{flex:1;}
+
+  .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .progress-text{font-size:13px;color:var(--ink-dim);font-weight:600;}
+  .score-text{font-size:13px;color:var(--sub);font-weight:700;}
+  .progress-track{height:5px;background:var(--bg2);border-radius:99px;overflow:hidden;margin-bottom:22px;}
+  .progress-fill{height:100%;background:var(--sub);border-radius:99px;transition:width .25s ease;}
+
+  .card{background:var(--card);border-radius:24px;padding:32px 22px;margin-bottom:18px;}
+  .sent-en{font-size:22px;font-weight:700;line-height:1.5;margin-bottom:14px;}
+  .blank-slot{display:inline-block;min-width:64px;border-bottom:2px solid var(--ink-dim);padding:0 4px;text-align:center;}
+  .blank-slot.filled{color:var(--amber);}
+  .blank-slot.correct{color:var(--good);border-color:var(--good);}
+  .blank-slot.wrong{color:var(--bad);border-color:var(--bad);}
+  .sent-ko{font-size:15px;color:var(--ink-dim);line-height:1.5;}
+
+  .role-chip{display:inline-block;font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;margin-bottom:14px;background:var(--bg2);visibility:hidden;}
+  .role-chip.c-sub{color:var(--sub);}
+  .role-chip.c-pos{color:var(--pos);}
+  .role-chip.c-obj{color:var(--obj);}
+  .role-chip.c-poss{color:var(--poss);}
+  .role-chip.show{visibility:visible;}
+
+  .input-row{display:flex;gap:10px;margin-bottom:14px;}
+  .ans-input{
+    flex:1;background:var(--bg2);border:2px solid #3d4468;border-radius:14px;
+    padding:14px 16px;font-size:18px;color:var(--ink);font-family:inherit;
+  }
+  .ans-input:focus{outline:none;border-color:var(--amber);}
+  .ans-input.correct{border-color:var(--good);}
+  .ans-input.wrong{border-color:var(--bad);}
+
+  .feedback{font-size:14px;font-weight:700;margin-bottom:14px;min-height:20px;}
+  .feedback.good{color:var(--good);}
+  .feedback.bad{color:var(--bad);}
+
+  /* results */
+  .result-score{font-size:52px;font-weight:800;text-align:center;margin:10px 0 4px;}
+  .result-sub{text-align:center;color:var(--ink-dim);font-size:14px;margin-bottom:26px;}
+  .wrong-list{flex:1;overflow-y:auto;margin-bottom:16px;}
+  .wrong-item{background:var(--bg2);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+  .wrong-item .role-tag{font-size:11px;font-weight:700;margin-bottom:6px;display:inline-block;}
+  .wrong-item.c-sub .role-tag{color:var(--sub);}
+  .wrong-item.c-pos .role-tag{color:var(--pos);}
+  .wrong-item.c-obj .role-tag{color:var(--obj);}
+  .wrong-item.c-poss .role-tag{color:var(--poss);}
+  .wrong-item .sent{font-size:15px;font-weight:700;margin-bottom:3px;}
+  .wrong-item .sent b{color:var(--good);}
+  .wrong-item .sent-ko{font-size:13px;color:var(--ink-dim);}
+  .btn-row{display:flex;gap:10px;}
+  .btn-row .btn{flex:1;}
+  .empty-note{text-align:center;color:var(--ink-dim);font-size:14px;margin:30px 0;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="eyebrow">Case in Context</div>
+    <h1>문장 속 격변화<br>빈칸 채우기</h1>
+    <p class="lead">문장을 읽고 빈칸에 알맞은 인칭대명사(주격·소유격·목적격·소유대명사)를 직접 입력하는 연습이에요. 한글 해석을 참고해서 답을 완성해보세요.</p>
+    <div class="stat-row">
+      <div class="stat-cell c-sub"><div class="n">21</div><div class="l">주격</div></div>
+      <div class="stat-cell c-pos"><div class="n">21</div><div class="l">소유격</div></div>
+      <div class="stat-cell c-obj"><div class="n">21</div><div class="l">목적격</div></div>
+      <div class="stat-cell c-poss"><div class="n">21</div><div class="l">소유대명사</div></div>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-primary" onclick="startQuiz(false)">시작하기 (총 84문장)</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div class="top-row">
+      <span class="progress-text" id="progress-text">1 / 84</span>
+      <span class="score-text" id="score-text">맞음 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+    <div class="card">
+      <span class="role-chip" id="role-chip"></span>
+      <div class="sent-en" id="sent-en"></div>
+      <div class="sent-ko" id="sent-ko"></div>
+    </div>
+
+    <div class="input-row">
+      <input type="text" class="ans-input" id="ans-input" placeholder="정답을 입력하세요" autocomplete="off" autocapitalize="off" autocorrect="off">
+    </div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="spacer"></div>
+    <button class="btn btn-primary" id="action-btn" onclick="handleAction()">확인</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="eyebrow" id="result-eyebrow">Result</div>
+    <h1 id="result-title">수고했어요</h1>
+    <div class="result-score" id="result-score">0 / 84</div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="wrong-list" id="wrong-list"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goIntro()">처음 화면</button>
+      <button class="btn btn-primary" id="retry-wrong-btn" onclick="retryWrongOnly()">틀린 문제만 다시</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ROLE_LABEL = {sub:"주격 · ~은/는", pos:"소유격 · ~의", obj:"목적격 · ~을/를", poss:"소유대명사 · ~의 것"};
+
+// data: {role, en (with ___ blank), answer, ko}
+const RAW = [
+["I",[
+ ["sub","___ am a middle school student.","I","나는 중학생이다."],
+ ["sub","___ like pizza very much.","I","나는 피자를 매우 좋아한다."],
+ ["sub","___ go to school by bus.","I","나는 버스를 타고 학교에 간다."],
+ ["pos","___ favorite color is blue.","My","나의 가장 좋아하는 색은 파란색이다."],
+ ["pos","___ father works at a bank.","My","나의 아버지는 은행에서 일하신다."],
+ ["pos","___ room is very clean.","My","나의 방은 매우 깨끗하다."],
+ ["obj","She gave ___ a present.","me","그녀는 나에게 선물을 주었다."],
+ ["obj","Please call ___ tonight.","me","오늘 밤 나에게 전화해줘."],
+ ["obj","He helped ___ with my homework.","me","그는 나의 숙제를 도와주었다."],
+ ["poss","This pencil case is ___.","mine","이 필통은 나의 것이다."],
+ ["poss","That backpack is ___.","mine","저 배낭은 나의 것이다."],
+ ["poss","The blue bike is ___.","mine","그 파란 자전거는 나의 것이다."]
+]],
+["You",[
+ ["sub","___ are very kind.","You","너는 매우 친절하다."],
+ ["sub","___ speak English well.","You","너는 영어를 잘 한다."],
+ ["sub","___ look happy today.","You","너는 오늘 행복해 보인다."],
+ ["pos","___ smile is beautiful.","Your","너의 미소는 아름답다."],
+ ["pos","___ bag is on the desk.","Your","너의 가방은 책상 위에 있다."],
+ ["pos","___ idea sounds great.","Your","너의 생각은 좋게 들린다."],
+ ["obj","I will call ___ later.","you","내가 나중에 너에게 전화할게."],
+ ["obj","We miss ___ a lot.","you","우리는 너를 많이 그리워한다."],
+ ["obj","Can I help ___?","you","내가 너를 도와줄까?"],
+ ["poss","Is this umbrella ___?","yours","이 우산은 너의 것이니?"],
+ ["poss","That seat is ___.","yours","저 자리는 너의 것이다."],
+ ["poss","This idea was ___.","yours","이 생각은 너의 것이었다."]
+]],
+["He",[
+ ["sub","___ is my English teacher.","He","그는 나의 영어 선생님이다."],
+ ["sub","___ plays soccer every weekend.","He","그는 주말마다 축구를 한다."],
+ ["sub","___ lives near my house.","He","그는 우리 집 근처에 산다."],
+ ["pos","___ voice is very deep.","His","그의 목소리는 매우 낮다."],
+ ["pos","___ car is parked outside.","His","그의 차는 밖에 주차되어 있다."],
+ ["pos","___ answer was correct.","His","그의 대답은 정확했다."],
+ ["obj","I met ___ at the library.","him","나는 도서관에서 그를 만났다."],
+ ["obj","She trusts ___ completely.","him","그녀는 그를 완전히 신뢰한다."],
+ ["obj","We invited ___ to the party.","him","우리는 그를 파티에 초대했다."],
+ ["poss","This jacket is ___.","his","이 재킷은 그의 것이다."],
+ ["poss","The red umbrella is ___.","his","그 빨간 우산은 그의 것이다."],
+ ["poss","That laptop is ___.","his","저 노트북은 그의 것이다."]
+]],
+["She",[
+ ["sub","___ is a famous singer.","She","그녀는 유명한 가수이다."],
+ ["sub","___ studies very hard.","She","그녀는 매우 열심히 공부한다."],
+ ["sub","___ lives in Seoul.","She","그녀는 서울에 산다."],
+ ["pos","___ dream is to be a doctor.","Her","그녀의 꿈은 의사가 되는 것이다."],
+ ["pos","___ hair is very curly.","Her","그녀의 머리카락은 매우 곱슬거린다."],
+ ["pos","___ house is very large.","Her","그녀의 집은 매우 크다."],
+ ["obj","I saw ___ at the mall.","her","나는 쇼핑몰에서 그녀를 보았다."],
+ ["obj","He always supports ___.","her","그는 항상 그녀를 지지한다."],
+ ["obj","They congratulated ___ on the win.","her","그들은 그녀의 승리를 축하해주었다."],
+ ["poss","This scarf is ___.","hers","이 스카프는 그녀의 것이다."],
+ ["poss","The gold ring is ___.","hers","그 금반지는 그녀의 것이다."],
+ ["poss","That idea was ___.","hers","그 생각은 그녀의 것이었다."]
+]],
+["It",[
+ ["sub","___ is very cold today.","It","오늘은 매우 춥다."],
+ ["sub","___ rained all day yesterday.","It","어제는 하루 종일 비가 왔다."],
+ ["sub","___ looks like a good movie.","It","그것은 좋은 영화처럼 보인다."],
+ ["pos","The dog wagged ___ tail.","its","그 개는 자신의 꼬리를 흔들었다."],
+ ["pos","The tree lost ___ leaves.","its","그 나무는 자신의 잎을 잃었다."],
+ ["pos","The company changed ___ name.","its","그 회사는 자신의 이름을 바꾸었다."],
+ ["obj","I found ___ under the bed.","it","나는 그것을 침대 밑에서 찾았다."],
+ ["obj","She doesn't need ___ anymore.","it","그녀는 더 이상 그것이 필요하지 않다."],
+ ["obj","We really enjoyed ___.","it","우리는 그것을 정말 즐겼다."],
+ ["poss","This nest is ___.","its","이 둥지는 그것의 것이다."],
+ ["poss","That cage is ___.","its","저 우리는 그것의 것이다."],
+ ["poss","The bowl on the floor is ___.","its","바닥에 있는 그 그릇은 그것의 것이다."]
+]],
+["We",[
+ ["sub","___ are best friends.","We","우리는 가장 친한 친구이다."],
+ ["sub","___ study English together.","We","우리는 함께 영어를 공부한다."],
+ ["sub","___ watched a movie last night.","We","우리는 어젯밤 영화를 보았다."],
+ ["pos","___ school has a big playground.","Our","우리 학교에는 큰 운동장이 있다."],
+ ["pos","___ teacher is very kind.","Our","우리 선생님은 매우 친절하다."],
+ ["pos","___ team won the game.","Our","우리 팀이 경기에서 이겼다."],
+ ["obj","They invited ___ to dinner.","us","그들은 우리를 저녁 식사에 초대했다."],
+ ["obj","Please help ___ with this problem.","us","이 문제를 우리에게 도와주세요."],
+ ["obj","Mom picked ___ up from school.","us","엄마는 학교에서 우리를 데려갔다."],
+ ["poss","This trophy is ___.","ours","이 트로피는 우리의 것이다."],
+ ["poss","That victory was ___.","ours","그 승리는 우리의 것이었다."],
+ ["poss","The best idea was ___.","ours","가장 좋은 생각은 우리의 것이었다."]
+]],
+["They",[
+ ["sub","___ are twins.","They","그들은 쌍둥이이다."],
+ ["sub","___ live in the same building.","They","그들은 같은 건물에 산다."],
+ ["sub","___ practice basketball every day.","They","그들은 매일 농구를 연습한다."],
+ ["pos","___ house is next to the park.","Their","그들의 집은 공원 옆에 있다."],
+ ["pos","___ teacher gave them homework.","Their","그들의 선생님은 그들에게 숙제를 주었다."],
+ ["pos","___ plan sounds interesting.","Their","그들의 계획은 흥미롭게 들린다."],
+ ["obj","I saw ___ at the station.","them","나는 역에서 그들을 보았다."],
+ ["obj","She invited ___ to her birthday party.","them","그녀는 그들을 생일 파티에 초대했다."],
+ ["obj","We helped ___ move the boxes.","them","우리는 그들이 상자를 옮기는 것을 도와주었다."],
+ ["poss","This car is ___.","theirs","이 차는 그들의 것이다."],
+ ["poss","That house is ___.","theirs","저 집은 그들의 것이다."],
+ ["poss","The prize was ___.","theirs","그 상은 그들의 것이었다."]
+]]
+];
+
+let allQuestions = [];
+RAW.forEach(([setName, items]) => {
+  items.forEach(([role, en, answer, ko]) => {
+    allQuestions.push({setName, role, en, answer, ko});
+  });
+});
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let queue = [];
+let current = 0;
+let correctCount = 0;
+let wrongItems = [];
+let sessionWrong = [];
+let answered = false;
+let isRetryMode = false;
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(retry){
+  isRetryMode = retry;
+  queue = shuffle(retry ? wrongItems.slice() : allQuestions);
+  current = 0;
+  correctCount = 0;
+  sessionWrong = [];
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function retryWrongOnly(){
+  if(wrongItems.length === 0) return;
+  startQuiz(true);
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = queue[current];
+  document.getElementById('progress-text').textContent = (current+1)+" / "+queue.length;
+  document.getElementById('score-text').textContent = "맞음 "+correctCount;
+  document.getElementById('progress-fill').style.width = ((current+1)/queue.length*100)+"%";
+
+  document.getElementById('sent-en').innerHTML = q.en.replace('___', '<span class="blank-slot">____</span>');
+  document.getElementById('sent-ko').textContent = q.ko;
+
+  const chip = document.getElementById('role-chip');
+  chip.textContent = '';
+  chip.className = 'role-chip';
+
+  const input = document.getElementById('ans-input');
+  input.value = '';
+  input.className = 'ans-input';
+  input.disabled = false;
+  setTimeout(()=>input.focus(), 100);
+
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('action-btn').textContent = '확인';
+}
+
+function handleAction(){
+  if(!answered){
+    checkAnswer();
+  } else {
+    goNext();
+  }
+}
+
+function checkAnswer(){
+  const q = queue[current];
+  const input = document.getElementById('ans-input');
+  const userVal = input.value.trim().toLowerCase();
+  const correctVal = q.answer.toLowerCase();
+  const isCorrect = userVal === correctVal;
+
+  answered = true;
+  input.disabled = true;
+  input.className = 'ans-input ' + (isCorrect ? 'correct' : 'wrong');
+
+  const chip = document.getElementById('role-chip');
+  chip.textContent = ROLE_LABEL[q.role];
+  chip.className = 'role-chip show c-'+q.role;
+
+  const fb = document.getElementById('feedback');
+  if(isCorrect){
+    correctCount++;
+    fb.textContent = '정답이에요! 👏';
+    fb.className = 'feedback good';
+  } else {
+    fb.innerHTML = '아쉬워요. 정답은 <b>'+q.answer+'</b> 이에요.';
+    fb.className = 'feedback bad';
+    sessionWrong.push(q);
+  }
+  document.getElementById('score-text').textContent = "맞음 "+correctCount;
+  document.getElementById('action-btn').textContent = (current === queue.length-1) ? '결과 보기' : '다음';
+}
+
+function goNext(){
+  if(current === queue.length-1){
+    showResults();
+    return;
+  }
+  current++;
+  renderQuestion();
+}
+
+function showResults(){
+  wrongItems = sessionWrong;
+  showScreen('screen-results');
+  document.getElementById('result-score').textContent = correctCount+" / "+queue.length;
+  const pct = Math.round(correctCount/queue.length*100);
+  document.getElementById('result-title').textContent = pct === 100 ? '완벽해요! 🎉' : '수고했어요';
+  document.getElementById('result-sub').textContent = pct+"% 정답률";
+
+  const list = document.getElementById('wrong-list');
+  list.innerHTML = '';
+  if(wrongItems.length === 0){
+    list.innerHTML = '<div class="empty-note">틀린 문제가 없어요. 완벽해요!</div>';
+  } else {
+    wrongItems.forEach(q => {
+      const div = document.createElement('div');
+      div.className = 'wrong-item c-'+q.role;
+      const filledEn = q.en.replace('___', '<b>'+q.answer+'</b>');
+      div.innerHTML = `
+        <span class="role-tag">${ROLE_LABEL[q.role]}</span>
+        <div class="sent">${filledEn}</div>
+        <div class="sent-ko">${q.ko}</div>
+      `;
+      list.appendChild(div);
+    });
+  }
+  document.getElementById('retry-wrong-btn').style.display = wrongItems.length === 0 ? 'none' : 'block';
+}
+
+function goIntro(){
+  showScreen('screen-intro');
+}
+
+document.getElementById('ans-input').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    handleAction();
+  }
+});
+</script>
+</body>
+</html>
