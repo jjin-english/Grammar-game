@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provided That 연습 앱 | Lesson 3</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header h1 { font-size: 1.35rem; font-weight: 700; }
+    .header p { font-size: 0.85rem; opacity: 0.9; margin-top: 0.25rem; }
+    .container { max-width: 720px; margin: 0 auto; padding: 1rem; }
+    
+    /* Home */
+    .home-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+    .home-card h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--primary); }
+    .section-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.25rem;
+      margin: 0.5rem 0;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+    .section-btn:hover, .section-btn:active {
+      border-color: var(--primary);
+      background: #eff6ff;
+      transform: translateY(-1px);
+    }
+    .section-btn .num {
+      display: inline-block;
+      width: 28px; height: 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.85rem;
+      margin-right: 0.6rem;
+    }
+    .section-btn .desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; margin-left: 2.1rem; }
+    
+    .stats-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .stat {
+      flex: 1;
+      min-width: 100px;
+      background: white;
+      padding: 0.75rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .stat .val { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+    .stat .label { font-size: 0.75rem; color: var(--muted); }
+    
+    /* Quiz */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .progress {
+      background: #e2e8f0;
+      border-radius: 999px;
+      height: 8px;
+      flex: 1;
+      min-width: 120px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+    .score-badge {
+      background: #dbeafe;
+      color: var(--primary-dark);
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .q-num { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+    .q-eng { background: #f1f5f9; padding: 0.75rem 1rem; border-radius: 8px; margin: 0.75rem 0; font-size: 0.95rem; }
+    .q-kor { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    
+    .options { display: flex; flex-direction: column; gap: 0.6rem; }
+    .option {
+      padding: 0.9rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: white;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .option:hover { border-color: #93c5fd; background: #f0f9ff; }
+    .option.selected { border-color: var(--primary); background: #eff6ff; }
+    .option.correct { border-color: var(--success); background: #f0fdf4; }
+    .option.wrong { border-color: var(--danger); background: #fef2f2; }
+    .option:disabled { cursor: default; }
+    
+    .fill-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .fill-input:focus { outline: none; border-color: var(--primary); }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-success { background: var(--success); color: white; }
+    .btn-outline {
+      background: white;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .feedback.wrong { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .feedback .explain { margin-top: 0.5rem; font-size: 0.9rem; }
+    
+    .nav-btns {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .nav-btns .btn { flex: 1; min-width: 120px; text-align: center; }
+    
+    /* Result */
+    .result-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .result-score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+    .result-msg { font-size: 1.1rem; margin-bottom: 1.5rem; }
+    
+    /* Wrong list */
+    .wrong-item {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .wrong-item .q { font-weight: 600; margin-bottom: 0.3rem; }
+    .wrong-item .ans { font-size: 0.9rem; color: #166534; }
+    
+    .hidden { display: none !important; }
+    
+    /* Matching special */
+    .match-left, .match-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .match-item {
+      padding: 0.7rem 0.9rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .match-item.selected { border-color: var(--primary); background: #eff6ff; }
+    .match-item.matched { border-color: var(--success); background: #f0fdf4; opacity: 0.7; pointer-events: none; }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    
+    @media (max-width: 480px) {
+      .header h1 { font-size: 1.15rem; }
+      .question-card { padding: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🌱 Provided That 연습 앱</h1>
+    <p>Lesson 3 · Seeds as the Best Survival Strategy</p>
+  </div>
+
+  <div class="container">
+    <!-- HOME -->
+    <div id="home" class="view">
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="val" id="totalSolved">0</div>
+          <div class="label">푼 문제</div>
+        </div>
+        <div class="stat">
+          <div class="val" id="totalCorrect">0</div>
+          <div class="label">맞은 문제</div>
+        </div>
+        <div class="stat">
+          <div class="val" id="wrongCount">0</div>
+          <div class="label">틀린 문제</div>
+        </div>
+      </div>
+
+      <div class="home-card">
+        <h2>📚 유형별 연습 (각 10문제)</h2>
+        <button class="section-btn" onclick="startSection(1)">
+          <span class="num">1</span> 문장 연결하기 (Matching)
+          <div class="desc">앞뒤 절을 올바르게 연결하세요</div>
+        </button>
+        <button class="section-btn" onclick="startSection(2)">
+          <span class="num">2</span> 빈칸 채우기
+          <div class="desc">provided that / if 중 알맞은 것 고르기</div>
+        </button>
+        <button class="section-btn" onclick="startSection(3)">
+          <span class="num">3</span> 어법 오류 찾기
+          <div class="desc">틀린 부분을 찾아보세요 (고등 수준)</div>
+        </button>
+        <button class="section-btn" onclick="startSection(4)">
+          <span class="num">4</span> 문장 완성 & 영작
+          <div class="desc">조건을 이용해 문장을 완성하세요</div>
+        </button>
+        <button class="section-btn" onclick="startSection(5)">
+          <span class="num">5</span> 본문 활용 + if vs provided that
+          <div class="desc">교과서 본문과 비교 연습</div>
+        </button>
+        <button class="section-btn" onclick="startSection(6)">
+          <span class="num">6</span> 종합 테스트
+          <div class="desc">여러 유형이 섞인 10문제</div>
+        </button>
+      </div>
+
+      <div class="home-card">
+        <h2>🔄 틀린 문제 다시 풀기</h2>
+        <p style="font-size:0.9rem; color:var(--muted); margin-bottom:0.75rem;">
+          틀린 문제만 모아서 다시 연습할 수 있어요.
+        </p>
+        <button class="btn btn-outline" style="width:100%" onclick="startWrongRetry()" id="wrongRetryBtn" disabled>
+          틀린 문제 다시 풀기 (0개)
+        </button>
+        <button class="btn btn-outline" style="width:100%; margin-top:0.5rem;" onclick="clearWrong()">
+          틀린 문제 기록 초기화
+        </button>
+      </div>
+
+      <div class="home-card">
+        <h2>ℹ️ 문법 핵심 정리</h2>
+        <p style="font-size:0.9rem;">
+          <strong>provided that</strong> = “~라는 조건이라면 / 반드시 ~해야만”<br>
+          → if보다 조건을 <strong>더 강하게</strong> 강조하는 접속사예요.<br>
+          → that은 생략 가능합니다.<br>
+          → 앞뒤 절 순서는 자유롭습니다.
+        </p>
+        <p style="font-size:0.85rem; margin-top:0.75rem; color:var(--muted);">
+          본문 예문: <em>eucalyptus is only able to reproduce provided that there is fire.</em><br>
+          (유칼립투스는 불이 있을 때만 번식할 수 있다.)
+        </p>
+      </div>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div id="quiz" class="view hidden">
+      <div class="quiz-header">
+        <button class="btn btn-outline" onclick="goHome()" style="padding:0.4rem 0.8rem; font-size:0.85rem;">← 홈</button>
+        <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+        <span class="score-badge" id="currentScore">0 / 0</span>
+      </div>
+      <div id="questionArea"></div>
+      <div class="nav-btns" id="navBtns"></div>
+    </div>
+
+    <!-- RESULT VIEW -->
+    <div id="result" class="view hidden">
+      <div class="question-card result-card">
+        <h2 id="resultTitle">섹션 완료!</h2>
+        <div class="result-score" id="resultScore">0점</div>
+        <div class="result-msg" id="resultMsg"></div>
+        <div id="resultDetails"></div>
+        <div class="nav-btns" style="justify-content:center;">
+          <button class="btn btn-primary" onclick="goHome()">홈으로</button>
+          <button class="btn btn-outline" onclick="retryCurrentSection()">다시 풀기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Nature is Full of Wonders · Lesson 3 · provided that 연습
+  </footer>
+
+  <script>
+    // ===================== DATA =====================
+    const sections = {
+      1: {
+        title: "문장 연결하기 (Matching)",
+        type: "matching",
+        questions: [
+          {
+            left: "I will buy you a new smartphone",
+            leftKor: "나는 너에게 새 스마트폰을 사줄 것이다",
+            options: [
+              "provided that the price is decent.",
+              "provided that you finish your homework first.",
+              "provided that the weather is fine.",
+              "provided that everyone arrives on time."
+            ],
+            answer: 0,
+            rightKor: "가격이 괜찮다면",
+            full: "I will buy you a new smartphone provided that the price is decent.",
+            fullKor: "가격이 괜찮다면 나는 너에게 새 스마트폰을 사줄 것이다."
+          },
+          {
+            left: "We can still catch the train on time",
+            leftKor: "우리는 여전히 제시간에 기차를 탈 수 있다",
+            options: [
+              "provided that the Internet connection is stable.",
+              "provided that we leave in five minutes.",
+              "provided that you return it within two weeks.",
+              "provided that there is fire."
+            ],
+            answer: 1,
+            rightKor: "우리가 5분 안에 떠난다면",
+            full: "We can still catch the train on time provided that we leave in five minutes.",
+            fullKor: "우리가 5분 안에 떠난다면 여전히 제시간에 기차를 탈 수 있다."
+          },
+          {
+            left: "The students will go on the field trip as scheduled",
+            leftKor: "학생들은 예정대로 현장학습을 갈 것이다",
+            options: [
+              "provided that you finish your tasks first.",
+              "provided that the price is decent.",
+              "provided that the weather is fine.",
+              "provided that you drive carefully."
+            ],
+            answer: 2,
+            rightKor: "날씨가 좋다면",
+            full: "The students will go on the field trip as scheduled provided that the weather is fine.",
+            fullKor: "날씨가 좋다면 학생들은 예정대로 현장학습을 갈 것이다."
+          },
+          {
+            left: "You can play computer games",
+            leftKor: "너는 컴퓨터 게임을 할 수 있다",
+            options: [
+              "provided that everyone arrives on time.",
+              "provided that you finish your homework first.",
+              "provided that there is fire.",
+              "provided that the price is decent."
+            ],
+            answer: 1,
+            rightKor: "숙제를 먼저 끝낸다면",
+            full: "You can play computer games provided that you finish your homework first.",
+            fullKor: "숙제를 먼저 끝낸다면 컴퓨터 게임을 할 수 있다."
+          },
+          {
+            left: "We can start the event as planned",
+            leftKor: "우리는 계획대로 행사를 시작할 수 있다",
+            options: [
+              "provided that everyone arrives on time.",
+              "provided that the weather is fine.",
+              "provided that you return it within two weeks.",
+              "provided that you finish your homework first."
+            ],
+            answer: 0,
+            rightKor: "모든 사람이 제시간에 도착한다면",
+            full: "We can start the event as planned provided that everyone arrives on time.",
+            fullKor: "모든 사람이 제시간에 도착한다면 계획대로 행사를 시작할 수 있다."
+          },
+          {
+            left: "I will start the online lecture",
+            leftKor: "나는 온라인 강의를 시작할 것이다",
+            options: [
+              "provided that you drive carefully.",
+              "provided that the Internet connection is stable.",
+              "provided that the price is decent.",
+              "provided that we leave in five minutes."
+            ],
+            answer: 1,
+            rightKor: "인터넷 연결이 안정적이라면",
+            full: "I will start the online lecture provided that the Internet connection is stable.",
+            fullKor: "인터넷 연결이 안정적이라면 온라인 강의를 시작할 것이다."
+          },
+          {
+            left: "Eucalyptus is only able to reproduce",
+            leftKor: "유칼립투스는 번식할 수 있다",
+            options: [
+              "provided that the weather is fine.",
+              "provided that you finish your homework first.",
+              "provided that there is fire.",
+              "provided that everyone arrives on time."
+            ],
+            answer: 2,
+            rightKor: "불이 있을 때만",
+            full: "Eucalyptus is only able to reproduce provided that there is fire.",
+            fullKor: "유칼립투스는 불이 있을 때만 번식할 수 있다. (본문)"
+          },
+          {
+            left: "You may borrow my book",
+            leftKor: "너는 내 책을 빌려도 좋다",
+            options: [
+              "provided that you return it within two weeks.",
+              "provided that the Internet connection is stable.",
+              "provided that there is fire.",
+              "provided that the price is decent."
+            ],
+            answer: 0,
+            rightKor: "2주 이내에 돌려준다면",
+            full: "You may borrow my book provided that you return it within two weeks.",
+            fullKor: "2주 이내에 돌려준다면 내 책을 빌려도 좋다."
+          },
+          {
+            left: "I'll approve your leave request",
+            leftKor: "나는 너의 휴가 신청을 승인할 것이다",
+            options: [
+              "provided that the weather is fine.",
+              "provided that we leave in five minutes.",
+              "provided that you finish your tasks first.",
+              "provided that there is fire."
+            ],
+            answer: 2,
+            rightKor: "일을 먼저 끝낸다면",
+            full: "I'll approve your leave request provided that you finish your tasks first.",
+            fullKor: "일을 먼저 끝낸다면 휴가 신청을 승인할 것이다."
+          },
+          {
+            left: "You can borrow my car",
+            leftKor: "너는 내 차를 빌려도 좋다",
+            options: [
+              "provided that you drive carefully.",
+              "provided that the price is decent.",
+              "provided that everyone arrives on time.",
+              "provided that you finish your homework first."
+            ],
+            answer: 0,
+            rightKor: "조심히 운전한다면",
+            full: "You can borrow my car provided that you drive carefully.",
+            fullKor: "조심히 운전한다면 내 차를 빌려도 좋다."
+          }
+        ]
+      },
+      2: {
+        title: "빈칸 채우기",
+        type: "choice",
+        questions: [
+          {
+            q: "You can join the club activities _____ you pay the membership fee.",
+            kor: "회비를 낸다면 동아리 활동에 참여할 수 있다.",
+            options: [
+              "provided that",
+              "in spite of",
+              "as a result of",
+              "regardless of"
+            ],
+            answer: 0,
+            explain: "조건을 나타내므로 provided that이 맞습니다. in spite of = 불구하고, regardless of = ~에 상관없이"
+          },
+          {
+            q: "_____ the weather is fine, the students will go on the field trip as scheduled.",
+            kor: "날씨가 좋다면, 학생들은 예정대로 현장학습을 갈 것이다.",
+            options: [
+              "Even though",
+              "Provided that",
+              "As soon as",
+              "In case of"
+            ],
+            answer: 1,
+            explain: "Provided that = ~라는 조건이라면. Even though = 비록 ~일지라도, As soon as = ~하자마자"
+          },
+          {
+            q: "Eucalyptus is only able to reproduce _____ there is fire.",
+            kor: "유칼립투스는 불이 있을 때만 번식할 수 있다. (본문)",
+            options: [
+              "even if",
+              "provided that",
+              "as if",
+              "so that"
+            ],
+            answer: 1,
+            explain: "본문 원문 그대로 provided that을 사용합니다. even if = 비록 ~일지라도"
+          },
+          {
+            q: "I will buy you a new phone _____ the price is reasonable.",
+            kor: "가격이 합리적이라면 새 폰을 사줄게.",
+            options: [
+              "because of",
+              "instead of",
+              "provided that",
+              "in addition to"
+            ],
+            answer: 2,
+            explain: "조건을 나타내는 접속사는 provided that입니다."
+          },
+          {
+            q: "You may use my computer _____ you do not download any games.",
+            kor: "게임을 다운받지 않는다면 내 컴퓨터를 써도 좋다.",
+            options: [
+              "provided that",
+              "despite the fact that",
+              "no matter how",
+              "as though"
+            ],
+            answer: 0,
+            explain: "규칙을 강조하는 조건이므로 provided that이 가장 적절합니다."
+          },
+          {
+            q: "_____ everyone arrives on time, we can start the event as planned.",
+            kor: "모두가 제시간에 도착한다면, 계획대로 행사를 시작할 수 있다.",
+            options: [
+              "Now that",
+              "Even if",
+              "Provided that",
+              "As if"
+            ],
+            answer: 2,
+            explain: "Provided that으로 시작하는 조건절이 자연스럽습니다."
+          },
+          {
+            q: "We can catch the early train _____ we leave home by 6 a.m.",
+            kor: "아침 6시까지 집을 나서면 일찍 출발하는 기차를 탈 수 있다.",
+            options: [
+              "for fear that",
+              "provided that",
+              "in spite of",
+              "as a result"
+            ],
+            answer: 1,
+            explain: "조건을 나타내므로 provided that이 맞습니다."
+          },
+          {
+            q: "The teacher will let you retake the test _____ you have a valid reason.",
+            kor: "정당한 사유가 있다면 선생님이 재시험을 허락할 것이다.",
+            options: [
+              "provided that",
+              "although",
+              "whereas",
+              "unless"
+            ],
+            answer: 0,
+            explain: "unless는 '~하지 않으면'이므로 반대 의미입니다. 여기서는 provided that이 적절합니다."
+          },
+          {
+            q: "Animals help spread jackfruit seeds. In return, they get food. 이 관계를 조건으로 표현하면?",
+            kor: "동물들은 맛있는 과육을 먹는 조건으로 씨앗을 퍼뜨린다.",
+            options: [
+              "Animals spread the seeds provided that they get a meal.",
+              "Animals spread the seeds although they get a meal.",
+              "Animals spread the seeds so that they get a meal.",
+              "Animals spread the seeds in spite of getting a meal."
+            ],
+            answer: 0,
+            explain: "조건을 나타낼 때 provided that을 쓸 수 있습니다. (본문의 상호 이익 관계)"
+          },
+          {
+            q: "You can stay in the library _____ you keep quiet.",
+            kor: "조용히 한다면 도서관에 있어도 된다.",
+            options: [
+              "provided that",
+              "in case",
+              "as long as",
+              "both A and C"
+            ],
+            answer: 3,
+            explain: "provided that과 as long as 모두 '조건이라면'의 뜻으로 비슷하게 쓰입니다."
+          }
+        ]
+      },
+      3: {
+        title: "어법 오류 찾기",
+        type: "choice",
+        questions: [
+          {
+            q: "다음 중 어법상 옳지 않은 것은?",
+            kor: "밑줄 친 부분의 쓰임이 잘못된 문장을 고르세요.",
+            options: [
+              "① I'll approve your leave request provided that you finish your tasks first.",
+              "② You can borrow my car provided that you drive carefully.",
+              "③ You can join the club activities provided that you pay the membership fee.",
+              "④ Provided that he studies hard for the test, he will be anxious about the results."
+            ],
+            answer: 3,
+            explain: "④는 논리적으로 어색합니다. '열심히 공부하면 결과에 불안해할 것이다'는 조건과 결과가 자연스럽지 않습니다. 보통 '합격할 것이다' 등이 와야 합니다."
+          },
+          {
+            q: "다음 중 provided that의 쓰임이 어색한 것은?",
+            options: [
+              "① You can play games provided that you finish homework.",
+              "② Provided that it rains, we will cancel the picnic.",
+              "③ She looked at me provided that she knew the secret.",
+              "④ The event will start provided that everyone arrives on time."
+            ],
+            answer: 2,
+            explain: "③은 조건을 나타내지 않고 상황을 설명하는 느낌이어서 어색합니다. as if나 because 등이 더 자연스럽습니다."
+          },
+          {
+            q: "어법상 올바른 문장은?",
+            options: [
+              "① Provided that the Internet is stable, I will start the lecture.",
+              "② Provided that the Internet is stable, I starting the lecture.",
+              "③ Provided that the Internet stable, I will start the lecture.",
+              "④ Provided that the Internet is stable, will start the lecture."
+            ],
+            answer: 0,
+            explain: "주어+동사 구조가 완전해야 합니다. ①만 문법적으로 완벽합니다."
+          },
+          {
+            q: "다음 중 밑줄 친 부분이 올바른 것은? (that 생략 관련)",
+            options: [
+              "① Eucalyptus reproduces provided that there is fire.",
+              "② Eucalyptus reproduces provided that there fire.",
+              "③ Eucalyptus reproduces provided that is fire.",
+              "④ Eucalyptus reproduces provided there is fire."
+            ],
+            answer: 3,
+            explain: "that은 생략 가능하므로 ④가 올바른 예입니다. (①도 맞지만, 생략이 가능하다는 점을 확인하는 문제입니다.)"
+          },
+          {
+            q: "어색한 문장을 고르세요.",
+            options: [
+              "① Provided that you return the book, you can borrow it again.",
+              "② You can borrow the book provided that you return it.",
+              "③ Provided that returning the book, you can borrow it again.",
+              "④ The book can be borrowed provided that it is returned on time."
+            ],
+            answer: 2,
+            explain: "③은 동명사만 있어서 절이 불완전합니다. provided that 뒤에는 주어+동사 절이 와야 합니다."
+          },
+          {
+            q: "본문 내용과 어법에 맞는 문장은?",
+            options: [
+              "① Eucalyptus is only able to reproduce provided that there is fire.",
+              "② Eucalyptus is only able to reproduce provided that there are fire.",
+              "③ Eucalyptus is only able to reproduce provided that there is fires.",
+              "④ Eucalyptus is only able to reproduce provided that fire is."
+            ],
+            answer: 0,
+            explain: "본문 원문 그대로입니다. fire는 여기서 불가산으로 쓰여 there is fire가 맞습니다."
+          },
+          {
+            q: "다음 중 올바른 것은?",
+            options: [
+              "① Provided that the price is decent, I will buy it.",
+              "② Provided that the price decent, I will buy it.",
+              "③ Provided that is the price decent, I will buy it.",
+              "④ Provided the price is decent that, I will buy it."
+            ],
+            answer: 0,
+            explain: "①이 올바른 어순입니다."
+          },
+          {
+            q: "의미상 가장 자연스러운 것은?",
+            options: [
+              "① Provided that you study hard, you will fail the test.",
+              "② Provided that you study hard, you will pass the test.",
+              "③ Provided that you don't study, you will pass the test.",
+              "④ Provided that you sleep all day, you will pass the test."
+            ],
+            answer: 1,
+            explain: "조건을 충족하면 좋은 결과가 나오는 것이 자연스럽습니다."
+          },
+          {
+            q: "어법상 틀린 것은?",
+            options: [
+              "① You can stay provided that you are quiet.",
+              "② Provided that you are quiet, you can stay.",
+              "③ You can stay provided that you quiet.",
+              "④ Provided that you keep quiet, you may stay."
+            ],
+            answer: 2,
+            explain: "③은 be동사(are)가 빠져서 틀렸습니다."
+          },
+          {
+            q: "다음 중 provided that을 바르게 쓴 문장은?",
+            options: [
+              "① He will come provided that if he has time.",
+              "② He will come provided that he has time.",
+              "③ He will come provided that having time.",
+              "④ He will come provided that to have time."
+            ],
+            answer: 1,
+            explain: "provided that 뒤에 if를 또 쓰지 않습니다. 주어+동사 절이 와야 합니다."
+          }
+        ]
+      },
+      4: {
+        title: "문장 완성 & 영작",
+        type: "fill",
+        questions: [
+          {
+            q: "다음 한글을 보고 provided that을 이용해 문장을 완성하세요.\\n「나는 숙제를 끝내면 게임을 할 수 있다.」",
+            hint: "You can play games _______________________________.",
+            answer: "provided that you finish your homework",
+            accept: ["provided that you finish your homework", "provided that you finish homework", "provided you finish your homework", "provided that you finish your homework first"],
+            kor: "You can play games provided that you finish your homework.\\n(숙제를 끝내면 게임을 할 수 있다.)"
+          },
+          {
+            q: "빈칸에 알맞은 말을 쓰세요. (본문)\\nEucalyptus is only able to reproduce _______________________________.",
+            hint: "불이 있을 때만",
+            answer: "provided that there is fire",
+            accept: ["provided that there is fire", "provided that there is a fire", "provided there is fire"],
+            kor: "Eucalyptus is only able to reproduce provided that there is fire.\\n(유칼립투스는 불이 있을 때만 번식할 수 있다.)"
+          },
+          {
+            q: "주어진 단어를 배열하여 문장을 만드세요.\\n(provided / the weather / that / is / fine / , / we / will / go)",
+            answer: "Provided that the weather is fine, we will go.",
+            accept: ["Provided that the weather is fine, we will go.", "Provided that the weather is fine we will go", "We will go provided that the weather is fine."],
+            kor: "Provided that the weather is fine, we will go.\\n(날씨가 좋다면 우리는 갈 것이다.)"
+          },
+          {
+            q: "한글을 영어로 바꾸세요.\\n「가격이 괜찮다면 새 스마트폰을 사줄게.」",
+            answer: "I will buy you a new smartphone provided that the price is decent.",
+            accept: ["I will buy you a new smartphone provided that the price is decent.", "I'll buy you a new smartphone provided that the price is decent", "I will buy you a new smartphone provided the price is decent."],
+            kor: "I will buy you a new smartphone provided that the price is decent.\\n(가격이 괜찮다면 새 스마트폰을 사줄게.)"
+          },
+          {
+            q: "문장 완성\\nWe can start the event as planned _______________________________.",
+            hint: "모든 사람이 제시간에 도착한다면",
+            answer: "provided that everyone arrives on time",
+            accept: ["provided that everyone arrives on time", "provided everyone arrives on time"],
+            kor: "We can start the event as planned provided that everyone arrives on time.\\n(모든 사람이 제시간에 도착한다면 계획대로 행사를 시작할 수 있다.)"
+          },
+          {
+            q: "다음을 영어로 (provided that 사용)\\n「인터넷이 안정적이라면 온라인 강의를 시작하겠다.」",
+            answer: "I will start the online lecture provided that the Internet connection is stable.",
+            accept: ["I will start the online lecture provided that the Internet connection is stable.", "Provided that the Internet connection is stable, I will start the online lecture.", "I will start the online lecture provided the Internet connection is stable."],
+            kor: "I will start the online lecture provided that the Internet connection is stable.\\n(인터넷이 안정적이라면 온라인 강의를 시작하겠다.)"
+          },
+          {
+            q: "문장 완성\\nYou may borrow my book _______________________________.",
+            hint: "2주 안에 반납한다는 조건",
+            answer: "provided that you return it within two weeks",
+            accept: ["provided that you return it within two weeks", "provided you return it within two weeks"],
+            kor: "You may borrow my book provided that you return it within two weeks.\\n(2주 이내에 돌려준다면 내 책을 빌려도 좋다.)"
+          },
+          {
+            q: "올바른 어순으로 배열\\n(catch / we / the train / can / provided that / leave / we / early)",
+            answer: "We can catch the train provided that we leave early.",
+            accept: ["We can catch the train provided that we leave early.", "Provided that we leave early, we can catch the train."],
+            kor: "We can catch the train provided that we leave early.\\n(일찍 떠난다면 기차를 탈 수 있다.)"
+          },
+          {
+            q: "한글 → 영어\\n「모두가 준비되면 게임을 시작할 것이다.」",
+            answer: "We will start the game provided that everyone is ready.",
+            accept: ["We will start the game provided that everyone is ready.", "Provided that everyone is ready, we will start the game."],
+            kor: "We will start the game provided that everyone is ready.\\n(모두가 준비되면 게임을 시작할 것이다.)"
+          },
+          {
+            q: "빈칸에 provided that 절을 넣으세요.\\nThe students will go on the field trip as scheduled _______________________________.",
+            answer: "provided that the weather is fine",
+            accept: ["provided that the weather is fine", "provided the weather is fine"],
+            kor: "The students will go on the field trip as scheduled provided that the weather is fine.\\n(날씨가 좋다면 학생들은 예정대로 현장학습을 갈 것이다.)"
+          }
+        ]
+      },
+      5: {
+        title: "본문 활용 + if vs provided that",
+        type: "choice",
+        questions: [
+          {
+            q: "본문에서 eucalyptus와 관련된 올바른 문장은?",
+            options: [
+              "Eucalyptus can reproduce if there is no fire.",
+              "Eucalyptus is only able to reproduce provided that there is fire.",
+              "Eucalyptus reproduces even if there is fire.",
+              "Eucalyptus never reproduces provided that there is fire."
+            ],
+            answer: 1,
+            explain: "본문: “eucalyptus is only able to reproduce provided that there is fire.”"
+          },
+          {
+            q: "if와 provided that의 차이로 가장 적절한 것은?",
+            options: [
+              "의미가 완전히 같다.",
+              "provided that이 조건을 더 강하게 강조한다.",
+              "if만 격식체로 쓰인다.",
+              "provided that은 과거 시제에만 쓴다."
+            ],
+            answer: 1,
+            explain: "provided that은 ‘반드시 ~해야만’이라는 강한 조건의 느낌을 줍니다."
+          },
+          {
+            q: "다음 중 provided that이 if보다 더 자연스러운 상황은?",
+            options: [
+              "친구에게 “비 오면 집에 있을게”라고 말할 때",
+              "규칙으로 “숙제를 끝내야만 게임을 할 수 있다”고 강조할 때",
+              "단순한 가정 “내가 새라면”을 말할 때",
+              "과거 사실을 말할 때"
+            ],
+            answer: 1,
+            explain: "규칙을 강조하거나 필수 조건을 말할 때 provided that이 더 적합합니다."
+          },
+          {
+            q: "같은 의미로 바꿔 쓸 수 있는 것은?\\n“You can play provided that you finish homework.”",
+            options: [
+              "You can play if you finish homework. (의미가 거의 같음)",
+              "You can play although you finish homework.",
+              "You can play so that you finish homework.",
+              "You can play because you finish homework."
+            ],
+            answer: 0,
+            explain: "if로 바꿔도 기본 의미는 통하지만, provided that이 조건을 더 강조합니다."
+          },
+          {
+            q: "본문의 유칼립투스 문장을 if로 바꾸면?",
+            options: [
+              "Eucalyptus is only able to reproduce if there is fire.",
+              "Eucalyptus is only able to reproduce if there is no fire.",
+              "Eucalyptus cannot reproduce if there is fire.",
+              "Eucalyptus reproduces only if there is no fire."
+            ],
+            answer: 0,
+            explain: "if로 바꿔도 의미는 통합니다. 다만 본문은 강한 조건을 나타내기 위해 provided that을 사용했습니다."
+          },
+          {
+            q: "다음 문장의 빈칸에 더 적합한 것은?\\n“You may use my computer _____ you do not download any games.” (규칙 강조)",
+            options: ["if", "provided that", "although", "because"],
+            answer: 1,
+            explain: "규칙을 강하게 제시할 때는 provided that이 더 적합합니다."
+          },
+          {
+            q: "앞뒤 순서가 자유로운가?",
+            options: [
+              "provided that만 앞에 올 수 있다.",
+              "if만 뒤에 올 수 있다.",
+              "둘 다 앞뒤에 자유롭게 올 수 있다.",
+              "둘 다 반드시 앞에 와야 한다."
+            ],
+            answer: 2,
+            explain: "둘 다 조건절을 문장 앞이나 뒤에 자유롭게 둘 수 있습니다."
+          },
+          {
+            q: "that 생략이 가능한가?",
+            options: [
+              "provided that에서 that은 절대 생략 불가",
+              "provided that에서 that은 생략 가능",
+              "if에서만 that을 쓴다",
+              "둘 다 that이 필요하다"
+            ],
+            answer: 1,
+            explain: "provided (that)으로 that을 생략할 수 있습니다."
+          },
+          {
+            q: "다음 중 본문 내용과 일치하는 것은?",
+            options: [
+              "유칼립투스는 불이 없어도 씨앗을 쉽게 퍼뜨린다.",
+              "유칼립투스 씨앗은 불의 열로 껍질이 열리며 나온다.",
+              "유칼립투스는 동물에게 씨앗을 퍼뜨린다.",
+              "유칼립투스는 갈고리로 동물에 붙는다."
+            ],
+            answer: 1,
+            explain: "본문에서 불의 열이 껍질을 열어 씨앗이 나온다고 설명합니다."
+          },
+          {
+            q: "가장 강한 조건의 느낌을 주는 표현은?",
+            options: ["if", "when", "provided that", "as"],
+            answer: 2,
+            explain: "provided that이 ‘반드시 ~해야만’의 강한 조건을 나타냅니다."
+          }
+        ]
+      },
+      6: {
+        title: "종합 테스트",
+        type: "mixed",
+        questions: [
+          {
+            type: "choice",
+            q: "다음 빈칸에 알맞은 것은?\\n_____ you finish your homework first, you can play computer games.",
+            options: ["Provided that", "Even though", "As if", "So that"],
+            answer: 0,
+            explain: "조건을 나타내므로 Provided that이 맞습니다."
+          },
+          {
+            type: "choice",
+            q: "본문 문장과 같은 의미는?",
+            options: [
+              "Eucalyptus can reproduce only when there is fire.",
+              "Eucalyptus can reproduce without fire.",
+              "Eucalyptus hates fire.",
+              "Fire destroys all eucalyptus seeds."
+            ],
+            answer: 0,
+            explain: "provided that there is fire ≈ only when there is fire"
+          },
+          {
+            type: "choice",
+            q: "어법상 틀린 것은?",
+            options: [
+              "Provided that the price is decent, I will buy it.",
+              "I will buy it provided that the price is decent.",
+              "Provided that the price is decent I will buy it.",
+              "Provided that the price decent, I will buy it."
+            ],
+            answer: 3,
+            explain: "is가 빠져서 틀렸습니다."
+          },
+          {
+            type: "choice",
+            q: "if와 provided that 중 더 강한 조건은?",
+            options: ["if", "provided that", "둘 다 같음", "상황에 따라 다름"],
+            answer: 1,
+            explain: "provided that이 더 강한 조건의 느낌을 줍니다."
+          },
+          {
+            type: "choice",
+            q: "다음 중 올바른 연결은?",
+            options: [
+              "I will buy you a phone / provided that the price is decent.",
+              "I will buy you a phone / provided that the weather is fine.",
+              "We can catch the train / provided that the price is decent.",
+              "The students will go / provided that you finish homework."
+            ],
+            answer: 0,
+            explain: "의미상 가격이 맞아야 사는 것이 자연스럽습니다."
+          },
+          {
+            type: "choice",
+            q: "빈칸에 들어갈 말로 가장 알맞은 것은?\\nYou can borrow my car _____ you drive carefully.",
+            options: ["provided that", "in spite of", "because of", "according to"],
+            answer: 0,
+            explain: "조건 접속사 provided that이 필요합니다."
+          },
+          {
+            type: "choice",
+            q: "다음 문장의 해석으로 알맞은 것은?\\n“Provided that everyone arrives on time, we can start the event as planned.”",
+            options: [
+              "모두가 제시간에 도착한다면, 계획대로 행사를 시작할 수 있다.",
+              "모두가 제시간에 도착해서, 계획대로 행사를 시작했다.",
+              "모두가 제시간에 도착하지 않아도 행사를 시작할 수 있다.",
+              "모두가 제시간에 도착했는지 확인한 후 행사를 시작했다."
+            ],
+            answer: 0,
+            explain: "조건을 나타내는 문장입니다."
+          },
+          {
+            type: "choice",
+            q: "that을 생략한 올바른 문장은?",
+            options: [
+              "You can stay provided you are quiet.",
+              "You can stay provided that are quiet.",
+              "You can stay provided that you quiet.",
+              "You can stay provided is quiet."
+            ],
+            answer: 0,
+            explain: "provided (that) you are quiet이 올바릅니다."
+          },
+          {
+            type: "choice",
+            q: "본문에서 유칼립투스가 불을 이용하는 이유는?",
+            options: [
+              "씨앗의 껍질을 열어 씨앗을 내보내기 위해",
+              "동물들을 쫓아내기 위해",
+              "열매를 익히기 위해",
+              "다른 나무를 태우기 위해서만"
+            ],
+            answer: 0,
+            explain: "불의 열이 껍질을 갈라 씨앗이 나옵니다."
+          },
+          {
+            type: "choice",
+            q: "다음 중 provided that이 가장 잘 어울리는 문장은?",
+            options: [
+              "I will help you provided that you ask politely.",
+              "I was happy provided that I saw you.",
+              "She cried provided that the movie was sad.",
+              "He ran provided that he was late."
+            ],
+            answer: 0,
+            explain: "조건을 제시하는 상황에 가장 잘 맞습니다."
+          }
+        ]
+      }
+    };
+
+    // ===================== STATE =====================
+    let currentSection = null;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answers = [];
+    let isRetryMode = false;
+    let selectedMatch = null;
+
+    // LocalStorage helpers
+    function loadStats() {
+      const stats = JSON.parse(localStorage.getItem('pt_stats') || '{"solved":0,"correct":0}');
+      const wrong = JSON.parse(localStorage.getItem('pt_wrong') || '[]');
+      document.getElementById('totalSolved').textContent = stats.solved;
+      document.getElementById('totalCorrect').textContent = stats.correct;
+      document.getElementById('wrongCount').textContent = wrong.length;
+      const btn = document.getElementById('wrongRetryBtn');
+      btn.disabled = wrong.length === 0;
+      btn.textContent = `틀린 문제 다시 풀기 (${wrong.length}개)`;
+    }
+
+    function saveWrong(q, sectionId) {
+      let wrong = JSON.parse(localStorage.getItem('pt_wrong') || '[]');
+      const key = sectionId + '_' + (q.q || q.left || '').slice(0, 40);
+      if (!wrong.find(w => w.key === key)) {
+        wrong.push({ key, sectionId, q });
+        localStorage.setItem('pt_wrong', JSON.stringify(wrong));
+      }
+      loadStats();
+    }
+
+    function updateStats(correct) {
+      const stats = JSON.parse(localStorage.getItem('pt_stats') || '{"solved":0,"correct":0}');
+      stats.solved++;
+      if (correct) stats.correct++;
+      localStorage.setItem('pt_stats', JSON.stringify(stats));
+      loadStats();
+    }
+
+    function clearWrong() {
+      if (confirm('틀린 문제 기록을 모두 삭제할까요?')) {
+        localStorage.setItem('pt_wrong', '[]');
+        loadStats();
+        alert('초기화되었습니다.');
+      }
+    }
+
+    // ===================== NAVIGATION =====================
+    function goHome() {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('home').classList.remove('hidden');
+      isRetryMode = false;
+      loadStats();
+    }
+
+    function startSection(id) {
+      currentSection = id;
+      isRetryMode = false;
+      const sec = sections[id];
+      currentQuestions = JSON.parse(JSON.stringify(sec.questions)); // deep copy
+      // shuffle for variety except matching order is fixed-ish
+      if (id !== 1) {
+        currentQuestions = shuffle(currentQuestions);
+      }
+      currentIndex = 0;
+      score = 0;
+      answers = [];
+      showQuiz();
+    }
+
+    function startWrongRetry() {
+      const wrong = JSON.parse(localStorage.getItem('pt_wrong') || '[]');
+      if (wrong.length === 0) return;
+      isRetryMode = true;
+      currentSection = 'wrong';
+      currentQuestions = wrong.map(w => w.q);
+      currentIndex = 0;
+      score = 0;
+      answers = [];
+      showQuiz();
+    }
+
+    function showQuiz() {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('quiz').classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // ===================== RENDER =====================
+    function renderQuestion() {
+      const q = currentQuestions[currentIndex];
+      const total = currentQuestions.length;
+      const area = document.getElementById('questionArea');
+      const nav = document.getElementById('navBtns');
+      document.getElementById('progressBar').style.width = ((currentIndex) / total * 100) + '%';
+      document.getElementById('currentScore').textContent = `${score} / ${currentIndex}`;
+
+      // Determine type
+      let type = sections[currentSection]?.type || q.type || 'choice';
+      if (currentSection === 'wrong') type = q.type || (q.left ? 'matching' : (q.answer && typeof q.answer === 'string' ? 'fill' : 'choice'));
+
+      if (type === 'matching') {
+        renderMatching(q, area, nav);
+      } else if (type === 'fill') {
+        renderFill(q, area, nav);
+      } else {
+        renderChoice(q, area, nav);
+      }
+    }
+
+    function renderChoice(q, area, nav) {
+      let optsHtml = q.options.map((opt, i) => 
+        `<button class="option" data-idx="${i}" onclick="selectOption(this, ${i})">${opt}</button>`
+      ).join('');
+      
+      area.innerHTML = `
+        <div class="question-card">
+          <div class="q-num">문제 ${currentIndex + 1} / ${currentQuestions.length}</div>
+          <div class="q-text">${q.q}</div>
+          ${q.kor ? `<div class="q-kor">${q.kor}</div>` : ''}
+          <div class="options" id="options">${optsHtml}</div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+      nav.innerHTML = `
+        <button class="btn btn-primary" id="checkBtn" onclick="checkChoice()" disabled>정답 확인</button>
+        <button class="btn btn-outline hidden" id="nextBtn" onclick="nextQuestion()">다음 문제</button>
+      `;
+      window.selectedIdx = null;
+    }
+
+    function selectOption(el, idx) {
+      document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      window.selectedIdx = idx;
+      document.getElementById('checkBtn').disabled = false;
+    }
+
+    function checkChoice() {
+      const q = currentQuestions[currentIndex];
+      const opts = document.querySelectorAll('.option');
+      const fb = document.getElementById('feedback');
+      const correct = window.selectedIdx === q.answer;
+      
+      opts.forEach((o, i) => {
+        o.disabled = true;
+        if (i === q.answer) o.classList.add('correct');
+        else if (i === window.selectedIdx) o.classList.add('wrong');
+      });
+
+      if (correct) {
+        score++;
+        fb.className = 'feedback show correct';
+        fb.innerHTML = `✅ 정답입니다!<div class="explain">${q.explain || ''}</div>`;
+        updateStats(true);
+      } else {
+        fb.className = 'feedback show wrong';
+        fb.innerHTML = `❌ 틀렸습니다.<div class="explain">${q.explain || ''}<br>정답: ${q.options[q.answer]}</div>`;
+        updateStats(false);
+        if (!isRetryMode) saveWrong(q, currentSection);
+      }
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('currentScore').textContent = `${score} / ${currentIndex + 1}`;
+    }
+
+    function renderFill(q, area, nav) {
+      area.innerHTML = `
+        <div class="question-card">
+          <div class="q-num">문제 ${currentIndex + 1} / ${currentQuestions.length}</div>
+          <div class="q-text" style="white-space:pre-wrap;">${q.q}</div>
+          ${q.hint ? `<div class="q-kor">힌트: ${q.hint}</div>` : ''}
+          <input type="text" class="fill-input" id="fillInput" placeholder="영어 문장 또는 빈칸 내용을 입력하세요" autocomplete="off">
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+      nav.innerHTML = `
+        <button class="btn btn-primary" id="checkBtn" onclick="checkFill()">정답 확인</button>
+        <button class="btn btn-outline hidden" id="nextBtn" onclick="nextQuestion()">다음 문제</button>
+      `;
+      document.getElementById('fillInput').focus();
+    }
+
+    function checkFill() {
+      const q = currentQuestions[currentIndex];
+      const input = document.getElementById('fillInput').value.trim().replace(/\s+/g, ' ');
+      const fb = document.getElementById('feedback');
+      const accept = q.accept || [q.answer];
+      const correct = accept.some(a => input.toLowerCase() === a.toLowerCase().replace(/\s+/g, ' '));
+      const korHtml = (q.kor || '').replace(/\\n/g, '<br>');
+
+      if (correct) {
+        score++;
+        fb.className = 'feedback show correct';
+        fb.innerHTML = `✅ 정답입니다!<br><strong>${q.answer}</strong><br><span style="color:#166534">${korHtml}</span>`;
+        updateStats(true);
+      } else {
+        fb.className = 'feedback show wrong';
+        fb.innerHTML = `❌ 다시 확인해 보세요.<br>모범 답안: <strong>${q.answer}</strong><br><span style="color:#991b1b">${korHtml}</span>`;
+        updateStats(false);
+        if (!isRetryMode) saveWrong(q, currentSection);
+      }
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('fillInput').disabled = true;
+      document.getElementById('currentScore').textContent = `${score} / ${currentIndex + 1}`;
+    }
+
+    function renderMatching(q, area, nav) {
+      // Use pre-defined options array (already varied and logical matching required)
+      const options = q.options;
+      
+      let optsHtml = options.map((opt, i) => 
+        `<button class="option" data-idx="${i}" onclick="selectOption(this, ${i})">${opt}</button>`
+      ).join('');
+
+      area.innerHTML = `
+        <div class="question-card">
+          <div class="q-num">문제 ${currentIndex + 1} / ${currentQuestions.length}</div>
+          <div class="q-text">다음 앞 절에 <strong>의미상 알맞은</strong> 조건 절을 고르세요.</div>
+          <div class="q-eng"><strong>${q.left}</strong></div>
+          <div class="q-kor">${q.leftKor}</div>
+          <div class="options" id="options">${optsHtml}</div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+      `;
+      nav.innerHTML = `
+        <button class="btn btn-primary" id="checkBtn" onclick="checkMatching()" disabled>정답 확인</button>
+        <button class="btn btn-outline hidden" id="nextBtn" onclick="nextQuestion()">다음 문제</button>
+      `;
+      window.selectedIdx = null;
+      window.matchAnswerIdx = q.answer;
+      window.matchOptions = options;
+    }
+
+    function checkMatching() {
+      const opts = document.querySelectorAll('.option');
+      const fb = document.getElementById('feedback');
+      const correct = window.selectedIdx === window.matchAnswerIdx;
+      const q = currentQuestions[currentIndex];
+      const correctText = q.options[q.answer];
+
+      opts.forEach((o, i) => {
+        o.disabled = true;
+        if (i === q.answer) o.classList.add('correct');
+        else if (i === window.selectedIdx) o.classList.add('wrong');
+      });
+
+      if (correct) {
+        score++;
+        fb.className = 'feedback show correct';
+        fb.innerHTML = `✅ 정답입니다!<br><strong>${q.full}</strong><br><small>${q.fullKor}</small>`;
+        updateStats(true);
+      } else {
+        fb.className = 'feedback show wrong';
+        fb.innerHTML = `❌ 틀렸습니다.<br>정답: <strong>${correctText}</strong><br><small>${q.rightKor}</small><br><br>완성 문장: ${q.full}<br>${q.fullKor}`;
+        updateStats(false);
+        if (!isRetryMode) saveWrong(q, 1);
+      }
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      document.getElementById('currentScore').textContent = `${score} / ${currentIndex + 1}`;
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= currentQuestions.length) {
+        showResult();
+      } else {
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      document.getElementById('result').classList.remove('hidden');
+      const total = currentQuestions.length;
+      const percent = Math.round((score / total) * 100);
+      document.getElementById('resultScore').textContent = `${percent}점`;
+      document.getElementById('resultTitle').textContent = isRetryMode ? '틀린 문제 재도전 완료!' : '섹션 완료!';
+      
+      let msg = '';
+      if (percent === 100) msg = '🎉 완벽합니다! 모든 문제를 맞혔어요!';
+      else if (percent >= 80) msg = '👍 훌륭해요! 거의 다 맞았습니다.';
+      else if (percent >= 60) msg = '💪 좋아요! 조금 더 연습하면 완벽해질 거예요.';
+      else msg = '📚 다시 한 번 복습해 보세요. 틀린 문제는 홈에서 다시 풀 수 있어요.';
+      
+      document.getElementById('resultMsg').textContent = msg;
+      document.getElementById('resultDetails').innerHTML = `
+        <p style="margin-bottom:1rem;">맞힌 문제: <strong>${score}</strong> / ${total}</p>
+      `;
+      loadStats();
+    }
+
+    function retryCurrentSection() {
+      if (isRetryMode) startWrongRetry();
+      else startSection(currentSection);
+    }
+
+    // Init
+    loadStats();
+  </script>
+</body>
+</html>
