@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#D92A6E">
+<title>마치 ~처럼! as if 영작 연습</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="마치 ~처럼! as if 영작 연습">
+<meta property="og:description" content="if와 as if는 뭐가 다를까? 쉬운 설명 + 영작 30문제 + 해석 10문제">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎭%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#F3F1FF;
+  --paper:#FFFFFF;
+  --ink:#26244A;
+  --ink-soft:#5B5982;
+  --line:#DCD8F4;
+  --if:#2456E8;
+  --if-soft:#E2EAFF;
+  --asif:#D92A6E;
+  --asif-soft:#FFE3EE;
+  --violet:#6F42C1;
+  --violet-soft:#EEE6FB;
+  --teal:#0E8377;
+  --teal-soft:#DDF4F1;
+  --gold:#FFD23F;
+  --gold-soft:#FFF1B8;
+  --ok:#0F7A4D;
+  --ok-soft:#DDF5EA;
+  --no:#C22F2F;
+  --no-soft:#FDE4E4;
+  --font:ui-rounded,"SF Pro Rounded","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+#app{max-width:520px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:calc(48px + env(safe-area-inset-bottom))}
+p{margin:0}
+h1,h2{margin:0;line-height:1.3}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* ---------- 마치 ~처럼: 무대 커튼 ---------- */
+.curtain{
+  position:relative;
+  background-color:var(--asif);
+  background-image:radial-gradient(circle at 88% -10%,rgba(255,210,63,.55),rgba(255,210,63,0) 55%);
+  color:#fff;
+  padding:calc(30px + env(safe-area-inset-top)) 22px 44px;
+  margin-bottom:34px;
+}
+.curtain::after{
+  content:"";position:absolute;left:0;right:0;bottom:-15px;height:16px;
+  background:radial-gradient(circle at 12px 0,var(--asif) 0 12px,transparent 12.5px) 0 0/24px 16px repeat-x;
+}
+.curtain h1{font-size:38px;font-weight:900;letter-spacing:-.01em}
+.curtain .en-title{font-size:22px;font-weight:800;margin-top:2px;letter-spacing:.02em}
+.curtain .tag{margin-top:12px;font-size:15px;opacity:.96;max-width:30em}
+.duo{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:baseline;gap:8px;padding:8px 14px;border-radius:999px;font-size:15px;font-weight:700}
+.chip b{font-size:19px}
+.chip.if{background:var(--if);color:#fff}
+.chip.asif{background:#fff;color:var(--asif)}
+
+/* ---------- 메뉴 티켓 ---------- */
+.menu{list-style:none;margin:0;padding:0 16px;display:grid;gap:14px}
+.ticket{
+  position:relative;display:flex;width:100%;min-height:92px;
+  background:var(--paper);border:0;border-radius:18px;padding:0;text-align:left;
+  box-shadow:0 2px 0 var(--line),0 10px 20px rgba(38,36,74,.07);
+}
+.ticket::before,.ticket::after{content:"";position:absolute;left:64px;width:16px;height:16px;border-radius:50%;background:var(--bg)}
+.ticket::before{top:-8px}
+.ticket::after{bottom:-8px}
+.ticket:active{transform:translateY(1px)}
+.stub{flex:0 0 72px;display:grid;place-items:center;font-size:30px;border-radius:18px 0 0 18px}
+.stub.gold{background:var(--gold)}
+.stub.split{background:linear-gradient(135deg,var(--if) 50%,var(--asif) 50%)}
+.stub.pink{background:var(--asif)}
+.stub.violet{background:var(--violet)}
+.stub.teal{background:var(--teal)}
+.stub.ink{background:var(--ink)}
+.tbody{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ttitle{font-size:19px;font-weight:800}
+.tsub{font-size:14.5px;color:var(--ink-soft)}
+.tmeta{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pill{font-size:13px;font-weight:700;padding:1px 10px;border-radius:999px;background:var(--bg);color:var(--ink-soft)}
+.pill.best{background:var(--gold-soft);color:#6B5200}
+.foot{margin:22px 22px 0;font-size:14.5px;color:var(--ink-soft);text-align:center}
+
+/* ---------- 공통 헤더 ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(12px + env(safe-area-inset-top)) 14px 8px}
+.back,.helpbtn{border:0;background:var(--paper);border-radius:999px;padding:8px 16px;font-weight:700;font-size:15px;min-height:42px;box-shadow:0 2px 0 var(--line)}
+.helpbtn{background:var(--gold)}
+.qtitle{font-weight:800;font-size:17px;text-align:center;flex:1}
+.progress{margin:6px 18px 0;height:10px;border-radius:999px;background:var(--line);overflow:hidden}
+.progress .bar{height:100%;background:var(--asif);border-radius:999px;transition:width .3s}
+.pcount{margin:6px 20px 0;text-align:right;font-size:14px;font-weight:700;color:var(--ink-soft)}
+.wrap{padding:0 16px}
+.strip{margin:10px 0 0;padding:10px 14px;border-radius:14px;background:var(--gold-soft);font-size:14.5px;line-height:1.5}
+.strip b{font-weight:800}
+.strip.tip{background:var(--paper);box-shadow:inset 0 0 0 2px var(--line)}
+
+mark{background:none;font-weight:800;padding:0 5px;border-radius:6px}
+mark.k-if{background:var(--if-soft);color:var(--if)}
+mark.k-asif{background:var(--asif-soft);color:var(--asif)}
+
+/* ---------- 문제 카드 ---------- */
+.qcard{margin-top:14px;background:var(--paper);border-radius:22px;padding:20px 18px 22px;box-shadow:0 2px 0 var(--line),0 12px 24px rgba(38,36,74,.07)}
+.ko{font-size:20px;font-weight:800;line-height:1.5}
+.note{margin-top:8px;font-size:14.5px;font-weight:700;color:var(--violet);background:var(--violet-soft);display:inline-block;padding:3px 12px;border-radius:999px}
+.en{margin-top:16px;font-size:22px;line-height:2.15;font-weight:600}
+.en.big{line-height:1.6}
+.blank{
+  font:inherit;font-weight:800;font-size:22px;color:var(--asif);text-align:center;
+  border:0;border-bottom:3px solid var(--asif);background:var(--asif-soft);
+  border-radius:8px 8px 0 0;padding:1px 6px;min-width:5ch;max-width:100%;outline:none;
+  -webkit-appearance:none;appearance:none;
+}
+.blank:focus{background:var(--gold-soft);border-color:var(--ink);color:var(--ink)}
+.blank.done{display:inline-block;border-bottom-width:3px;min-width:4ch}
+.blank.done.ok{color:var(--ok);background:var(--ok-soft);border-color:var(--ok)}
+.blank.done.no{color:var(--no);background:var(--no-soft);border-color:var(--no);text-decoration:line-through}
+.base{display:inline-block;font-size:.8em;font-weight:800;color:#6B5200;background:var(--gold-soft);padding:0 10px;border-radius:999px;margin:0 2px;line-height:1.6}
+.slot{display:inline-block;min-width:3.2em;text-align:center;border-bottom:3px solid var(--ink);font-weight:800;padding:0 6px}
+.slot.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-soft);border-radius:8px 8px 0 0}
+.slot.no{color:var(--no);border-color:var(--no);background:var(--no-soft);border-radius:8px 8px 0 0;text-decoration:line-through}
+.hintbox{margin-top:14px;padding:12px 14px;background:var(--gold-soft);border-radius:14px;font-size:15.5px;line-height:1.55}
+.hintbox .forms{display:inline-block;margin-top:4px;font-weight:800;font-size:17px}
+
+.btns{display:flex;gap:10px;margin-top:18px}
+.btn{flex:1;min-height:54px;border:0;border-radius:16px;font-weight:800;font-size:17px;padding:0 16px;background:var(--paper);box-shadow:inset 0 0 0 2px var(--line)}
+.btn.primary{background:var(--asif);color:#fff;box-shadow:0 3px 0 #A81D54}
+.btn.primary:active{transform:translateY(2px);box-shadow:0 1px 0 #A81D54}
+.btn.dark{background:var(--ink);color:#fff;box-shadow:0 3px 0 #0F0E28}
+.btn.blue{background:var(--if);color:#fff;box-shadow:0 3px 0 #163A9E}
+.btn.slim{flex:0 0 auto}
+.warn{margin-top:10px;font-size:14.5px;font-weight:700;color:var(--no)}
+.shake{animation:shake .35s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+.fb{margin-top:16px;padding:14px 16px;border-radius:16px;font-size:16px;line-height:1.6}
+.fb.ok{background:var(--ok-soft);color:#0B4F32}
+.fb.no{background:var(--no-soft);color:#7A1D1D}
+.fb-h{font-weight:800;font-size:18px}
+.fb .full{margin-top:6px;font-size:18px;font-weight:600;color:var(--ink)}
+.fb .full b{color:var(--ok)}
+.fb.no .full b{color:var(--no)}
+.fb .why{margin-top:6px;color:var(--ink)}
+
+/* ---------- 선택 버튼 ---------- */
+.opts{display:grid;gap:10px;margin-top:18px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{min-height:64px;border:0;border-radius:16px;background:var(--paper);box-shadow:inset 0 0 0 2px var(--line);font-weight:800;font-size:17px;padding:12px 14px;text-align:left;line-height:1.45}
+.opts.two .opt{text-align:center;font-size:26px}
+.opt.if{color:var(--if);box-shadow:inset 0 0 0 3px var(--if)}
+.opt.asif{color:var(--asif);box-shadow:inset 0 0 0 3px var(--asif)}
+.opt:active:not(:disabled){transform:translateY(1px)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);color:var(--ok);box-shadow:inset 0 0 0 3px var(--ok)}
+.opt.wrong{background:var(--no-soft);color:var(--no);box-shadow:inset 0 0 0 3px var(--no)}
+.opt.dim{opacity:.55}
+
+/* ---------- 결과 ---------- */
+.score{text-align:center;padding:26px 16px 6px}
+.score .num{font-size:72px;font-weight:900;line-height:1}
+.score .of{font-size:24px;font-weight:800;color:var(--ink-soft);margin-left:6px}
+.dots{display:flex;justify-content:center;gap:6px;margin:14px 0 6px;flex-wrap:wrap}
+.dot{width:22px;height:22px;border-radius:50%;display:inline-block}
+.dot.ok{background:var(--ok)}
+.dot.no{background:var(--no)}
+.msg{text-align:center;font-size:19px;font-weight:800;padding:0 20px}
+.msg-sub{text-align:center;font-size:15px;color:var(--ink-soft);padding:4px 20px 0}
+.actions{display:grid;gap:10px;margin:20px 16px 0}
+.actions .btn{flex:none;width:100%}
+.review{list-style:none;margin:22px 16px 0;padding:0;display:grid;gap:10px}
+.row{display:flex;gap:12px;padding:12px 14px;border-radius:16px;background:var(--paper)}
+.row .mark{flex:0 0 28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:16px;margin-top:2px}
+.row.ok .mark{background:var(--ok)}
+.row.no .mark{background:var(--no)}
+.row.no{box-shadow:inset 0 0 0 2px var(--no-soft)}
+.rk{font-size:15px;color:var(--ink-soft);font-weight:700}
+.re{font-size:17px;font-weight:600;line-height:1.55}
+.re b{color:var(--ok)}
+.mine{font-size:14.5px;color:var(--no);font-weight:700;margin-top:2px}
+h2.sec{font-size:18px;margin:26px 16px 0}
+
+/* ---------- 배우기 ---------- */
+.learn{padding:0 16px}
+.learn h1{font-size:27px;font-weight:900;margin:8px 4px 14px}
+.learn h2{font-size:20px;font-weight:900;margin:30px 4px 10px}
+.panel{background:var(--paper);border-radius:22px;overflow:hidden;margin-top:14px;box-shadow:0 2px 0 var(--line),0 12px 24px rgba(38,36,74,.07)}
+.panel .band{display:flex;align-items:baseline;gap:12px;padding:12px 18px;color:#fff}
+.panel.pif .band{background:var(--if)}
+.panel.pasif .band{background:var(--asif)}
+.band .w{font-size:32px;font-weight:900;letter-spacing:.01em}
+.band .m{font-size:19px;font-weight:800}
+.panel .pbody{padding:14px 18px 18px}
+.panel .ex{font-size:19px;font-weight:700;margin-top:10px;line-height:1.5}
+.panel .exk{font-size:16px;color:var(--ink-soft);font-weight:600}
+.tipbox{margin-top:14px;padding:16px 18px;background:var(--gold);border-radius:22px;font-size:17px;font-weight:600;line-height:1.65}
+.tipbox b{font-weight:900}
+.rules{display:grid;gap:12px}
+.rule{background:var(--paper);border-radius:18px;padding:14px 16px 16px;border-left:8px solid var(--asif);box-shadow:0 2px 0 var(--line)}
+.rule.r-pp{border-color:var(--violet)}
+.rule.r-pres{border-color:var(--teal)}
+.rule .formula{display:inline-block;font-size:18px;font-weight:800;padding:2px 12px;border-radius:999px;background:var(--asif-soft);color:var(--asif)}
+.rule.r-pp .formula{background:var(--violet-soft);color:var(--violet)}
+.rule.r-pres .formula{background:var(--teal-soft);color:var(--teal)}
+.rule .when{margin-top:8px;font-weight:800;font-size:17px}
+.rule .rex{margin-top:6px;font-size:18px;font-weight:600;line-height:1.5}
+.rule .rex b{color:var(--asif)}
+.rule.r-pp .rex b{color:var(--violet)}
+.rule.r-pres .rex b{color:var(--teal)}
+.rule .rexk{font-size:15.5px;color:var(--ink-soft);font-weight:600}
+.rule .small{margin-top:6px;font-size:15px;color:var(--ink)}
+details.verbs{margin-top:14px;background:var(--paper);border-radius:18px;padding:4px 16px;box-shadow:0 2px 0 var(--line)}
+details.verbs summary{cursor:pointer;font-weight:800;padding:12px 0;font-size:17px}
+table.vt{width:100%;border-collapse:collapse;margin:4px 0 12px;font-size:16px}
+table.vt th{font-size:13.5px;color:var(--ink-soft);text-align:left;padding:6px 6px;border-bottom:2px solid var(--line)}
+table.vt td{padding:7px 6px;border-bottom:1px solid var(--line);font-weight:700}
+table.vt td:first-child{color:var(--ink-soft)}
+.vnote{font-size:14.5px;color:var(--ink-soft);margin:0 0 12px}
+.learn .cta{margin-top:26px}
+.learn .cta .btn{width:100%}
+
+/* ---------- 도움말 시트 ---------- */
+.sheet-back{position:fixed;inset:0;background:rgba(38,36,74,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:88vh;max-height:88dvh;overflow:auto;-webkit-overflow-scrolling:touch;border-radius:24px 24px 0 0;padding:16px 14px calc(26px + env(safe-area-inset-bottom))}
+.sheet-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sheet-top h2{font-size:19px;font-weight:900;margin:0 0 0 4px}
+.x{border:0;background:var(--paper);width:42px;height:42px;border-radius:50%;font-size:18px;font-weight:800;box-shadow:0 2px 0 var(--line)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media (max-width:360px){
+  .curtain h1{font-size:33px}
+  .en,.blank{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>이 앱은 JavaScript가 필요해요.</noscript>
+
+<script>
+(function(){
+'use strict';
+
+/* =====================================================
+   데이터
+   ===================================================== */
+var RULES = {
+  past: { name:"as if + 과거형", desc:"지금 사실이 아닌 모습이에요. 과거형을 쓰지만 옛날 이야기가 아니에요!" },
+  pp:   { name:"as if + had + 과거분사", desc:"말하는 때보다 더 옛날 일이에요." },
+  pres: { name:"as if + 현재형", desc:"진짜일 수도 있는 모습이에요. ‘~해 보여요’라고 해석해요." }
+};
+
+/* 영작 연습 1: as if + 과거형 */
+var FILL1 = [
+ {ko:"그는 마치 모든 것을 아는 것처럼 말해요.", before:"He talks as if he", base:"know", after:"everything.", answer:"knew", forms:["know","knew","known"], type:"past",
+  why:"사실은 다 아는 게 아니에요. ‘아닌데 그런 척!’이라서 know의 과거형 knew를 써요."},
+ {ko:"그녀는 마치 공주인 것처럼 행동해요.", before:"She acts as if she", base:"be", after:"a princess.", answer:"were", forms:["be","was / were","been"], type:"past",
+  why:"진짜 공주가 아니에요. as if 뒤의 be동사는 누구든지 were!"},
+ {ko:"그 소년은 마치 날개가 있는 것처럼 달려요.", before:"The boy runs as if he", base:"have", after:"wings.", answer:"had", forms:["have","had","had"], type:"past",
+  why:"날개는 없는데 있는 것처럼! have의 과거형 had를 써요."},
+ {ko:"우리 강아지는 마치 내 말을 알아듣는 것처럼 나를 쳐다봐요.", before:"My dog looks at me as if it", base:"understand", after:"my words.", answer:"understood", forms:["understand","understood","understood"], type:"past",
+  why:"강아지가 사람 말을 진짜 아는 건 아니에요. understand의 과거형은 understood예요."},
+ {ko:"톰은 마치 부자인 것처럼 돈을 써요.", before:"Tom spends money as if he", base:"be", after:"rich.", answer:"were", forms:["be","was / were","been"], type:"past",
+  why:"톰은 부자가 아니에요. 아닌데 그런 모습이라서 were!"},
+ {ko:"미나는 마치 아무도 자기를 보지 않는 것처럼 춤춰요.", before:"Mina dances as if nobody", base:"watch", after:"her.", answer:"watched", forms:["watch","watched","watched"], type:"past",
+  why:"사실은 사람들이 보고 있어요. 아닌 모습이라서 과거형 watched!"},
+ {ko:"그는 마치 미국에 사는 것처럼 영어로 말해요.", before:"He speaks English as if he", base:"live", after:"in America.", answer:"lived", forms:["live","lived","lived"], type:"past",
+  why:"미국에 사는 건 아니에요. 그래서 live의 과거형 lived를 써요. (e로 끝나면 d만 붙여요)"},
+ {ko:"그 소녀는 마치 모든 사람을 사랑하는 것처럼 웃어요.", before:"The girl smiles as if she", base:"love", after:"everyone.", answer:"loved", forms:["love","loved","loved"], type:"past",
+  why:"모두를 사랑하는 건 아니에요. love의 과거형은 loved예요."},
+ {ko:"그 꼬마는 마치 무엇이든 할 수 있는 것처럼 말해요.", before:"The little boy talks as if he", base:"can", after:"do anything.", answer:"could", forms:["can","could"], type:"past",
+  why:"무엇이든 할 수 있는 건 아니에요. can의 과거형은 could!"},
+ {ko:"그 고양이는 마치 집 주인인 것처럼 소파에 누워 있어요.", before:"The cat lies on the sofa as if it", base:"own", after:"the house.", answer:"owned", forms:["own","owned","owned"], type:"past",
+  why:"고양이는 집 주인이 아니에요. own의 과거형 owned를 써요."}
+];
+
+/* 영작 연습 2: as if + had + 과거분사 */
+var FILL2 = [
+ {ko:"그는 마치 유령을 본 것처럼 보여요.", before:"He looks as if he", base:"see", after:"a ghost.", answer:"had seen", forms:["see","saw","seen"], type:"pp",
+  why:"유령을 본 건 사실이 아니고, 더 옛날 일이에요. had + 과거분사 → had seen!"},
+ {ko:"그녀는 마치 파리에 가 본 것처럼 말해요.", before:"She talks as if she", base:"be", after:"to Paris.", answer:"had been", forms:["be","was / were","been"], type:"pp",
+  why:"가 본 적은 없어요. 더 옛날 일이라서 had been (been to = 가 본 적 있다)."},
+ {ko:"그는 마치 아무 일도 없었던 것처럼 행동해요.", before:"He behaves as if nothing", base:"happen", after:".", answer:"had happened", forms:["happen","happened","happened"], type:"pp",
+  why:"사실은 일이 있었어요. 더 옛날 일이라서 had happened."},
+ {ko:"지호는 마치 경기에서 이긴 것처럼 말해요.", before:"Jiho speaks as if he", base:"win", after:"the game.", answer:"had won", forms:["win","won","won"], type:"pp",
+  why:"이기지 않았어요. 더 옛날 일을 말하니까 had won."},
+ {ko:"그녀는 마치 모든 것을 잃은 것처럼 울었어요.", before:"She cried as if she", base:"lose", after:"everything.", answer:"had lost", forms:["lose","lost","lost"], type:"pp",
+  why:"우는 것보다 ‘잃은 것’이 더 먼저예요. had lost!"},
+ {ko:"그는 마치 전에 나를 만난 것처럼 나를 쳐다봤어요.", before:"He looked at me as if he", base:"meet", after:"me before.", answer:"had met", forms:["meet","met","met"], type:"pp",
+  why:"‘전에’는 더 옛날이에요. 처음 만났는데 만난 척! → had met"},
+ {ko:"방이 마치 태풍이 강타한 것처럼 보였어요.", before:"The room looked as if a storm", base:"hit", after:"it.", answer:"had hit", forms:["hit","hit","hit"], type:"pp",
+  why:"태풍이 온 건 아니에요. hit은 모양이 안 바뀌어요(hit-hit-hit). 그래서 had hit!"},
+ {ko:"그는 마치 하루 종일 달린 것처럼 지쳐 있었어요.", before:"He was tired as if he", base:"run", after:"all day.", answer:"had run", forms:["run","ran","run"], type:"pp",
+  why:"지친 것보다 ‘달린 것’이 더 먼저예요. run의 과거분사는 run → had run"},
+ {ko:"그 소년은 마치 그 책을 다 읽은 것처럼 말해요.", before:"The boy talks as if he", base:"read", after:"the whole book.", answer:"had read", forms:["read","read","read"], type:"pp",
+  why:"read는 read-read-read! 모양은 같아도 had read가 정답이에요."},
+ {ko:"그녀는 마치 나를 몇 년 동안 알고 지낸 것처럼 말해요.", before:"She talks as if she", base:"know", after:"me for years.", answer:"had known", forms:["know","knew","known"], type:"pp",
+  why:"몇 년 동안 알고 지낸 건 더 옛날 일이에요. know의 과거분사는 known → had known"}
+];
+
+/* 영작 연습 3: 섞어서 도전 */
+var FILL3 = [
+ {ko:"그녀는 피곤한 것 같아 보여요.", note:"진짜 그런 것 같아 보여요.", before:"She looks as if she", base:"be", after:"tired.", answer:"is", forms:["be","was / were","been"], type:"pres",
+  why:"진짜 피곤해 보이는 모습이에요. 진짜일 수도 있을 땐 as if 뒤에 현재형! be의 현재형 is를 써요."},
+ {ko:"그는 마치 선생님인 것처럼 말해요.", note:"선생님이 아니에요.", before:"He talks as if he", base:"be", after:"a teacher.", answer:"were", forms:["be","was / were","been"], type:"past",
+  why:"선생님이 아닌데 그런 모습이에요. 지금 사실이 아니니까 were!"},
+ {ko:"수호는 마치 달에 가 본 것처럼 말해요.", note:"가 본 적이 없어요. 더 옛날 일을 말해요.", before:"Suho talks as if he", base:"visit", after:"the moon.", answer:"had visited", forms:["visit","visited","visited"], type:"pp",
+  why:"달에 간 건 더 옛날 일이고 사실도 아니에요. had + visited!"},
+ {ko:"준은 마치 뼈가 없는 것처럼 춤춰요.", note:"뼈가 없는 게 아니에요.", before:"Jun dances as if he", base:"have", after:"no bones.", answer:"had", forms:["have","had","had"], type:"past",
+  why:"뼈가 없는 건 아니에요. 지금 사실이 아니라서 과거형 had!"},
+ {ko:"그는 감기에 걸린 것 같아 보여요.", note:"진짜 그런 것 같아 보여요.", before:"He looks as if he", base:"have", after:"a cold.", answer:"has", forms:["have","had","had"], type:"pres",
+  why:"진짜 감기에 걸린 것 같은 모습이에요. 현재형을 쓰고, he 다음이라서 have가 has로 바뀌어요."},
+ {ko:"그녀는 마치 숙제를 다 끝낸 것처럼 말했어요.", note:"숙제를 안 끝냈어요. 더 옛날 일을 말해요.", before:"She talked as if she", base:"finish", after:"all her homework.", answer:"had finished", forms:["finish","finished","finished"], type:"pp",
+  why:"숙제를 끝낸 건 더 옛날 일이고 사실도 아니에요. had finished!"},
+ {ko:"그녀는 마치 겨울인 것처럼 두꺼운 코트를 입어요.", note:"지금은 겨울이 아니에요.", before:"She wears a thick coat as if it", base:"be", after:"winter.", answer:"were", forms:["be","was / were","been"], type:"past",
+  why:"지금은 겨울이 아니에요. 지금 사실이 아니니까 were!"},
+ {ko:"선생님은 마치 내 마음을 읽는 것처럼 나를 봐요.", note:"마음을 읽을 수는 없어요.", before:"The teacher looks at me as if she", base:"read", after:"my mind.", answer:"read", forms:["read","read","read"], type:"past",
+  why:"지금 사실이 아니라서 과거형! read의 과거형도 read예요(발음은 ‘레드’)."},
+ {ko:"그는 마치 물에 빠졌던 것처럼 젖어 있었어요.", note:"물에 빠지지 않았어요. 더 옛날 일을 말해요.", before:"He was wet as if he", base:"fall", after:"into the water.", answer:"had fallen", forms:["fall","fell","fallen"], type:"pp",
+  why:"물에 빠진 건 더 옛날 일이고 사실도 아니에요. fall의 과거분사는 fallen → had fallen"},
+ {ko:"그 소년은 도움이 필요해 보여요.", note:"진짜 그런 것 같아 보여요.", before:"The boy looks as if he", base:"need", after:"help.", answer:"needs", forms:["need","needed","needed"], type:"pres",
+  why:"진짜 도움이 필요해 보이는 모습이에요. 현재형이고, he 다음이라서 needs!"}
+];
+
+/* if / as if 구분 연습 */
+var IFQ = [
+ {ko:"내일 비가 오면 우리는 집에 있을 거예요.", en:"We will stay home ___ it rains tomorrow.", ans:"if",
+  why:"비가 올 수도 있는 일이에요. ‘만약 ~라면’이라서 if!"},
+ {ko:"그는 마치 왕인 것처럼 걸어요.", en:"He walks ___ he were a king.", ans:"as if",
+  why:"진짜 왕은 아니에요. ‘마치 ~처럼’이라서 as if!"},
+ {ko:"그 아이는 마치 어른인 것처럼 말해요.", en:"The child talks ___ he were an adult.", ans:"as if",
+  why:"어른이 아닌데 어른인 것처럼! as if예요. 뒤에 were가 온 것도 힌트예요."},
+ {ko:"네가 도와주면 나는 정말 기쁠 거야.", en:"I will be very happy ___ you help me.", ans:"if",
+  why:"‘마치’를 넣으면 이상해요. ‘만약 네가 도와주면’이라서 if!"},
+ {ko:"시간이 있으면 우리 집에 와.", en:"Come to my house ___ you have time.", ans:"if",
+  why:"‘만약 시간이 있으면’이라서 if!"},
+ {ko:"그녀는 마치 나를 아는 것처럼 웃었어요.", en:"She smiled ___ she knew me.", ans:"as if",
+  why:"나를 모를 수도 있는데 아는 것처럼! ‘마치 ~처럼’이라서 as if."},
+ {ko:"배가 고프면 이 빵을 먹어.", en:"Eat this bread ___ you are hungry.", ans:"if",
+  why:"‘만약 배가 고프면’이라서 if!"},
+ {ko:"그 개는 마치 사람인 것처럼 앉아 있어요.", en:"The dog sits ___ it were a person.", ans:"as if",
+  why:"개는 사람이 아니에요. ‘마치 ~처럼’이라서 as if!"},
+ {ko:"열심히 공부하면 시험을 잘 볼 거예요.", en:"You will do well on the test ___ you study hard.", ans:"if",
+  why:"‘만약 열심히 공부하면’이라서 if!"},
+ {ko:"그는 마치 아무것도 못 본 것처럼 행동했어요.", en:"He acted ___ he hadn't seen anything.", ans:"as if",
+  why:"사실은 봤는데 못 본 척! ‘마치 ~처럼’이라서 as if."}
+];
+
+/* 해석 연습 */
+var TR = [
+ {en:"He talks as if he knew everything.", c:"그는 마치 모든 것을 아는 것처럼 말해요.",
+  w:["그가 모든 것을 안다면 말할 거예요.","그는 모든 것을 알아서 말했어요."],
+  why:"as if는 ‘마치 ~처럼’이에요. 진짜로 다 아는 건 아니에요."},
+ {en:"If it rains, we will stay home.", c:"비가 오면 우리는 집에 있을 거예요.",
+  w:["우리는 마치 비가 오는 것처럼 집에 있어요.","비가 와서 우리는 집에 있었어요."],
+  why:"If는 ‘만약 ~라면’이에요."},
+ {en:"She acts as if she were a princess.", c:"그녀는 마치 공주인 것처럼 행동해요.",
+  w:["그녀가 공주라면 행동할 거예요.","그녀는 공주여서 그렇게 행동해요."],
+  why:"as if는 ‘마치 ~처럼’! 진짜 공주는 아니에요."},
+ {en:"He looked as if he had seen a ghost.", c:"그는 마치 유령을 본 것처럼 보였어요.",
+  w:["그가 유령을 본다면 놀랄 거예요.","그는 유령을 보고 도망갔어요."],
+  why:"as if + had seen → ‘마치 ~을 본 것처럼’이에요."},
+ {en:"If you study hard, you will pass the test.", c:"열심히 공부하면 시험에 합격할 거예요.",
+  w:["너는 마치 열심히 공부한 것처럼 시험에 합격했어.","열심히 공부해서 시험에 합격했어요."],
+  why:"If는 ‘만약 ~라면’이라서 ‘공부하면’이라고 해석해요."},
+ {en:"The baby sleeps as if she were an angel.", c:"아기는 마치 천사인 것처럼 자요.",
+  w:["아기가 천사라면 잘 거예요.","아기는 천사라서 잘 자요."],
+  why:"as if는 ‘마치 ~처럼’! 아기가 진짜 천사인 건 아니에요."},
+ {en:"Tom talks as if he had been to space.", c:"톰은 마치 우주에 가 본 것처럼 말해요.",
+  w:["톰이 우주에 간다면 말할 거예요.","톰은 우주에 가 본 적이 있어서 말해요."],
+  why:"as if + had been to → ‘마치 ~에 가 본 것처럼’이에요."},
+ {en:"Call me if you need help.", c:"도움이 필요하면 나에게 전화해.",
+  w:["너는 마치 도움이 필요한 것처럼 나에게 전화해.","도움이 필요해서 나에게 전화했어."],
+  why:"if가 문장 가운데 있어도 ‘만약 ~라면’이에요."},
+ {en:"My dog eats as if it had not eaten for days.", c:"우리 강아지는 마치 며칠 동안 먹지 못한 것처럼 먹어요.",
+  w:["우리 강아지가 며칠 동안 먹지 않으면 먹을 거예요.","우리 강아지는 며칠 동안 먹지 않아서 먹어요."],
+  why:"as if + had not eaten → ‘마치 ~을 먹지 못한 것처럼’이에요."},
+ {en:"She looks as if she is tired.", c:"그녀는 피곤해 보여요.",
+  w:["그녀가 피곤하면 쉴 거예요.","그녀는 피곤해서 쉬고 있었어요."],
+  why:"진짜일 수도 있을 땐 as if 뒤에 현재형을 써요. ‘~해 보여요’라고 해석해요."}
+];
+
+var SETS = {
+  ifq:   { kind:'ifq',  title:"if? as if?",   items:IFQ },
+  fill1: { kind:'fill', title:"영작 연습 1", rule:['past'], items:FILL1 },
+  fill2: { kind:'fill', title:"영작 연습 2", rule:['pp'],   items:FILL2 },
+  fill3: { kind:'fill', title:"영작 연습 3", rule:['past','pp','pres'], mixed:true, items:FILL3 },
+  tr:    { kind:'tr',   title:"해석 연습",   items:TR }
+};
+var ORDER = ['ifq','fill1','fill2','fill3','tr'];
+
+var MENU = [
+  {id:'learn', icon:"📖", title:"배우기",       sub:"if와 as if, 뭐가 다를까요?",        stub:'gold'},
+  {id:'ifq',   icon:"🔍", title:"if? as if?",   sub:"둘 중에 알맞은 것을 골라요",         stub:'split'},
+  {id:'fill1', icon:"🎭", title:"영작 연습 1", sub:"as if + 과거형",                      stub:'pink'},
+  {id:'fill2', icon:"🕰️", title:"영작 연습 2", sub:"as if + had + 과거분사",              stub:'violet'},
+  {id:'fill3', icon:"🎲", title:"영작 연습 3", sub:"세 가지 규칙을 섞어서 도전!",         stub:'teal'},
+  {id:'tr',    icon:"💬", title:"해석 연습",   sub:"영어 문장을 우리말로 바꿔 봐요",      stub:'ink'}
+];
+
+/* =====================================================
+   도우미
+   ===================================================== */
+var $app = document.getElementById('app');
+var KEY = 'asif-practice-best-v1';
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
+}
+function hl(en){
+  return esc(en).replace(/\b(as if|if)\b/gi, function(m){
+    return '<mark class="' + (m.toLowerCase()==='if' ? 'k-if' : 'k-asif') + '">' + m + '</mark>';
+  });
+}
+function norm(s){
+  return String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/\s+/g,' ').trim();
+}
+function shuffle(a){
+  a = a.slice();
+  for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function loadBest(){
+  try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; }
+}
+function saveBest(id, score){
+  try {
+    var b = loadBest();
+    if (!(b[id] >= score)) { b[id] = score; localStorage.setItem(KEY, JSON.stringify(b)); }
+  } catch(e){}
+}
+function joinAfter(after){
+  return /^[.,!?]/.test(after) ? '' : ' ';
+}
+
+/* =====================================================
+   상태
+   ===================================================== */
+var S = { view:'home', quiz:null, sheet:false };
+var pushed = false;
+
+function pushIfNeeded(){
+  if (!pushed) {
+    try { history.pushState({inner:1}, ''); pushed = true; } catch(e){}
+  }
+}
+function goHome(){
+  if (pushed) { history.back(); }
+  else { S.view='home'; S.quiz=null; S.sheet=false; render(true); }
+}
+window.addEventListener('popstate', function(){
+  pushed = false; S.view='home'; S.quiz=null; S.sheet=false; render(true);
+});
+
+/* =====================================================
+   화면: 홈
+   ===================================================== */
+function homeHtml(){
+  var best = loadBest();
+  var tickets = MENU.map(function(m){
+    var meta;
+    if (m.id === 'learn') meta = '<span class="pill">읽어 보기</span>';
+    else {
+      meta = '<span class="pill">10문제</span>';
+      if (best[m.id] != null) meta += '<span class="pill best">최고 ' + best[m.id] + '/10</span>';
+    }
+    return '<li><button type="button" class="ticket" data-act="open" data-id="' + m.id + '">' +
+      '<span class="stub ' + m.stub + '" aria-hidden="true">' + m.icon + '</span>' +
+      '<span class="tbody"><span class="ttitle">' + m.title + '</span>' +
+      '<span class="tsub">' + m.sub + '</span><span class="tmeta">' + meta + '</span></span></button></li>';
+  }).join('');
+
+  return '<header class="curtain">' +
+      '<h1>마치 ~처럼!</h1>' +
+      '<p class="en-title">as if 영작 연습</p>' +
+      '<p class="tag">진짜는 아니지만 마치 그런 것처럼! 쉬운 설명을 읽고, 빈칸을 채우며 연습해요.</p>' +
+      '<div class="duo"><span class="chip if"><b>if</b> 만약 ~라면</span><span class="chip asif"><b>as if</b> 마치 ~처럼</span></div>' +
+    '</header>' +
+    '<main><ul class="menu">' + tickets + '</ul>' +
+    '<p class="foot">동사가 헷갈리면 문제 화면의 <b>규칙</b> 버튼을 눌러 보세요.</p></main>';
+}
+
+/* =====================================================
+   화면: 배우기 + 규칙 블록
+   ===================================================== */
+function ruleBlock(){
+  return '<div class="rules">' +
+    '<div class="rule r-past"><span class="formula">as if + 과거형</span>' +
+      '<p class="when">지금 사실이 아닌 모습</p>' +
+      '<p class="rex">He talks as if he <b>knew</b> everything.</p>' +
+      '<p class="rexk">그는 마치 모든 것을 아는 것처럼 말해요. (다 아는 건 아니에요!)</p>' +
+      '<p class="small">과거형을 쓰지만 옛날 이야기가 아니에요. ‘진짜가 아니야!’라는 신호예요. be동사는 누구든지 <b>were</b>!</p></div>' +
+    '<div class="rule r-pp"><span class="formula">as if + had + 과거분사</span>' +
+      '<p class="when">더 옛날 일 (사실이 아닌 모습)</p>' +
+      '<p class="rex">He looks as if he <b>had seen</b> a ghost.</p>' +
+      '<p class="rexk">그는 마치 유령을 본 것처럼 보여요.</p>' +
+      '<p class="small">말하는 때보다 더 옛날 일을 말할 때는 <b>had + 과거분사(p.p.)</b> 두 단어를 써요.</p></div>' +
+    '<div class="rule r-pres"><span class="formula">as if + 현재형</span>' +
+      '<p class="when">진짜일 수도 있는 모습</p>' +
+      '<p class="rex">She looks as if she <b>is</b> tired.</p>' +
+      '<p class="rexk">그녀는 피곤해 보여요.</p>' +
+      '<p class="small">‘~해 보여요’라고 해석되면 현재형을 써요. he, she, it 다음에는 has, needs처럼 s가 붙어요.</p></div>' +
+  '</div>';
+}
+function verbTable(){
+  var rows = [
+    ["know","knew","known"],["see","saw","seen"],["be","was / were","been"],["have","had","had"],
+    ["win","won","won"],["lose","lost","lost"],["meet","met","met"],["run","ran","run"],
+    ["fall","fell","fallen"],["read","read","read"],["hit","hit","hit"],["understand","understood","understood"],
+    ["can","could","-"]
+  ];
+  var tr = rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('');
+  return '<table class="vt"><thead><tr><th>기본형</th><th>과거형</th><th>과거분사</th></tr></thead><tbody>' + tr + '</tbody></table>' +
+    '<p class="vnote">-ed를 붙이는 동사: watch→watched, visit→visited, finish→finished, happen→happened, own→owned, need→needed. e로 끝나면 d만 붙여요: live→lived, love→loved.</p>';
+}
+function learnHtml(){
+  return '<div class="topbar"><button type="button" class="back" data-act="home">← 메뉴</button><div class="qtitle">배우기</div><span style="width:74px"></span></div>' +
+  '<main class="learn">' +
+    '<h1>if와 as if, 뭐가 다를까요?</h1>' +
+    '<section class="panel pif"><div class="band"><span class="w">if</span><span class="m">만약 ~라면</span></div>' +
+      '<div class="pbody"><p>앞으로 <b>진짜 일어날 수도 있는 일</b>을 말해요.</p>' +
+      '<p class="ex"><mark class="k-if">If</mark> it rains, we will stay home.</p>' +
+      '<p class="exk">비가 오면 우리는 집에 있을 거예요.</p></div></section>' +
+    '<section class="panel pasif"><div class="band"><span class="w">as if</span><span class="m">마치 ~인 것처럼</span></div>' +
+      '<div class="pbody"><p><b>진짜는 아닌데</b> 그런 모습일 때 써요. 진짜 왕은 아닌데 왕처럼 걷는 것처럼요!</p>' +
+      '<p class="ex">He walks <mark class="k-asif">as if</mark> he were a king.</p>' +
+      '<p class="exk">그는 마치 왕인 것처럼 걸어요. (진짜 왕은 아니에요!)</p></div></section>' +
+    '<div class="tipbox">🔎 <b>구분 꿀팁</b><br>문장에 <b>‘마치’</b>를 넣어서 읽어 봐요. 말이 되면 <b>as if</b>예요.<br><b>‘만약’</b>을 넣었을 때 말이 되면 <b>if</b>예요.</div>' +
+    '<h2>as if 뒤의 동사는 이렇게 바꿔요</h2>' + ruleBlock() +
+    '<details class="verbs"><summary>동사 변화표 보기</summary>' + verbTable() + '</details>' +
+    '<div class="cta"><button type="button" class="btn blue" data-act="open" data-id="ifq">if? as if? 연습하러 가기</button></div>' +
+  '</main>';
+}
+
+/* =====================================================
+   화면: 도움말 시트
+   ===================================================== */
+function sheetHtml(){
+  return '<div class="sheet-back" data-act="closehelp"><div class="sheet" role="dialog" aria-modal="true" aria-label="규칙과 동사 변화표">' +
+    '<div class="sheet-top"><h2>as if 규칙과 동사표</h2><button type="button" class="x" data-act="closehelp" aria-label="닫기">✕</button></div>' +
+    ruleBlock() + '<details class="verbs" open><summary>동사 변화표</summary>' + verbTable() + '</details>' +
+    '<div class="btns"><button type="button" class="btn dark" data-act="closehelp">닫기</button></div>' +
+  '</div></div>';
+}
+
+/* =====================================================
+   퀴즈 시작 / 진행
+   ===================================================== */
+function startQuiz(id, items, retry){
+  var def = SETS[id];
+  var list = items;
+  if (!list) {
+    list = def.items.map(function(x){
+      var c = {}; for (var k in x) c[k] = x[k];
+      if (def.kind === 'tr') c.opts = shuffle([x.c].concat(x.w));
+      return c;
+    });
+  }
+  S.quiz = { id:id, def:def, items:list, idx:0, results:[], phase:'answer', input:'', given:null, pickIdx:null, ok:false, hint:false, warn:false, retry:!!retry };
+  S.view = 'quiz';
+  render(true);
+}
+
+function stripHtml(def){
+  if (def.kind === 'fill') {
+    if (def.mixed) return '<div class="strip">📌 <b>규칙 3가지 중에 알맞은 것을 골라요.</b> 막히면 오른쪽 위 ‘규칙’ 버튼!</div>';
+    var r = RULES[def.rule[0]];
+    return '<div class="strip">📌 <b>' + r.name + '</b> ' + esc(r.desc) + '</div>';
+  }
+  if (def.kind === 'ifq') {
+    return '<div class="strip tip">💡 문장에 <b>‘마치’</b>를 넣어 읽어 봐요. 말이 되면 <mark class="k-asif">as if</mark>, <b>‘만약’</b>이 어울리면 <mark class="k-if">if</mark>!</div>';
+  }
+  return '<div class="strip tip">💡 <mark class="k-asif">as if</mark>는 ‘마치 ~처럼’, <mark class="k-if">if</mark>는 ‘만약 ~라면’이에요.</div>';
+}
+
+function fillBody(q, it){
+  var done = q.phase === 'checked';
+  var w = Math.max(6, it.answer.length + 3);
+  var blank = done
+    ? '<span class="blank done ' + (q.ok ? 'ok' : 'no') + '">' + esc(q.given) + '</span>'
+    : '<input class="blank" id="blank" type="text" lang="en" value="' + esc(q.input) + '" style="width:' + w + 'ch" ' +
+      'autocapitalize="none" autocorrect="off" autocomplete="off" spellcheck="false" enterkeyhint="done" aria-label="빈칸에 들어갈 말">';
+  var j = joinAfter(it.after);
+  var sentence = esc(it.before) + ' ' + blank + ' <span class="base">(' + esc(it.base) + ')</span>' + j + esc(it.after);
+
+  var html = '<div class="qcard"><p class="ko">' + esc(it.ko) + '</p>' +
+    (it.note ? '<p class="note">📌 ' + esc(it.note) + '</p>' : '') +
+    '<p class="en">' + sentence + '</p>';
+
+  if (!done && q.hint) {
+    var r = RULES[it.type];
+    html += '<div class="hintbox">💡 <b>' + r.name + '</b> ' + esc(r.desc) + '<br><span class="forms">' + esc(it.forms.join(' – ')) + '</span></div>';
+  }
+  if (!done) {
+    html += '<div class="btns">' + (q.hint ? '' : '<button type="button" class="btn slim" data-act="hint">💡 힌트</button>') +
+      '<button type="button" class="btn primary" data-act="check">정답 확인</button></div>';
+    if (q.warn) html += '<p class="warn" role="alert">먼저 빈칸에 답을 써 주세요!</p>';
+  } else {
+    var full = esc(it.before) + ' <b>' + esc(it.answer) + '</b>' + j + esc(it.after);
+    var extra = (!q.ok && norm(q.given) === 'was' && it.answer === 'were')
+      ? '<p class="why">as if 뒤에는 was 대신 <b>were</b>를 써요!</p>' : '';
+    html += '<div class="fb ' + (q.ok ? 'ok' : 'no') + '" role="status" aria-live="polite">' +
+      '<p class="fb-h">' + (q.ok ? '정답이에요! 👏' : '아쉬워요. 정답은 ' + esc(it.answer)) + '</p>' +
+      '<p class="full">' + full + '</p><p class="why">' + esc(it.why) + '</p>' + extra + '</div>' +
+      nextBtn(q);
+  }
+  return html + '</div>';
+}
+
+function ifqBody(q, it){
+  var done = q.phase === 'checked';
+  var parts = it.en.split('___');
+  var slot = done
+    ? '<span class="slot ' + (q.ok ? 'ok' : 'no') + '">' + esc(q.given) + '</span>'
+    : '<span class="slot">&nbsp;&nbsp;&nbsp;</span>';
+  var html = '<div class="qcard"><p class="ko">' + esc(it.ko) + '</p>' +
+    '<p class="en big">' + esc(parts[0]) + slot + esc(parts[1]) + '</p><div class="opts two">';
+  ['if','as if'].forEach(function(v){
+    var cls = 'opt ' + (v === 'if' ? 'if' : 'asif');
+    if (done) {
+      if (v === it.ans) cls += ' right';
+      else if (v === q.given) cls += ' wrong';
+      else cls += ' dim';
+    }
+    html += '<button type="button" class="' + cls + '" data-act="pick" data-v="' + v + '"' + (done ? ' disabled' : '') + '>' + v + '</button>';
+  });
+  html += '</div>';
+  if (done) {
+    var full = esc(parts[0]) + '<mark class="' + (it.ans === 'if' ? 'k-if' : 'k-asif') + '">' + it.ans + '</mark>' + esc(parts[1]);
+    html += '<div class="fb ' + (q.ok ? 'ok' : 'no') + '" role="status" aria-live="polite">' +
+      '<p class="fb-h">' + (q.ok ? '정답이에요! 👏' : '아쉬워요. 정답은 ' + it.ans) + '</p>' +
+      '<p class="full">' + full + '</p><p class="why">' + esc(it.why) + '</p></div>' + nextBtn(q);
+  }
+  return html + '</div>';
+}
+
+function trBody(q, it){
+  var done = q.phase === 'checked';
+  var html = '<div class="qcard"><p class="ko">이 문장을 우리말로 바르게 바꾼 것은?</p>' +
+    '<p class="en big">' + hl(it.en) + '</p><div class="opts">';
+  it.opts.forEach(function(o, i){
+    var cls = 'opt';
+    if (done) {
+      if (o === it.c) cls += ' right';
+      else if (i === q.pickIdx) cls += ' wrong';
+      else cls += ' dim';
+    }
+    html += '<button type="button" class="' + cls + '" data-act="pick" data-i="' + i + '"' + (done ? ' disabled' : '') + '>' + esc(o) + '</button>';
+  });
+  html += '</div>';
+  if (done) {
+    html += '<div class="fb ' + (q.ok ? 'ok' : 'no') + '" role="status" aria-live="polite">' +
+      '<p class="fb-h">' + (q.ok ? '정답이에요! 👏' : '아쉬워요. 정답은 이거예요') + '</p>' +
+      '<p class="full">' + esc(it.c) + '</p><p class="why">' + esc(it.why) + '</p></div>' + nextBtn(q);
+  }
+  return html + '</div>';
+}
+
+function nextBtn(q){
+  var last = q.idx === q.items.length - 1;
+  return '<div class="btns"><button type="button" class="btn dark" data-act="next">' + (last ? '결과 보기' : '다음 문제') + '</button></div>';
+}
+
+function quizHtml(){
+  var q = S.quiz, it = q.items[q.idx], n = q.items.length;
+  var done = q.phase === 'checked';
+  var pct = Math.round((q.idx + (done ? 1 : 0)) / n * 100);
+  var kind = q.def.kind;
+  var body = kind === 'fill' ? fillBody(q, it) : kind === 'ifq' ? ifqBody(q, it) : trBody(q, it);
+  return '<div class="topbar"><button type="button" class="back" data-act="home">← 메뉴</button>' +
+    '<div class="qtitle">' + esc(q.def.title) + (q.retry ? ' (다시 풀기)' : '') + '</div>' +
+    '<button type="button" class="helpbtn" data-act="help">규칙</button></div>' +
+    '<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><div class="bar" style="width:' + pct + '%"></div></div>' +
+    '<p class="pcount">' + (q.idx + 1) + ' / ' + n + '</p>' +
+    '<main class="wrap">' + stripHtml(q.def) + body + '</main>';
+}
+
+/* =====================================================
+   화면: 결과
+   ===================================================== */
+function resultHtml(){
+  var q = S.quiz, n = q.results.length;
+  var score = q.results.filter(function(r){ return r.ok; }).length;
+  var wrong = q.results.filter(function(r){ return !r.ok; });
+  var ratio = score / n;
+  var msg, sub;
+  if (ratio === 1)      { msg = "완벽해요! 🎉 as if 박사님!";        sub = "모든 문제를 맞혔어요."; }
+  else if (ratio >= .8) { msg = "아주 잘했어요! 👏";                 sub = "조금만 더 하면 완벽해요."; }
+  else if (ratio >= .6) { msg = "좋아요! 조금만 더 힘내요 💪";       sub = "틀린 문제를 다시 풀어 볼까요?"; }
+  else                  { msg = "괜찮아요, 다시 도전해 봐요! 🌱";    sub = "‘규칙’을 다시 읽고 도전하면 훨씬 쉬워져요."; }
+
+  var dots = q.results.map(function(r){ return '<i class="dot ' + (r.ok ? 'ok' : 'no') + '"></i>'; }).join('');
+
+  var rows = q.results.map(function(r){
+    var it = r.item, kind = q.def.kind, mid, mine = '';
+    if (kind === 'fill') {
+      mid = '<p class="rk">' + esc(it.ko) + '</p><p class="re">' + esc(it.before) + ' <b>' + esc(it.answer) + '</b>' + joinAfter(it.after) + esc(it.after) + '</p>';
+    } else if (kind === 'ifq') {
+      var p = it.en.split('___');
+      mid = '<p class="rk">' + esc(it.ko) + '</p><p class="re">' + esc(p[0]) + '<mark class="' + (it.ans === 'if' ? 'k-if' : 'k-asif') + '">' + it.ans + '</mark>' + esc(p[1]) + '</p>';
+    } else {
+      mid = '<p class="re">' + hl(it.en) + '</p><p class="rk">' + esc(it.c) + '</p>';
+    }
+    if (!r.ok) mine = '<p class="mine">내 답: ' + esc(r.given) + '</p>';
+    return '<li class="row ' + (r.ok ? 'ok' : 'no') + '"><span class="mark" aria-label="' + (r.ok ? '정답' : '오답') + '">' + (r.ok ? '✓' : '✗') + '</span><div>' + mid + mine + '</div></li>';
+  }).join('');
+
+  var actions = '';
+  if (wrong.length) actions += '<button type="button" class="btn primary" data-act="retry">틀린 문제 다시 풀기 (' + wrong.length + '개)</button>';
+  var pos = ORDER.indexOf(q.id);
+  if (pos > -1 && pos < ORDER.length - 1 && !wrong.length) {
+    var nx = ORDER[pos + 1];
+    actions += '<button type="button" class="btn blue" data-act="open" data-id="' + nx + '">다음 연습으로 (' + esc(SETS[nx].title) + ')</button>';
+  }
+  actions += '<button type="button" class="btn" data-act="restart">처음부터 다시 풀기</button>' +
+             '<button type="button" class="btn dark" data-act="home">메뉴로</button>';
+
+  return '<div class="topbar"><button type="button" class="back" data-act="home">← 메뉴</button><div class="qtitle">' +
+    esc(q.def.title) + (q.retry ? ' (다시 풀기)' : '') + ' 결과</div><span style="width:74px"></span></div>' +
+    '<main><div class="score"><span class="num">' + score + '</span><span class="of">/ ' + n + '</span></div>' +
+    '<div class="dots" aria-hidden="true">' + dots + '</div>' +
+    '<p class="msg">' + msg + '</p><p class="msg-sub">' + sub + '</p>' +
+    '<div class="actions">' + actions + '</div>' +
+    '<h2 class="sec">문제 다시 보기</h2><ul class="review">' + rows + '</ul></main>';
+}
+
+/* =====================================================
+   렌더
+   ===================================================== */
+function render(toTop){
+  var html;
+  if (S.view === 'home') html = homeHtml();
+  else if (S.view === 'learn') html = learnHtml();
+  else if (S.view === 'quiz') html = quizHtml();
+  else html = resultHtml();
+  if (S.sheet) html += sheetHtml();
+  $app.innerHTML = html;
+  document.body.classList.toggle('lock', S.sheet);
+  if (toTop) window.scrollTo(0, 0);
+
+  if (S.view === 'quiz' && !S.sheet) {
+    var q = S.quiz;
+    if (q.def.kind === 'fill' && q.phase === 'answer') {
+      var el = document.getElementById('blank');
+      if (el) { try { el.focus({ preventScroll: true }); } catch(e){ el.focus(); } }
+    } else if (q.phase === 'checked') {
+      var fb = $app.querySelector('.fb');
+      if (fb && fb.scrollIntoView) fb.scrollIntoView({ block: 'nearest' });
+    }
+  }
+}
+
+/* =====================================================
+   동작
+   ===================================================== */
+function finishQuiz(){
+  var q = S.quiz;
+  var score = q.results.filter(function(r){ return r.ok; }).length;
+  if (!q.retry) saveBest(q.id, score);
+  S.view = 'result';
+  render(true);
+}
+
+function act(name, el){
+  var q = S.quiz;
+  if (name === 'open') {
+    var id = el.getAttribute('data-id');
+    pushIfNeeded();
+    S.sheet = false;
+    if (id === 'learn') { S.view = 'learn'; S.quiz = null; render(true); }
+    else startQuiz(id);
+  }
+  else if (name === 'home') { goHome(); }
+  else if (name === 'help') { S.sheet = true; render(false); }
+  else if (name === 'closehelp') { S.sheet = false; render(false); }
+  else if (name === 'hint') { q.hint = true; render(false); }
+  else if (name === 'check') {
+    var it = q.items[q.idx];
+    var val = (q.input || '').trim();
+    if (!val) { q.warn = true; render(false); var b = document.getElementById('blank'); if (b) { b.classList.add('shake'); } return; }
+    q.ok = norm(val) === norm(it.answer);
+    q.given = val; q.phase = 'checked';
+    q.results.push({ item: it, given: val, ok: q.ok });
+    render(false);
+  }
+  else if (name === 'pick') {
+    var it2 = q.items[q.idx];
+    if (q.phase === 'checked') return;
+    var given, ok;
+    if (q.def.kind === 'ifq') { given = el.getAttribute('data-v'); ok = (given === it2.ans); }
+    else { var i = parseInt(el.getAttribute('data-i'), 10); q.pickIdx = i; given = it2.opts[i]; ok = (given === it2.c); }
+    q.given = given; q.ok = ok; q.phase = 'checked';
+    q.results.push({ item: it2, given: given, ok: ok });
+    render(false);
+  }
+  else if (name === 'next') {
+    if (q.idx >= q.items.length - 1) { finishQuiz(); return; }
+    q.idx++; q.phase = 'answer'; q.input = ''; q.given = null; q.pickIdx = null; q.hint = false; q.warn = false; q.ok = false;
+    render(true);
+  }
+  else if (name === 'retry') {
+    var again = q.results.filter(function(r){ return !r.ok; }).map(function(r){
+      var c = {}; for (var k in r.item) c[k] = r.item[k];
+      if (q.def.kind === 'tr') c.opts = shuffle(r.item.opts);
+      return c;
+    });
+    startQuiz(q.id, again, true);
+  }
+  else if (name === 'restart') { startQuiz(q.id); }
+}
+
+document.addEventListener('click', function(e){
+  var el = e.target.closest ? e.target.closest('[data-act]') : null;
+  if (!el) return;
+  if (el.getAttribute('data-act') === 'closehelp' && el.classList.contains('sheet-back') && e.target !== el) return;
+  act(el.getAttribute('data-act'), el);
+});
+document.addEventListener('input', function(e){
+  if (e.target && e.target.id === 'blank' && S.quiz) { S.quiz.input = e.target.value; S.quiz.warn = false; }
+});
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Enter' && e.target && e.target.id === 'blank' && S.quiz) {
+    e.preventDefault();
+    S.quiz.input = e.target.value;
+    act('check', e.target);
+  }
+});
+
+render(true);
+})();
+</script>
+</body>
+</html>
