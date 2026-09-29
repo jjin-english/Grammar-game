@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>다양한 쓰임의 that 연습</title>
+<style>
+:root{--bg:#f3f7fb;--ink:#1d2a3a;--ac:#2563eb;--ok:#15803d;--no:#c2410c;--line:#cfdbe8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.5}
+.w{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:6px 0 4px}
+.sub{color:#556;font-size:14px;margin:0 0 16px}
+.btn{display:block;width:100%;text-align:left;font:inherit;font-size:17px;padding:14px 16px;margin:10px 0;background:#fff;border:2px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer}
+.btn:active{transform:scale(.99)}
+.btn small{display:block;color:#667;font-size:13px}
+.tip{background:#fff;border-left:6px solid var(--ac);border-radius:8px;padding:14px 16px;margin:14px 0;font-size:16px}
+.en{font-size:24px;font-weight:600;margin:18px 0 6px;line-height:1.4}
+.ko{color:#556;font-size:16px;margin-bottom:12px}
+mark{background:#ffe066;padding:0 4px;border-radius:4px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.ch.ok{border-color:var(--ok);background:#e8f6ec}
+.ch.no{border-color:var(--no);background:#fdebe3}
+.fb{margin-top:12px;padding:12px 14px;border-radius:10px;background:#fff;font-size:15px}
+.go{background:var(--ac);color:#fff;border:0;text-align:center;font-weight:700}
+.top{display:flex;justify-content:space-between;font-size:14px;color:#556;margin-bottom:6px}
+.rv{background:#fff;border-radius:10px;padding:10px 14px;margin:8px 0;font-size:15px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const CH={a:"ⓐ 지시 (저/그, 저것/그것)",b:"ⓑ 명사절 접속사 (~라는 것)",c:"ⓒ 동격 (~라는)",d:"ⓓ 관계대명사 (~하는)",e:"ⓔ 관계부사 (~하는)"};
+const ST=[
+{t:"1단계  지시 vs 명사절",k:"ab",tip:"<b>that 뒤에 명사</b>(dog, bag)가 오거나 혼자 쓰이면 → <b>저/그, 저것/그것</b> (ⓐ)<br><b>that 뒤에 '주어+동사'</b> 문장이 오면 → <b>~라는 것</b> (ⓑ)",q:[
+["I like [that] dog.","나는 저 개가 좋아.","a","that 바로 뒤에 명사 dog → '저'"],
+["[That] is my bag.","저것은 내 가방이야.","a","that 혼자 쓰임 → '저것'"],
+["Look at [that] bird.","저 새를 봐.","a","that 뒤에 명사 bird → '저'"],
+["I know [that] he is kind.","나는 그가 친절하다는 것을 알아.","b","that 뒤에 he is kind (주어+동사) → '~라는 것'"],
+["She says [that] she is happy.","그녀는 행복하다고 말해.","b","that 뒤에 she is happy (주어+동사)"],
+["I think [that] it is good.","나는 그것이 좋다고 생각해.","b","that 뒤에 it is good (주어+동사)"]]},
+{t:"2단계  관계대명사 that",k:"abd",tip:"<b>명사 + that</b> 뒤에서 <b>주어나 목적어가 빠져 있으면</b> → <b>관계대명사</b> (ⓓ)<br>'~하는 / ~한' 으로 앞의 명사를 꾸며줘요.<br>예) the dog <b>that</b> I like (like 뒤에 목적어가 없음)",q:[
+["This is the dog [that] I like.","이건 내가 좋아하는 개야.","d","dog 뒤 that. like 뒤에 목적어가 빠짐 → 관계대명사"],
+["I have a friend [that] likes music.","나는 음악을 좋아하는 친구가 있어.","d","friend 뒤 that. 뒤에 주어가 빠지고 likes부터 시작 → 관계대명사"],
+["The cake [that] Mom made is good.","엄마가 만든 케이크는 맛있어.","d","cake 뒤 that. made 뒤에 목적어가 빠짐"],
+["[That] is my cat.","저것은 내 고양이야.","a","that 혼자 쓰임 → '저것'"],
+["I know [that] she is kind.","나는 그녀가 친절하다는 것을 알아.","b","앞에 꾸며줄 명사가 없고 뒤가 완전한 문장 → 명사절"],
+["The book [that] I read was fun.","내가 읽은 책은 재미있었어.","d","book 뒤 that. read 뒤에 목적어가 빠짐"]]},
+{t:"3단계  동격 that",k:"abcd",tip:"<b>news, fact, idea</b> 같은 명사 뒤 that + <b>완전한 문장</b> → <b>동격</b> (ⓒ) '~라는'<br>관계대명사(ⓓ)는 뒤가 <b>불완전</b>, 동격(ⓒ)은 뒤가 <b>완전</b>!",q:[
+["I heard the news [that] our team won.","나는 우리 팀이 이겼다는 소식을 들었어.","c","news 뒤 that + our team won(완전한 문장) → 동격"],
+["The news [that] I heard was sad.","내가 들은 소식은 슬펐어.","d","heard 뒤에 목적어가 빠짐(불완전) → 관계대명사"],
+["I like the idea [that] we can go by bike.","나는 우리가 자전거로 갈 수 있다는 생각이 좋아.","c","idea 뒤 that + we can go(완전) → 동격"],
+["The fact [that] he is late is bad.","그가 늦었다는 사실은 나빠.","c","fact 뒤 that + he is late(완전) → 동격"],
+["I know [that] you are tired.","나는 네가 피곤하다는 것을 알아.","b","앞에 명사 없음 + 완전한 문장 → 명사절"],
+["This is the bag [that] I bought.","이것은 내가 산 가방이야.","d","bag 뒤 that. bought 뒤에 목적어가 빠짐"]]},
+{t:"4단계  관계부사 that",k:"abcde",tip:"<b>day, time, reason</b> (때·이유) 뒤 that + <b>완전한 문장</b> → <b>관계부사</b> (ⓔ)<br>동격과 헷갈리면? news, fact, idea → 동격 / day, reason → 관계부사",q:[
+["I remember the day [that] we met.","나는 우리가 만난 날을 기억해.","e","day(때) 뒤 that + 완전한 문장 → 관계부사"],
+["Tell me the reason [that] you were late.","네가 늦은 이유를 말해줘.","e","reason(이유) 뒤 that + 완전한 문장 → 관계부사"],
+["I heard the news [that] he came.","나는 그가 왔다는 소식을 들었어.","c","news 뒤 that + 완전한 문장 → 동격"],
+["This is the bag [that] I bought.","이것은 내가 산 가방이야.","d","bought 뒤 목적어 빠짐 → 관계대명사"],
+["I know [that] it is true.","나는 그것이 사실이라는 것을 알아.","b","앞에 명사 없음 → 명사절"],
+["Do you remember the time [that] we ate pizza?","우리가 피자 먹었던 때를 기억해?","e","time(때) 뒤 that + 완전한 문장 → 관계부사"]]},
+{t:"5단계  프린트 문장 12개",k:"abcde",tip:"프린트에 나온 문장이에요. 지금까지 배운 방법으로 풀어봐요!<br>① that 앞에 명사 있나? ② 뒤가 완전한가 불완전한가?",q:[
+["I still remember the day [that] we first met at the library.","나는 우리가 도서관에서 처음 만난 날을 아직도 기억한다.","e","day(때) 뒤 that + 완전한 문장 → 관계부사"],
+["The scientist proved [that] light travels faster than sound.","그 과학자는 빛이 소리보다 빠르게 이동한다는 것을 증명했다.","b","앞에 명사 없음, 뒤가 완전 → 명사절 접속사"],
+["Look at [that] tall building over there.","저기 저 높은 건물을 봐.","a","that 뒤에 명사구 tall building → 지시형용사 '저'"],
+["She accepts the fact [that] everyone makes mistakes sometimes.","그녀는 모두가 가끔 실수한다는 사실을 받아들인다.","c","fact 뒤 that + 완전한 문장 → 동격"],
+["This is the book [that] I borrowed from the school library yesterday.","이것은 내가 어제 학교 도서관에서 빌린 책이다.","d","borrowed 뒤에 목적어가 빠짐 → 목적격 관계대명사"],
+["Do you know the exact reason [that] he was absent from class yesterday?","그가 어제 결석한 정확한 이유를 아니?","e","reason(이유) 뒤 that + 완전한 문장 → 관계부사"],
+["The police are investigating the evidence [that] was found at the scene.","경찰은 현장에서 발견된 증거를 조사하고 있다.","d","that 뒤에 주어가 없이 was found → 주격 관계대명사"],
+["I didn't realize [that] the final exam schedule had already been changed.","나는 기말고사 일정이 이미 바뀌었다는 것을 몰랐다.","b","realize의 목적어 역할, 뒤가 완전 → 명사절"],
+["[That] red backpack on the chair belongs to the new transfer student.","의자 위의 저 빨간 가방은 새 전학생의 것이다.","a","that 뒤에 명사구 red backpack → 지시형용사 '저'"],
+["The movie [that] we watched together last weekend was really impressive.","우리가 지난 주말에 함께 본 영화는 정말 인상적이었다.","d","watched 뒤에 목적어가 빠짐 → 목적격 관계대명사"],
+["[That] she solved the complex physics problem by herself surprised everyone.","그녀가 복잡한 물리 문제를 혼자 풀었다는 것은 모두를 놀라게 했다.","b","문장의 주어 역할, 뒤가 완전 → 명사절 (~라는 것)"],
+["Who is [that] standing by the entrance?","입구 옆에 서 있는 저 사람은 누구니?","a","that이 '저 사람'이라는 뜻의 대명사 → 지시대명사"]]}
+];
+const $=document.getElementById("app");
+let S,Q,i,ok,wrong;
+const fmt=s=>s.replace("[that]","<mark>that</mark>");
+function menu(){
+ $.innerHTML='<h1>that 연습장</h1><p class="sub">쉬운 문장부터 한 단계씩! 단계마다 힌트가 있어요.</p>'+
+ ST.map((s,n)=>`<button class="btn" onclick="tip(${n})">${s.t}<small>${s.q.length}문제</small></button>`).join("");
+}
+function tip(n){S=ST[n];$.innerHTML=`<h1>${S.t}</h1><div class="tip">${S.tip}</div><button class="btn go" onclick="start(${n})">시작하기</button><button class="btn" onclick="menu()">← 단계 선택</button>`;}
+function start(n,list){S=ST[n];Q=list||S.q.slice();i=0;ok=0;wrong=[];show();}
+function show(){
+ if(i>=Q.length)return end();
+ const q=Q[i];
+ $.innerHTML=`<div class="top"><span>${S.t}</span><span>${i+1} / ${Q.length}</span></div><div class="bar"><i style="width:${i/Q.length*100}%"></i></div>
+ <div class="en">${fmt(q[0])}</div><div class="ko">${q[1]}</div><div>${S.k.split("").map(k=>`<button class="btn ch" data-k="${k}">${CH[k]}</button>`).join("")}</div><div id="fb"></div>`;
+ document.querySelectorAll(".ch").forEach(b=>b.onclick=()=>pick(b,q));
+}
+function pick(b,q){
+ const k=b.dataset.k,r=k===q[2];
+ document.querySelectorAll(".ch").forEach(x=>{x.disabled=true;if(x.dataset.k===q[2])x.classList.add("ok")});
+ if(r)ok++;else{b.classList.add("no");wrong.push(q)}
+ document.getElementById("fb").innerHTML=`<div class="fb">${r?"⭕ 정답!":"❌ 정답은 "+CH[q[2]]}<br>${q[3]}</div><button class="btn go" onclick="i++;show()">${i+1>=Q.length?"결과 보기":"다음"}</button>`;
+}
+function end(){
+ const n=ST.indexOf(S);
+ $.innerHTML=`<h1>${ok} / ${Q.length} 정답</h1><p class="sub">${wrong.length?"틀린 문제를 다시 풀어봐요!":"완벽해요! 다음 단계로 가볼까요?"}</p>`+
+ wrong.map(q=>`<div class="rv">${fmt(q[0])}<br>${q[1]}<br>→ ${CH[q[2]]}</div>`).join("")+
+ (wrong.length?`<button class="btn go" id="rw">틀린 문제 다시 풀기</button>`:"")+
+ (n<ST.length-1?`<button class="btn" onclick="tip(${n+1})">다음 단계 →</button>`:"")+
+ `<button class="btn" onclick="start(${n})">처음부터 다시</button><button class="btn" onclick="menu()">단계 선택</button>`;
+ const rw=document.getElementById("rw");if(rw){const w=wrong.slice();rw.onclick=()=>start(n,w)}
+}
+menu();
+</script></body></html>
