@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>that 문장구조 연습</title>
+<style>
+:root{--bg:#f3f7fb;--ink:#1d2a3a;--ac:#2563eb;--ok:#15803d;--no:#c2410c;--line:#cfdbe8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.5}
+.w{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:6px 0 8px}
+.sub{color:#556;font-size:14px;margin:0 0 14px}
+.btn{display:block;width:100%;text-align:left;font:inherit;font-size:17px;padding:14px 16px;margin:10px 0;background:#fff;border:2px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer}
+.btn small{display:block;color:#667;font-size:13px}
+.go{background:var(--ac);color:#fff;border:0;text-align:center;font-weight:700}
+.tip,.fb,.ex{background:#fff;border-radius:10px;padding:14px 16px;margin:12px 0;font-size:16px}
+.tip{border-left:6px solid var(--ac)}
+.ex{border-left:6px solid #f59e0b}
+.top{display:flex;justify-content:space-between;font-size:14px;color:#556;margin-bottom:6px}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.en{font-size:24px;font-weight:600;margin:18px 0 6px;line-height:1.4}
+.ko{color:#556;font-size:16px;margin:8px 0}
+mark,.hl{background:#ffe066;border-radius:4px;padding:0 4px}
+.cks{display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px 4px;margin:16px 0 8px}
+.ck{display:flex;flex-direction:column;align-items:center}
+.tx{font-size:22px;font-weight:600}
+.sl{font-size:24px;color:#99a;padding:0 2px}
+.bd{font-size:12px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:4px;color:#fff;white-space:nowrap}
+.bs{background:#2563eb}.bv{background:#dc2626}.bo{background:#16a34a}.bc{background:#9333ea}.bm{background:#78716c}
+.ba{background:#d97706}.bp{background:#0891b2}.bn{background:#be185d}.br{background:#4d7c0f}.bw{background:#0f766e}.bd2{background:#7c3aed}
+.tg{font-size:12px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.full{background:#dcfce7;color:#166534;border:1px solid #16a34a}
+.hole{background:#ffedd5;color:#9a3412;border:1px solid #ea580c}
+.lg{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.ch.ok{border-color:var(--ok);background:#e8f6ec}
+.ch.no{border-color:var(--no);background:#fdebe3}
+.rv{background:#fff;border-radius:10px;padding:10px 14px;margin:8px 0;font-size:15px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const LB={s:"주어",v:"동사",o:"목적어",c:"보어",m:"꾸밈말",a:"지시형용사",p:"지시대명사",n:"명사절접속사",r:"관계대명사",w:"관계부사",d:"동격"};
+const HELP={s:"누가/무엇이",v:"한다/이다",o:"~을·를",c:"설명해 주는 말",m:"덧붙이는 말"};
+const CH={a:"지시형용사 (저·그 + 명사)",p:"지시대명사 (저것·그것)",n:"명사절 접속사 (~라는 것)",d:"동격 (~라는)",r:"관계대명사 (~하는)",w:"관계부사 (~한 때·이유)"};
+const SEC=[
+{t:"1. 지시형용사 that",k:"apn",tip:"that <b>바로 뒤에 명사</b>(dog, bag처럼 이름)가 있으면 → <b>'저·그'</b><br>that dog = 저 개",
+w:[["I|like|that|dog.","나는 저 개를 좋아해.","that 바로 뒤에 dog(명사)! 그래서 that은 '저'예요. 누가(I) 좋아한다(like) 무엇을(dog)."],
+["That|boy|is|my friend.","저 소년은 내 친구야.","that 뒤에 boy(명사)! '저 소년'이 한 덩어리로 주어예요."],
+["I|see|that|big tree.","나는 저 큰 나무를 봐.","that 뒤에 big tree(명사). that은 '저'라고 꾸며 줘요."],
+["My mom|likes|that|song.","우리 엄마는 저 노래를 좋아해.","that 뒤에 song(명사). '저 노래'예요."],
+["That|red bag|is|mine.","저 빨간 가방은 내 거야.","that 뒤에 red bag(명사). '저 빨간 가방'이 주어이고, mine(내 것)이 설명해 줘요."]],
+q:[["I want that pen.","나는 저 펜을 원해.","a","that 바로 뒤에 pen(명사) → 저"],
+["That is my pen.","저것은 내 펜이야.","p","that 뒤에 명사 없이 is가 와요 → 저것"],
+["Look at that cat.","저 고양이를 봐.","a","that 바로 뒤에 cat(명사) → 저"],
+["I know that she is kind.","나는 그녀가 친절하다는 것을 알아.","n","that 뒤에 she is kind(문장)가 통째로 → ~라는 것"],
+["That dog is big.","저 개는 커.","a","that 바로 뒤에 dog(명사) → 저"]]},
+{t:"2. 지시대명사 that",k:"apn",tip:"that이 <b>혼자</b> 있고 뒤에 명사가 없으면 → <b>'저것·그것'</b><br>That is my bag. = 저것은 내 가방이야.",
+w:[["That|is|my bag.","저것은 내 가방이야.","that 뒤에 명사가 없어요. is(이다)가 바로 와요. 그래서 that은 '저것'이 주어예요."],
+["I|like|that.","나는 그것이 좋아.","that이 문장 끝에 혼자 있어요. '그것'이라는 뜻으로 목적어예요."],
+["What|is|that?","저것은 뭐야?","that이 혼자 있어요. '저것'이 주어예요."],
+["Who|is|that|standing by the door?","문 옆에 서 있는 저 사람은 누구야?","that은 '저 사람'(사람을 가리키는 말)이에요. 뒤의 '서 있는'은 that을 설명해 줘요."],
+["Look at|that.","저것을 봐.","that이 혼자 있어요. '저것'이에요."]],
+q:[["That is a big dog.","저것은 큰 개야.","p","that 뒤에 is → 명사 없음 → 저것"],
+["That dog is big.","저 개는 커.","a","that 바로 뒤에 dog(명사) → 저"],
+["I want that.","나는 그것을 원해.","p","that이 혼자 → 그것"],
+["I know that he is tall.","나는 그가 키가 크다는 것을 알아.","n","that 뒤에 he is tall(문장) → ~라는 것"],
+["Is that your bag?","저것은 네 가방이야?","p","that이 혼자 주어 → 저것"]]},
+{t:"3. 명사절 접속사 that",k:"nap",tip:"that 뒤에 <b>'누가 + 어찌한다'</b> 문장이 <b>통째로</b> 오면 → <b>'~라는 것'</b><br>I know that he is kind. = 나는 <b>그가 친절하다는 것</b>을 알아.",
+w:[["I|know|that|he is kind.","나는 그가 친절하다는 것을 알아.","that 뒤에 he is kind(문장)가 통째로 와요. 이 문장 전체가 '알아'의 목적어(무엇을 알아?)예요."],
+["She|says|that|she is happy.","그녀는 행복하다고 말해.","that 뒤에 she is happy(문장). '무엇을 말해?' → '행복하다는 것'."],
+["I|think|that|it is good.","나는 그것이 좋다고 생각해.","that 뒤에 it is good(문장). '무엇을 생각해?' → '좋다는 것'."],
+["The teacher|said|that|the test is easy.","선생님은 시험이 쉽다고 말했어.","that 뒤에 the test is easy(문장). '무엇을 말했어?' → '시험이 쉽다는 것'."],
+["That|she is kind|is|good.","그녀가 친절하다는 것은 좋아.","that이 문장 맨 앞에서 she is kind(문장)를 묶어서 주어가 돼요. '친절하다는 것' 전체가 주어!"]],
+q:[["I hope that you win.","나는 네가 이기길 바라.","n","that 뒤에 you win(문장) → ~라는 것"],
+["I like that song.","나는 저 노래가 좋아.","a","that 바로 뒤에 song(명사) → 저"],
+["That is a cake.","저것은 케이크야.","p","that 뒤에 is → 저것"],
+["He said that he is sad.","그는 슬프다고 말했어.","n","that 뒤에 he is sad(문장) → ~라는 것"],
+["That he is late is bad.","그가 늦었다는 것은 나빠.","n","that 뒤에 he is late(문장)를 묶어서 주어 → ~라는 것"]]},
+{t:"4. 동격 that",k:"drn",tip:"<b>news(소식), fact(사실), idea(생각)</b> 뒤의 that + <b>꽉 찬 문장</b> → <b>'~라는'</b><br>the news that our team won = 우리 팀이 이겼<b>다는</b> 소식",
+w:[["I|heard|the news|that|our team won.","나는 우리 팀이 이겼다는 소식을 들었어.","news 뒤에 that! 'our team won(우리 팀이 이겼다)'은 빠진 게 없어요. 소식의 내용을 알려줘서 '~라는 소식'이에요."],
+["She|knows|the fact|that|the earth is round.","그녀는 지구가 둥글다는 사실을 알아.","fact 뒤에 that! the earth is round는 꽉 찬 문장. '~라는 사실'이에요."],
+["I|like|the idea|that|we go by bike.","나는 우리가 자전거로 간다는 생각이 좋아.","idea 뒤에 that! we go by bike는 꽉 찬 문장. '~라는 생각'이에요."],
+["We|heard|the news|that|the test is easy.","우리는 시험이 쉽다는 소식을 들었어.","news 뒤에 that! the test is easy는 꽉 찬 문장. '~라는 소식'이에요."],
+["He|accepts|the fact|that|he is wrong.","그는 자기가 틀렸다는 사실을 받아들여.","fact 뒤에 that! he is wrong은 꽉 찬 문장. '~라는 사실'이에요."]],
+q:[["I heard the news that she came.","나는 그녀가 왔다는 소식을 들었어.","d","news 뒤 that + she came(꽉 찬 문장) → ~라는"],
+["The cake that Mom made is good.","엄마가 만든 케이크는 맛있어.","r","cake 뒤 that. made 뒤에 '무엇을'이 비었어요 → ~하는"],
+["I know that he is kind.","나는 그가 친절하다는 것을 알아.","n","앞에 명사 없이 know 바로 뒤 that → ~라는 것"],
+["She has an idea that we can go.","그녀는 우리가 갈 수 있다는 생각이 있어.","d","idea 뒤 that + we can go(꽉 찬 문장) → ~라는"],
+["The fact that he lied is bad.","그가 거짓말했다는 사실은 나빠.","d","fact 뒤 that + he lied(꽉 찬 문장) → ~라는"]]},
+{t:"5. 목적격 관계대명사 that",k:"rnd",tip:"<b>명사 + that + 누가 + 했다</b> 인데 '했다' 뒤에 <b>'무엇을'이 비어</b> 있으면 → <b>'~하는'</b><br>the book that I read = 내가 <b>읽은</b> 책 (read 뒤 빈칸 = book!)",
+w:[["This|is|the book|that|I read.","이것은 내가 읽은 책이야.","read(읽었다) 뒤에 '무엇을?'이 비었어요. 그 자리는 앞에 있는 book이에요. 그래서 '내가 읽은 책'."],
+["I|like|the cake|that|Mom made.","나는 엄마가 만든 케이크가 좋아.","made(만들었다) 뒤에 '무엇을?'이 비었어요. 그 자리가 cake예요. '엄마가 만든 케이크'."],
+["The movie|that|we watched|was|fun.","우리가 본 영화는 재미있었어.","watched(봤다) 뒤에 '무엇을?'이 비었어요. 그 자리가 movie예요. '우리가 본 영화'."],
+["The pen|that|I lost|was|red.","내가 잃어버린 펜은 빨간색이었어.","lost(잃어버렸다) 뒤에 '무엇을?'이 비었어요. 그 자리가 pen이에요."],
+["He|ate|the pizza|that|I made.","그는 내가 만든 피자를 먹었어.","made 뒤에 '무엇을?'이 비었어요. 그 자리가 pizza예요."]],
+q:[["This is the cap that I like.","이것은 내가 좋아하는 모자야.","r","like 뒤에 '무엇을?'이 빔 → 관계대명사"],
+["I know that you like pizza.","나는 네가 피자를 좋아한다는 것을 알아.","n","앞에 명사 없음, you like pizza는 꽉 찬 문장 → ~라는 것"],
+["The song that we sang was fun.","우리가 부른 노래는 재미있었어.","r","sang 뒤에 '무엇을?'이 빔 → 관계대명사"],
+["I heard the news that he won.","나는 그가 이겼다는 소식을 들었어.","d","news 뒤 that + he won(꽉 찬 문장) → 동격"],
+["The dog that I have is small.","내가 키우는 개는 작아.","r","have 뒤에 '무엇을?'이 빔 → 관계대명사"]]},
+{t:"6. 주격 관계대명사 that",k:"rna",tip:"<b>명사 + that + 동사</b>가 바로 오면 → <b>'~하는'</b><br>a friend that likes music = 음악을 <b>좋아하는</b> 친구<br>that 뒤에 '누가'가 비었어요. 앞 명사(friend)가 '누가'예요!",
+w:[["I|have|a friend|that|likes music.","나는 음악을 좋아하는 친구가 있어.","that 바로 뒤에 likes(동사)가 와요. '누가 좋아해?'가 비었으니 a friend가 그 자리! '음악을 좋아하는 친구'."],
+["The boy|that|is running|is|my brother.","뛰고 있는 소년은 내 남동생이야.","that 바로 뒤에 is running(동사)! '누가 뛰어?'가 비었으니 The boy가 그 자리."],
+["I|see|a dog|that|is sleeping.","나는 자고 있는 개를 봐.","that 바로 뒤에 is sleeping(동사)! '누가 자?'가 비었으니 a dog가 그 자리."],
+["We|found|the key|that|was lost.","우리는 잃어버려진 열쇠를 찾았어.","that 바로 뒤에 was lost(동사)! '누가 잃어버려졌어?'가 비었으니 the key가 그 자리."],
+["The cat|that|sleeps here|is|cute.","여기서 자는 고양이는 귀여워.","that 바로 뒤에 sleeps(동사)! '누가 자?'가 비었으니 The cat이 그 자리."]],
+q:[["I have a dog that runs fast.","나는 빨리 달리는 개가 있어.","r","that 바로 뒤에 runs(동사) → 관계대명사"],
+["I know that he runs fast.","나는 그가 빨리 달린다는 것을 알아.","n","that 뒤에 he runs fast(꽉 찬 문장) → ~라는 것"],
+["The girl that sings is Amy.","노래하는 소녀는 Amy야.","r","that 바로 뒤에 sings(동사) → 관계대명사"],
+["That girl sings well.","저 소녀는 노래를 잘해.","a","that 바로 뒤에 girl(명사) → 저"],
+["I have a cat that is white.","나는 하얀 고양이가 있어.","r","that 바로 뒤에 is(동사) → 관계대명사"]]},
+{t:"7. 관계부사 that",k:"wrd",tip:"<b>day(날), time(때), year(해), reason(이유)</b> 뒤의 that + <b>꽉 찬 문장</b> → <b>관계부사</b><br>the day that we met = 우리가 만난 날<br>'그날에 우리가 만났다'로 바꿔도 말이 돼요!",
+w:[["I|remember|the day|that|we met.","나는 우리가 만난 날을 기억해.","day(날) 뒤에 that! we met은 꽉 찬 문장이에요. '그날에 우리가 만났다'로 말이 돼요 → 관계부사."],
+["I|know|the reason|that|he was late.","나는 그가 늦은 이유를 알아.","reason(이유) 뒤에 that! he was late는 꽉 찬 문장이에요 → 관계부사."],
+["I|like|the time|that|we play.","나는 우리가 노는 시간이 좋아.","time(때) 뒤에 that! we play는 꽉 찬 문장이에요 → 관계부사."],
+["Sunday|is|the day|that|we rest.","일요일은 우리가 쉬는 날이야.","day(날) 뒤에 that! we rest는 꽉 찬 문장이에요 → 관계부사."],
+["Tom|knows|the reason|that|I was sad.","Tom은 내가 슬펐던 이유를 알아.","reason(이유) 뒤에 that! I was sad는 꽉 찬 문장이에요 → 관계부사."]],
+q:[["I remember the year that we met.","나는 우리가 만난 해를 기억해.","w","year(해=때) 뒤 that + we met(꽉 찬 문장) → 관계부사"],
+["This is the book that I read.","이것은 내가 읽은 책이야.","r","read 뒤에 '무엇을?'이 빔 → 관계대명사"],
+["I know the reason that she cried.","나는 그녀가 운 이유를 알아.","w","reason(이유) 뒤 that + she cried(꽉 찬 문장) → 관계부사"],
+["I heard the news that we won.","나는 우리가 이겼다는 소식을 들었어.","d","news 뒤 that + we won → 동격 (때·이유 단어가 아님)"],
+["Do you know the day that he came?","그가 온 날을 아니?","w","day(날) 뒤 that + he came(꽉 찬 문장) → 관계부사"]]}
+];
+const $=document.getElementById("app");
+const bc=k=>"b"+(k==="d"?"d2":k);
+// 배우기 문장의 역할 표시: 각 섹션 데이터의 역할은 아래 ROLE에서 자동 부여
+const ROLE=[
+[["s","v","a","o"],["a","s","v","c"],["s","v","a","o"],["s","v","a","o"],["a","s","v","c"]],
+[["p","v","c"],["s","v","p"],["c","v","p"],["c","v","p","m"],["v","p"]],
+[["s","v","n","o"],["s","v","n","o"],["s","v","n","o"],["s","v","n","o"],["n","s","v","c"]],
+[["s","v","o","d","m"],["s","v","o","d","m"],["s","v","o","d","m"],["s","v","o","d","m"],["s","v","o","d","m"]],
+[["s","v","c","r","m"],["s","v","o","r","m"],["s","r","m","v","c"],["s","r","m","v","c"],["s","v","o","r","m"]],
+[["s","v","o","r","m"],["s","r","m","v","c"],["s","v","o","r","m"],["s","v","o","r","m"],["s","r","m","v","c"]],
+[["s","v","o","w","m"],["s","v","o","w","m"],["s","v","o","w","m"],["s","v","c","w","m"],["s","v","o","w","m"]]];
+const CLAUSE={2:[3,3,3,3,1],3:[4,4,4,4,4],4:[4,4,2,2,4],5:[4,2,4,4,2],6:[4,4,4,4,4]};
+[2,3,6].forEach(k=>SEC[k].tip+='<br>👉 that 뒤가 <b>꽉 찬 문장</b>이에요. (주어·동사가 다 있고 빠진 게 없어요)');
+SEC[4].tip+='<br>👉 that 뒤가 <b>불완전</b>해요. (목적어가 빠져 있어요)';
+SEC[5].tip+='<br>👉 that 뒤가 <b>불완전</b>해요. (주어가 빠져 있어요)';
+function cks(text,roles,sn,sx){
+ const CL=CLAUSE[sn]?CLAUSE[sn][sx]:-1;
+ const tag=[2,3,6].includes(sn)?'<span class="tg full">✔ 꽉 찬 문장</span>':'<span class="tg hole">✖ '+(sn==4?'목적어':'주어')+' 빠짐</span>';
+ return '<div class="cks">'+text.split("|").map((t,x)=>{const k=roles[x];
+  const th="apnrwd".includes(k);
+  return (x?'<span class="sl">/</span>':'')+`<span class="ck"><span class="tx ${th?'hl':''}">${t}</span><span class="bd ${bc(k)}">${LB[k]}</span>${x===CL?tag:''}</span>`}).join("")+'</div>';
+}
+let n,S,j,i,ok,wrong;
+function menu(){
+ $.innerHTML='<h1>that 문장구조 연습</h1><p class="sub">한 단계에 10문제! 1~5번은 배우기, 6~10번은 스스로 풀기예요.</p>'+
+ SEC.map((s,x)=>`<button class="btn" onclick="intro(${x})">${s.t}<small>배우기 5 + 풀기 5</small></button>`).join("");
+}
+function intro(a){
+ n=a;S=SEC[a];
+ const lg=Object.keys(LB).map(k=>`<span class="bd ${bc(k)}">${LB[k]}${HELP[k]?" ("+HELP[k]+")":""}</span>`).join("");
+ $.innerHTML=`<h1>${S.t}</h1><div class="tip">${S.tip}</div><p class="sub">문장을 / 로 나눠서 각 덩어리의 역할을 보여줘요.</p><div class="lg">${lg}</div><button class="btn go" onclick="learn(0)">배우기 시작 (1~5번)</button><button class="btn" onclick="menu()">← 단계 선택</button>`;
+}
+function learn(x){
+ if(x>=5){Q=S.q.slice();i=0;ok=0;wrong=[];return ask();}
+ j=x;const d=S.w[x];
+ $.innerHTML=`<div class="top"><span>${S.t}</span><span>${x+1} / 10</span></div><div class="bar"><i style="width:${x*10}%"></i></div>
+ ${cks(d[0],ROLE[n][x],n,x)}<div class="ko">${d[1]}</div><div class="ex">💡 ${d[2]}</div>
+ <button class="btn go" onclick="learn(${x+1})">${x==4?"이제 스스로 풀어봐요!":"다음"}</button>`;
+}
+function ask(){
+ if(i>=Q.length)return end();
+ const q=Q[i];
+ $.innerHTML=`<div class="top"><span>${S.t}</span><span>${i+6} / 10</span></div><div class="bar"><i style="width:${(i+5)*10}%"></i></div>
+ <div class="en">${q[0].replace(/\bthat\b/i,m=>"<mark>"+m+"</mark>")}</div><div class="ko">${q[1]}</div>
+ <p class="sub">노란색 that의 쓰임은?</p>${S.k.split("").map(k=>`<button class="btn ch" data-k="${k}">${CH[k]}</button>`).join("")}<div id="fb"></div>`;
+ document.querySelectorAll(".ch").forEach(b=>b.onclick=()=>pick(b,q));
+}
+function pick(b,q){
+ const r=b.dataset.k===q[2];
+ document.querySelectorAll(".ch").forEach(x=>{x.disabled=true;if(x.dataset.k===q[2])x.classList.add("ok")});
+ if(r)ok++;else{b.classList.add("no");wrong.push(q)}
+ document.getElementById("fb").innerHTML=`<div class="fb">${r?"⭕ 정답!":"❌ 정답은 "+CH[q[2]]}<br>💡 ${q[3]}</div><button class="btn go" onclick="i++;ask()">${i>=Q.length-1?"결과 보기":"다음"}</button>`;
+}
+function end(){
+ const tot=Q.length;
+ $.innerHTML=`<h1>${ok} / ${tot} 정답</h1><p class="sub">${wrong.length?"틀린 문제를 다시 풀어봐요!":"완벽해요! 다음 단계로 가볼까요?"}</p>`+
+ wrong.map(q=>`<div class="rv">${q[0]}<br>${q[1]}<br>→ ${CH[q[2]]}</div>`).join("")+
+ (wrong.length?`<button class="btn go" id="rw">틀린 문제 다시 풀기</button>`:"")+
+ (n<SEC.length-1?`<button class="btn" onclick="intro(${n+1})">다음 단계 →</button>`:"")+
+ `<button class="btn" onclick="learn(0)">배우기부터 다시</button><button class="btn" onclick="menu()">단계 선택</button>`;
+ const rw=document.getElementById("rw");
+ if(rw){const w=wrong.slice();rw.onclick=()=>{Q=w;i=0;ok=0;wrong=[];ask()}}
+}
+menu();
+</script></body></html>
