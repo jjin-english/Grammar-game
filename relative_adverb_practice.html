@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>관계부사 연습</title>
+<style>
+:root{--bg:#fff8ee;--ink:#3b2a1a;--line:#f0dcc0;--ok:#1f9d6a;--bad:#e04b4b;--when:#d99a0b;--where:#2e8b57;--why:#d6457a;--how:#2f6fed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.55}
+#app{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:6px 0 4px}h2{font-size:18px;margin:0 0 8px}p{margin:6px 0}
+.card{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:14px;padding:13px;font-size:16px;font-weight:700;margin:8px 0;cursor:pointer;text-align:center}
+.btn.main{background:var(--ink);color:#fff}
+.btn:disabled{cursor:default}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.opts .btn{margin:0;font-size:18px}
+.q{font-size:24px;font-weight:700;margin:12px 0 4px;word-break:keep-all}
+m{background:#ffe66d;border-radius:4px;padding:0 4px}
+.ko{color:#7a6650;font-size:15px}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar i{display:block;height:100%;background:var(--ink)}
+.fb{border-radius:12px;padding:12px;margin-top:10px;font-size:15px}
+.fb.ok{background:#e3f6ee}.fb.no{background:#fde8e8}
+.big{font-size:44px;text-align:center;font-weight:800;margin:6px 0}
+.rv{border-top:1px dashed var(--line);padding:10px 0;font-size:15px}
+.ex{border-top:1px dashed var(--line);padding:8px 0;font-size:18px}
+.ex .ko{font-size:14px;display:block}
+.ex .alt{font-size:15px;color:#7b3fc4;font-weight:600}
+table{width:100%;border-collapse:collapse;text-align:center;font-size:15px}
+td,th{border:1px solid var(--line);padding:6px}th{background:#fff1da}
+.tag{display:inline-block;border-radius:8px;padding:1px 10px;color:#fff;font-weight:700}
+.note{background:#f4ecff;border-radius:12px;padding:10px;font-size:15px;margin-top:10px}
+</style></head><body><div id="app"></div>
+<script>
+const TY={when:{n:"때 (시간)",c:"var(--when)",d:"때(시간)를 말해요",t:"that으로 바꿔도 돼요"},
+where:{n:"곳 (장소)",c:"var(--where)",d:"곳(장소)을 말해요",t:"that으로 바꾸면 끝에 in을 붙여요"},
+why:{n:"이유",c:"var(--why)",d:"이유(reason)를 말해요",t:"that으로 바꿔도 돼요"},
+how:{n:"방법",c:"var(--how)",d:"방법을 말해요",t:"the way that으로 바꿔 쓸 수 있어요 (the way how는 ✕)"}};
+const O=["when","where","why","how"];
+const q=(t,s,ko,noun)=>({s,ko,o:O,a:t,p:"빈칸에 알맞은 관계부사는?",e:`${noun} → ${TY[t].d} → <b>${t}</b>! (${TY[t].t})`});
+const P={
+when:[q("when","Monday is the day ___ school starts.","월요일은 학교가 시작하는 날이에요.","day"),
+q("when","I like the evening ___ we eat dinner.","나는 우리가 저녁을 먹는 저녁 시간이 좋아요.","evening"),
+q("when","Winter is the season ___ it is cold.","겨울은 날씨가 추운 계절이에요.","season"),
+q("when","Fall is the time ___ leaves turn red.","가을은 나뭇잎이 빨개지는 때예요.","time"),
+q("when","I remember the year ___ I started school.","나는 내가 학교를 시작한 해를 기억해요.","year")],
+where:[q("where","This is the library ___ I read.","여기는 내가 책을 읽는 도서관이에요.","library"),
+q("where","The beach ___ we play is wide.","우리가 노는 해변은 넓어요.","beach"),
+q("where","I see the kitchen ___ Mom cooks.","엄마가 요리하시는 부엌이 보여요.","kitchen"),
+q("where","Here is the farm ___ cows live.","여기는 소들이 사는 농장이에요.","farm"),
+q("where","The station ___ the bus stops is near.","버스가 서는 정류장은 가까워요.","station")],
+why:[q("why","Do you know the reason ___ the sky is blue?","하늘이 파란 이유를 아니?","reason"),
+q("why","I don't know the reason ___ he is angry.","나는 그가 화난 이유를 몰라요.","reason"),
+q("why","This is the reason ___ I go to bed early.","이것이 내가 일찍 자는 이유예요.","reason"),
+q("why","Tell me the reason ___ you like soccer.","네가 축구를 좋아하는 이유를 말해 주세요.","reason"),
+q("why","That is the reason ___ the baby is laughing.","그것이 아기가 웃고 있는 이유예요.","reason")],
+how:[q("how","Please show me ___ you ride a bike.","네가 자전거 타는 방법을 보여 주세요.","'~하는 방법'"),
+q("how","I like ___ Mom sings.","나는 엄마가 노래하는 방식이 좋아요.","'~하는 방식'"),
+q("how","This is ___ we make a paper plane.","이것이 우리가 종이비행기를 만드는 방법이에요.","'~하는 방법'"),
+q("how","Can you tell me ___ you brush your teeth?","네가 양치하는 방법을 말해 줄래요?","'~하는 방법'"),
+q("how","That is ___ he catches a ball.","저것이 그가 공을 잡는 방법이에요.","'~하는 방법'")]};
+const L=[
+{h:"🧴 관계부사도 '풀'이에요",b:`<p>관계대명사는 <b>사람·물건</b>을 붙이는 풀, 관계부사는 <b>때·곳·이유·방법</b>을 붙이는 풀이에요!</p>
+<table><tr><th>말해요</th><th>앞 단어</th><th>풀</th></tr><tr><td>때</td><td>day, time</td><td><b>when</b></td></tr><tr><td>곳</td><td>place, park</td><td><b>where</b></td></tr><tr><td>이유</td><td>reason</td><td><b>why</b></td></tr><tr><td>방법</td><td>way</td><td><b>how</b></td></tr></table>
+<div class="note">🔑 <b>that</b>은 만능열쇠! 네 가지 풀 대신 쓸 수 있어요.<br>뒤에는 <b>주어 + 동사</b>가 와요.</div>`},
+{k:"when",x:[["I like the day <m>when</m> it snows.","눈 오는 날이 좋아요."],["Summer is the time <m>when</m> we swim.","여름은 우리가 수영하는 때예요."],["I love the morning <m>when</m> the sun comes up.","나는 해가 뜨는 아침이 좋아요."],["Sunday is the day <m>when</m> I rest.","일요일은 내가 쉬는 날이에요."],["This is the night <m>when</m> the moon is big.","오늘은 달이 큰 밤이에요."]],
+ r:"<b>day, time, morning, night</b>처럼 <b>때</b>를 말하는 단어 뒤에는 <b>when</b>! 보라색 줄처럼 <b>that</b>으로 바꿔도 돼요."},
+{k:"where",x:[["This is the park <m>where</m> I run.","여기는 내가 달리는 공원이에요.","This is the park <m>that</m> I run in."],["The room <m>where</m> I sleep is small.","내가 자는 방은 작아요.","The room <m>that</m> I sleep in is small."],["I know a place <m>where</m> we can swim.","나는 우리가 수영할 수 있는 곳을 알아요.","I know a place <m>that</m> we can swim in."],["That is the house <m>where</m> Ben lives.","저기는 Ben이 사는 집이에요.","That is the house <m>that</m> Ben lives in."],["The town <m>where</m> I live has a zoo.","내가 사는 마을에는 동물원이 있어요.","The town <m>that</m> I live in has a zoo."]],
+ r:"<b>place, park, room, house</b>처럼 <b>곳</b>을 말하는 단어 뒤에는 <b>where</b>! that으로 바꿀 땐 문장 끝에 <b>in</b>을 꼭 붙여요."},
+{k:"why",x:[["I know the reason <m>why</m> Mina is sad.","나는 Mina가 슬픈 이유를 알아요."],["Tell me the reason <m>why</m> you are late.","네가 늦은 이유를 말해 주세요."],["That is the reason <m>why</m> I am happy.","그것이 내가 행복한 이유예요."],["Is this the reason <m>why</m> you cry?","이것이 네가 우는 이유니?"],["Here is the reason <m>why</m> Jisu is hungry.","여기 Jisu가 배고픈 이유가 있어요."]],
+ r:"<b>reason(이유)</b> 뒤에는 <b>why</b>! 'the reason why'는 짝꿍이에요. that으로 바꿔도 돼요."},
+{k:"how",x:[["This is <m>how</m> I swim.","이것이 내가 수영하는 방법이에요.","This is the way <m>that</m> I swim."],["Show me <m>how</m> you draw.","네가 그리는 방법을 보여 주세요.","Show me the way <m>that</m> you draw."],["I like <m>how</m> Mina jumps rope.","나는 Mina가 줄넘기하는 방식이 좋아요.","I like the way <m>that</m> Mina jumps rope."],["Do you know <m>how</m> he flies a kite?","그가 연을 날리는 방법을 아니?","Do you know the way <m>that</m> he flies a kite?"],["That is <m>how</m> we wash our hands.","저것이 우리가 손을 씻는 방법이에요.","That is the way <m>that</m> we wash our hands."]],
+ r:"<b>방법</b>은 <b>how</b>! 또는 <b>the way (that)</b>! <b>둘 중 하나만</b> 써요. ❌ the way how"}];
+const SEC={1:["① when (때)","when"],2:["② where (곳)","where"],3:["③ why (이유)","why"],4:["④ how (방법)","how"]};
+const $=document.getElementById('app'),S={};
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const tag=k=>`<span class="tag" style="background:${TY[k].c}">${k}</span>`;
+function home(){$.innerHTML=`<h1>관계부사 연습</h1><p class="ko">when · where · why · how · that</p>
+<button class="btn main" onclick="learn(0)">📖 먼저 쉽게 배우기</button>
+${[1,2,3,4].map(n=>`<button class="btn" onclick="go(${n})">${SEC[n][0]} (5문제)</button>`).join('')}`}
+function learn(i){const p=L[i];let h=`<p class="ko">배우기 ${i+1} / ${L.length}</p><div class="card">`;
+if(!p.k)h+=`<h2>${p.h}</h2>${p.b}`;
+else h+=`<h2>${tag(p.k)} ${TY[p.k].n}</h2><p>${p.r}</p>`+p.x.map((x,k)=>`<div class="ex">${k+1}. ${x[0]}<span class="ko">${x[1]}</span><div class="alt">= ${x[2]||x[0].replace(/<m>\w+<\/m>/,'<m>that</m>')}</div></div>`).join('');
+h+=`</div>`+(i<L.length-1?`<button class="btn main" onclick="learn(${i+1})">다음</button>`:`<button class="btn main" onclick="go(1)">✏️ 문제 풀러 가기</button>`)+(i?`<button class="btn" onclick="learn(${i-1})">이전</button>`:'')+`<button class="btn" onclick="home()">🏠 처음 화면</button>`;$.innerHTML=h;scrollTo(0,0)}
+function go(sec,list){Object.assign(S,{sec,q:sh(list||P[SEC[sec][1]]),i:0,w:[],ok:0});show()}
+function show(){const x=S.q[S.i],n=S.q.length;
+$.innerHTML=`<p class="ko">${SEC[S.sec][0]} · ${S.i+1} / ${n}</p><div class="bar"><i style="width:${S.i/n*100}%"></i></div><div class="card"><p class="ko">${x.p}</p><div class="q">${x.s.replace('___','<m>＿＿＿</m>')}</div><p class="ko">${x.ko}</p></div><div class="opts">${x.o.map((o,k)=>`<button class="btn" data-k="${k}" onclick="ans(${k})">${o}</button>`).join('')}</div><div id="fb"></div>`}
+function ans(k){const x=S.q[S.i],v=x.o[k],good=v==x.a;good?S.ok++:S.w.push(x);
+document.querySelectorAll('.opts .btn').forEach(b=>{b.disabled=true;const o=x.o[b.dataset.k];if(o==x.a)b.classList.add('ok');else if(o==v)b.classList.add('no')});
+const last=S.i==S.q.length-1;
+document.getElementById('fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'⭕ 정답!':'❌ 아쉬워요'}</b><br>정답: <b>${x.a}</b><br>💡 ${x.e}</div><button class="btn main" onclick="${last?'result()':'S.i++;show()'}">${last?'결과 보기':'다음 문제'}</button>`;
+document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'end'})}
+function result(){const n=S.q.length,w=S.w;
+let h=`<h1>결과</h1><div class="card"><div class="big">${S.ok} / ${n}</div><p style="text-align:center">${w.length?'틀린 문제를 다시 풀어 볼까요?':'🎉 모두 맞혔어요! 대단해요!'}</p></div>`;
+if(w.length)h+=`<button class="btn main" onclick="go(S.sec,S.w)">❌ 틀린 문제만 다시 풀기 (${w.length}개)</button><div class="card"><h2>틀린 문제 복습</h2>`+w.map(x=>`<div class="rv">${x.s.replace('___','<m>'+x.a+'</m>')}<br><span class="ko">${x.ko}</span><br>💡 ${x.e}</div>`).join('')+'</div>';
+h+=`<button class="btn main" onclick="go(S.sec)">🔄 처음부터 다시 풀기</button>`+(S.sec<4?`<button class="btn" onclick="go(${S.sec+1})">다음 섹션 →</button>`:'')+`<button class="btn" onclick="home()">🏠 처음 화면</button>`;$.innerHTML=h;scrollTo(0,0)}
+home();
+</script></body></html>
