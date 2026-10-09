@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>this / that 구분 연습</title>
+<style>
+:root{--bg:#f3f8ff;--ink:#1d2b4f;--adj:#2f6fed;--pro:#e8761a;--ok:#1f9d6a;--bad:#e04b4b;--line:#d5e2f7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.55}
+#app{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:6px 0 4px}h2{font-size:18px;margin:0 0 8px}
+p{margin:6px 0}
+.card{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:14px;padding:14px;font-size:16px;font-weight:700;margin:8px 0;cursor:pointer;text-align:left}
+.btn.main{background:var(--ink);color:#fff;text-align:center}
+.btn:disabled{cursor:default}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn small{font-weight:400;display:block;font-size:13px;opacity:.85}
+.row{display:flex;gap:8px}.row .btn{text-align:center}
+.q{font-size:26px;font-weight:700;margin:14px 0 4px;word-break:keep-all}
+m{background:#ffe66d;border-radius:4px;padding:0 4px}
+.ko{color:#5a6b92;font-size:15px}
+.tag{display:inline-block;border-radius:8px;padding:1px 8px;color:#fff;font-weight:700;font-size:14px}
+.adj{background:var(--adj)}.pro{background:var(--pro)}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar i{display:block;height:100%;background:var(--adj)}
+.fb{border-radius:12px;padding:12px;margin-top:10px;font-size:15px}
+.fb.ok{background:#e3f6ee}.fb.no{background:#fde8e8}
+table{width:100%;border-collapse:collapse;font-size:15px;text-align:center}
+td,th{border:1px solid var(--line);padding:6px}th{background:#eaf2ff}
+.big{font-size:44px;text-align:center;font-weight:800;margin:6px 0}
+.rv{border-top:1px dashed var(--line);padding:10px 0;font-size:15px}
+</style></head><body><div id="app"></div>
+<script>
+const A=[
+{s:"<m>This</m> is my bag.",ko:"이것은 내 가방이에요.",a:"pro",e:"this 바로 뒤에 is(동사)가 와요. 명사 없이 혼자 서 있으니 지시대명사!"},
+{s:"I like <m>this</m> bag.",ko:"나는 이 가방이 좋아요.",a:"adj",e:"this 바로 뒤에 bag(명사)이 붙어 있어요. 명사를 꾸며주니 지시형용사!"},
+{s:"<m>That</m> dog is big.",ko:"저 개는 커요.",a:"adj",e:"that 바로 뒤에 dog(명사)이 있어요. '저 ~' 하고 꾸며주니 지시형용사!"},
+{s:"<m>That</m> is a dog.",ko:"저것은 개예요.",a:"pro",e:"that 바로 뒤에 is(동사)가 와요. 명사가 없으니 지시대명사!"},
+{s:"<m>These</m> are apples.",ko:"이것들은 사과예요.",a:"pro",e:"these 바로 뒤에 are(동사)가 와요. 명사 없이 혼자 → 지시대명사!"},
+{s:"<m>These</m> apples are red.",ko:"이 사과들은 빨개요.",a:"adj",e:"these 바로 뒤에 apples(명사)가 붙어 있어요 → 지시형용사!"},
+{s:"<m>Those</m> are my shoes.",ko:"저것들은 내 신발이에요.",a:"pro",e:"those 바로 뒤에 are(동사)가 와요 → 지시대명사!"},
+{s:"Look at <m>those</m> birds.",ko:"저 새들을 보세요.",a:"adj",e:"those 바로 뒤에 birds(명사)가 있어요 → 지시형용사!"},
+{s:"What is <m>this</m>?",ko:"이것은 무엇이에요?",a:"pro",e:"this 뒤에 명사가 없고 문장이 끝나요(?). 혼자 서 있으니 지시대명사!"},
+{s:"I want <m>that</m> pen.",ko:"나는 저 펜을 원해요.",a:"adj",e:"that 바로 뒤에 pen(명사)이 있어요 → 지시형용사!"}];
+const B=[
+{q:"___ is a book.",k:"가까이 · 1개",ko:"이것은 책이에요.",a:"this",e:"가까이 있는 1개 → this. 뒤에 명사 없이 is → 지시대명사!"},
+{q:"___ is my school.",k:"멀리 · 1개",ko:"저것은 내 학교예요.",a:"that",e:"멀리 있는 1개 → that. 뒤에 명사 없이 is → 지시대명사!"},
+{q:"___ are my friends.",k:"가까이 · 여러 명",ko:"이 사람들은 내 친구들이에요.",a:"these",e:"가까이 있는 여러 명 → these. are도 여러 개일 때 써요."},
+{q:"___ are cats.",k:"멀리 · 여러 마리",ko:"저것들은 고양이예요.",a:"those",e:"멀리 있는 여러 마리 → those. 뒤에 are가 오니 지시대명사!"},
+{q:"___ pencil is long.",k:"가까이 · 1개",ko:"이 연필은 길어요.",a:"this",e:"pencil 1개 + 가까이 → this. 명사가 붙어 있으니 지시형용사!"},
+{q:"___ boys are tall.",k:"멀리 · 여러 명",ko:"저 소년들은 키가 커요.",a:"those",e:"boys(여러 명) + 멀리 → those. 명사가 붙어 있으니 지시형용사!"},
+{q:"I like ___ cap.",k:"가까이 · 1개",ko:"나는 이 모자가 좋아요.",a:"this",e:"cap 1개 + 가까이 → this. 명사가 붙어 있으니 지시형용사!"},
+{q:"Look at ___ flowers.",k:"가까이 · 여러 개",ko:"이 꽃들을 보세요.",a:"these",e:"flowers(여러 개) + 가까이 → these. 지시형용사!"},
+{q:"___ is a bird.",k:"멀리 · 1마리",ko:"저것은 새예요.",a:"that",e:"멀리 있는 1마리 → that. 뒤에 명사 없이 is → 지시대명사!"},
+{q:"___ shoes are new.",k:"가까이 · 여러 개",ko:"이 신발은 새 것이에요.",a:"these",e:"shoes(여러 개) + 가까이 → these. 명사가 붙어 있으니 지시형용사!"}];
+const $=document.getElementById('app'),S={};
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const T=x=>x=="adj"?'<span class="tag adj">지시형용사</span>':'<span class="tag pro">지시대명사</span>';
+function home(){$.innerHTML=`<h1>this · that 구분 연습</h1><p class="ko">중1 · 기초 단어 · 각 10문제</p>
+<div class="card"><h2>👆 쉬운 구분법: 바로 뒤를 보세요!</h2>
+<p><span class="tag adj">지시형용사</span> 뒤에 <b>명사</b>가 붙어 있어요<br>→ <b>this bag</b> (이 가방), <b>those birds</b> (저 새들)</p>
+<p><span class="tag pro">지시대명사</span> 뒤에 명사가 없어요 (is, are, 끝)<br>→ <b>This is</b> a bag. (이것은) / What is <b>this</b>?</p>
+<table><tr><th></th><th>1개</th><th>여러 개</th></tr><tr><th>가까이</th><td>this</td><td>these</td></tr><tr><th>멀리</th><td>that</td><td>those</td></tr></table></div>
+<button class="btn main" onclick="go('A')">① 형용사? 대명사? 구분하기 (10문제)</button>
+<button class="btn main" onclick="go('B')">② 알맞은 말 고르기 (10문제)</button>`}
+function go(sec,list){Object.assign(S,{sec,q:sh(list||(sec=='A'?A:B)),i:0,w:[],ok:0});show()}
+function show(){const q=S.q[S.i],n=S.q.length,A_=S.sec=='A';
+let h=`<p class="ko">${A_?'①':'②'} ${S.i+1} / ${n}</p><div class="bar"><i style="width:${S.i/n*100}%"></i></div><div class="card">`;
+if(A_)h+=`<p class="ko">밑줄 친 말은 무엇일까요?</p><div class="q">${q.s}</div><p class="ko">${q.ko}</p></div><div class="row"><button class="btn" onclick="ans('adj')">지시형용사<small>뒤에 명사 ○</small></button><button class="btn" onclick="ans('pro')">지시대명사<small>뒤에 명사 ✕</small></button></div>`;
+else{const cap=q.q.startsWith('___');h+=`<p class="ko">(${q.k})</p><div class="q">${q.q.replace('___','<m>＿＿＿</m>')}</div><p class="ko">${q.ko}</p></div><div class="row" style="flex-wrap:wrap">${['this','that','these','those'].map(w=>`<button class="btn" style="width:48%" data-w="${w}" onclick="ans('${w}')">${cap?w[0].toUpperCase()+w.slice(1):w}</button>`).join('')}</div>`}
+$.innerHTML=h+'<div id="fb"></div>'}
+function ans(v){const q=S.q[S.i],good=v==q.a;good?S.ok++:S.w.push(q);
+document.querySelectorAll('.btn').forEach(b=>{b.disabled=true;const w=b.dataset.w||(b.textContent.includes('형용사')?'adj':'pro');if(w==q.a)b.classList.add('ok');else if(w==v)b.classList.add('no')});
+const last=S.i==S.q.length-1,ex=S.sec=='A'?'':`<br>정답: <b>${q.a}</b> (${q.a=='this'||q.a=='that'?'1개':'여러 개'})`;
+document.getElementById('fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'⭕ 정답!':'❌ 아쉬워요'}</b>${ex}<br>${S.sec=='A'?'정답: '+T(q.a)+'<br>':''}💡 ${q.e}</div><button class="btn main" onclick="${last?'result()':'S.i++;show()'}">${last?'결과 보기':'다음 문제'}</button>`;
+document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'end'})}
+function result(){const n=S.q.length,w=S.w;
+let h=`<h1>결과</h1><div class="card"><div class="big">${S.ok} / ${n}</div><p style="text-align:center">${w.length==0?'🎉 모두 맞혔어요! 대단해요!':'틀린 문제를 다시 풀어 볼까요?'}</p></div>`;
+if(w.length){h+=`<button class="btn main" onclick="go(S.sec,S.w)">❌ 틀린 문제만 다시 풀기 (${w.length}개)</button><div class="card"><h2>틀린 문제 복습</h2>`+w.map(q=>`<div class="rv">${S.sec=='A'?q.s:q.q.replace('___','<m>'+q.a+'</m>')}<br><span class="ko">${q.ko}</span><br>💡 ${q.e}</div>`).join('')+'</div>'}
+h+=`<button class="btn main" onclick="go(S.sec)">🔄 처음부터 다시 풀기</button><button class="btn" onclick="home()" style="text-align:center">🏠 처음 화면</button>`;$.innerHTML=h;scrollTo(0,0)}
+home();
+</script></body></html>

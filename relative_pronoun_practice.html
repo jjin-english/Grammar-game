@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>관계대명사 연습</title>
+<style>
+:root{--bg:#f4faf5;--ink:#1f3329;--g:#2e8b57;--line:#d3e8d9;--ok:#1f9d6a;--bad:#e04b4b;--sub:#2f6fed;--obj:#e8761a;--omit:#8a4fd1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.55}
+#app{max-width:520px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:22px;margin:6px 0 4px}h2{font-size:18px;margin:0 0 8px}p{margin:6px 0}
+.card{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:14px;padding:13px;font-size:16px;font-weight:700;margin:8px 0;cursor:pointer;text-align:center}
+.btn.main{background:var(--ink);color:#fff}
+.btn:disabled{cursor:default}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.opts{display:flex;flex-wrap:wrap;gap:8px}.opts .btn{flex:1 1 30%;margin:0}
+.q{font-size:24px;font-weight:700;margin:12px 0 4px;word-break:keep-all}
+m{background:#ffe66d;border-radius:4px;padding:0 4px}
+u{text-decoration:none;border-bottom:3px solid var(--g)}
+.ko{color:#5b7466;font-size:15px}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar i{display:block;height:100%;background:var(--g)}
+.fb{border-radius:12px;padding:12px;margin-top:10px;font-size:15px}
+.fb.ok{background:#e3f6ee}.fb.no{background:#fde8e8}
+.big{font-size:44px;text-align:center;font-weight:800;margin:6px 0}
+.rv{border-top:1px dashed var(--line);padding:10px 0;font-size:15px}
+.ex{border-top:1px dashed var(--line);padding:8px 0;font-size:18px}
+.ex .ko{font-size:14px;display:block}
+.tag{display:inline-block;border-radius:8px;padding:1px 8px;color:#fff;font-weight:700;font-size:14px}
+.t1{background:var(--sub)}.t2{background:var(--obj)}.t3{background:var(--omit)}
+.dim{opacity:.35}
+</style></head><body><div id="app"></div>
+<script>
+const W=[["who","which","whom"],["whom","which","what"],["which","whom","what"],["who","which","that"]];
+const mk=(s,ko,o,a,e)=>({s,ko,o,a,e,p:"빈칸에 알맞은 말은?"});
+const S1=[
+mk("I have a friend ___ is kind.","나는 친절한 친구가 있어요.",W[0],"who","friend는 사람 → who. 빈칸 바로 뒤에 is(동사)가 와요 → 주격!"),
+mk("Look at the dog ___ is running.","달리고 있는 개를 보세요.",W[0],"which","dog는 동물 → which. 바로 뒤에 is(동사) → 주격!"),
+mk("She is a girl ___ sings well.","그녀는 노래를 잘하는 소녀예요.",W[0],"who","girl은 사람 → who. 바로 뒤에 sings(동사) → 주격!"),
+mk("This is a bird ___ can fly.","이것은 날 수 있는 새예요.",W[0],"which","bird는 동물 → which. 바로 뒤에 can fly(동사) → 주격!"),
+mk("I know a boy ___ likes cats.","나는 고양이를 좋아하는 소년을 알아요.",W[0],"who","boy는 사람 → who. 바로 뒤에 likes(동사) → 주격!"),
+mk("The cat ___ sleeps on the bed is mine.","침대에서 자는 고양이는 내 거예요.",W[0],"which","cat은 동물 → which. 바로 뒤에 sleeps(동사) → 주격!"),
+mk("The man ___ lives next door is nice.","옆집에 사는 남자는 친절해요.",W[0],"who","man은 사람 → who. 바로 뒤에 lives(동사) → 주격!"),
+mk("I like the apple ___ is red.","나는 빨간 사과가 좋아요.",W[0],"which","apple은 물건 → which. 바로 뒤에 is(동사) → 주격!"),
+mk("Look at the boy and his dog ___ are running.","달리고 있는 소년과 그의 개를 보세요.",W[3],"that","사람(boy)과 동물(dog)이 섞였어요 → 만능열쇠 that!"),
+mk("I see a girl and a cat ___ are sitting there.","저기 앉아 있는 소녀와 고양이가 보여요.",W[3],"that","사람(girl)과 동물(cat)이 섞였어요 → that!")];
+const S2=[
+mk("This is the cake ___ I made.","이것은 내가 만든 케이크예요.",W[2],"which","cake는 물건 → which. 뒤에 I made(주어+동사)가 와요 → 목적격!"),
+mk("The boy ___ I met is Tom.","내가 만난 소년은 Tom이에요.",W[1],"whom","boy는 사람 → whom. 뒤에 I met(주어+동사) → 목적격!"),
+mk("The book ___ you read is fun.","네가 읽은 책은 재미있어요.",W[2],"which","book은 물건 → which. 뒤에 you read(주어+동사) → 목적격!"),
+mk("She is the girl ___ we like.","그녀는 우리가 좋아하는 소녀예요.",W[1],"whom","girl은 사람 → whom. 뒤에 we like(주어+동사) → 목적격!"),
+mk("Here is the dog ___ my mom bought.","여기 엄마가 사 주신 개가 있어요.",W[2],"which","dog는 동물 → which. 뒤에 my mom bought(주어+동사) → 목적격!"),
+mk("The teacher ___ I love is kind.","내가 좋아하는 선생님은 친절해요.",W[1],"whom","teacher는 사람 → whom. 뒤에 I love(주어+동사) → 목적격!"),
+mk("The apple ___ she ate was red.","그녀가 먹은 사과는 빨갰어요.",W[2],"which","apple은 물건 → which. 뒤에 she ate(주어+동사) → 목적격!"),
+mk("The man ___ I saw is my uncle.","내가 본 남자는 우리 삼촌이에요.",W[1],"whom","man은 사람 → whom. 뒤에 I saw(주어+동사) → 목적격!"),
+mk("The boy and the cat ___ I like are here.","내가 좋아하는 소년과 고양이가 여기 있어요.",W[3],"that","사람(boy)과 동물(cat)이 섞였어요 → that! 뒤에 I like → 목적격."),
+mk("This is the toy ___ my brother wants.","이것은 내 동생이 원하는 장난감이에요.",W[2],"which","toy는 물건 → which. 뒤에 my brother wants(주어+동사) → 목적격!")];
+const Y="✂️ 지울 수 있어요",N="🚫 지울 수 없어요";
+const yes=(s,ko,e)=>({s,ko,o:[Y,N],a:Y,p:"밑줄 친 말을 지워도 될까요?",e:e+" 목적격은 지울 수 있어요!"});
+const no=(s,ko,e)=>({s,ko,o:[Y,N],a:N,p:"밑줄 친 말을 지워도 될까요?",e:e+" 주격은 지우면 안 돼요!"});
+const S3=[
+yes("This is the cake <m>that</m> I made.","이것은 내가 만든 케이크예요.","that 뒤에 I made(주어+동사) → 목적격."),
+no("I have a friend <m>who</m> is kind.","나는 친절한 친구가 있어요.","who 바로 뒤에 is(동사) → 주격."),
+yes("The boy <m>whom</m> I met is Tom.","내가 만난 소년은 Tom이에요.","whom 뒤에 I met(주어+동사) → 목적격."),
+no("Look at the dog <m>which</m> is running.","달리고 있는 개를 보세요.","which 바로 뒤에 is(동사) → 주격."),
+yes("The book <m>which</m> you read is fun.","네가 읽은 책은 재미있어요.","which 뒤에 you read(주어+동사) → 목적격."),
+no("She is a girl <m>who</m> sings well.","그녀는 노래를 잘하는 소녀예요.","who 바로 뒤에 sings(동사) → 주격."),
+yes("Here is the dog <m>that</m> we like.","여기 우리가 좋아하는 개가 있어요.","that 뒤에 we like(주어+동사) → 목적격."),
+no("This is a bird <m>that</m> can fly.","이것은 날 수 있는 새예요.","that 바로 뒤에 can fly(동사) → 주격."),
+yes("The apple <m>which</m> she ate was red.","그녀가 먹은 사과는 빨갰어요.","which 뒤에 she ate(주어+동사) → 목적격."),
+no("I know a boy <m>who</m> likes cats.","나는 고양이를 좋아하는 소년을 알아요.","who 바로 뒤에 likes(동사) → 주격.")];
+const K=["주격","목적격","목적격 생략"],KE=["who/which/that 바로 뒤에 <b>동사</b>가 와요 → 주격!","who(m)/which/that 뒤에 <b>주어+동사</b>가 와요 → 목적격!","명사 바로 뒤에 <b>주어+동사</b>가 와요. 관계대명사가 지워졌어요 → 목적격 생략!"];
+const c=(s,ko,t)=>({s,ko,o:K,a:K[t],p:"어떤 문장일까요?",e:KE[t]});
+const S4=[
+c("I see a man <m>who</m> is tall.","키 큰 남자가 보여요.",0),
+c("Look at the bird <m>which</m> is singing.","노래하는 새를 보세요.",0),
+c("He has a dog <m>that</m> likes milk.","그는 우유를 좋아하는 개가 있어요.",0),
+c("She is a teacher <m>who</m> helps kids.","그녀는 아이들을 돕는 선생님이에요.",0),
+c("I have a cap <m>which</m> is blue.","나는 파란 모자가 있어요.",0),
+c("This is the pen <m>that</m> I bought.","이것은 내가 산 펜이에요.",1),
+c("The girl <m>whom</m> I know is nice.","내가 아는 소녀는 착해요.",1),
+c("The song <m>which</m> we sing is fun.","우리가 부르는 노래는 재미있어요.",1),
+c("He is the boy <m>that</m> I like.","그는 내가 좋아하는 소년이에요.",1),
+c("The cookie <m>which</m> Mom made is sweet.","엄마가 만든 쿠키는 달아요.",1),
+c("The bag <m>I want</m> is red.","내가 원하는 가방은 빨개요.",2),
+c("The movie <m>we saw</m> was fun.","우리가 본 영화는 재미있었어요.",2),
+c("That is the boy <m>I met</m>.","저 아이가 내가 만난 소년이에요.",2),
+c("The toy <m>my sister likes</m> is big.","내 여동생이 좋아하는 장난감은 커요.",2),
+c("The fish <m>he caught</m> was big.","그가 잡은 물고기는 컸어요.",2)];
+const SEC={1:["① 주격",S1],2:["② 목적격",S2],3:["③ 목적격 생략",S3],4:["④ 섞어서 15문제",S4]};
+const L=[
+{h:"🧴 관계대명사는 '풀'이에요",b:`<p>짧은 문장 2개를 <b>풀</b>로 붙여요!</p><div class="ex">I have a friend. <i>+</i> He is kind.<span class="ko">나는 친구가 있어요. + 그는 친절해요.</span></div><p>⬇️ 풀(<b>who</b>)로 붙이면</p><div class="ex">I have a friend <m>who</m> is kind.<span class="ko">나는 친절한 친구가 있어요.</span></div><p><b>풀 고르는 법</b><br>👦 사람 → <b>who</b> (목적격은 whom)<br>🐶 동물·물건 → <b>which</b><br>🔑 섞였을 때, 아무때나 → <b>that</b></p><p><b>풀 뒤를 보면 3가지를 알 수 있어요!</b></p>`},
+{h:"1️⃣ 주격: 풀 뒤에 바로 '동사'",t:"t1",r:"풀 바로 뒤에 <b>동사</b>(is, likes, can fly…)가 와요. 풀이 '~하는'의 주인공이에요. <b>풀을 지우면 안 돼요!</b>",x:[["I have a friend <m>who</m> is kind.","나는 친절한 친구가 있어요."],["Look at the dog <m>which</m> is running.","달리는 개를 보세요."],["She is the girl <m>who</m> sings well.","그녀는 노래 잘하는 소녀예요."],["This is a bird <m>that</m> can fly.","이것은 날 수 있는 새예요."],["I know a boy <m>who</m> likes cats.","나는 고양이를 좋아하는 소년을 알아요."]]},
+{h:"2️⃣ 목적격: 풀 뒤에 '나·너·그 + 동사'",t:"t2",r:"풀 뒤에 <b>주어 + 동사</b>(I made, you read…)가 와요. '내가 ~한'이라는 뜻이에요. 사람은 <b>whom</b>, 물건은 <b>which</b>, 둘 다 <b>that</b>.",x:[["This is the cake <m>that</m> I made.","이것은 내가 만든 케이크예요."],["The boy <m>whom</m> I met is Tom.","내가 만난 소년은 Tom이에요."],["The book <m>which</m> you read is fun.","네가 읽은 책은 재미있어요."],["Here is the dog <m>that</m> we like.","여기 우리가 좋아하는 개가 있어요."],["The apple <m>which</m> she ate was red.","그녀가 먹은 사과는 빨갰어요."]]},
+{h:"3️⃣ 목적격 생략: 풀을 쏙 지워요",t:"t3",r:"목적격 풀 뒤에는 <b>주어+동사</b>가 오니까, 풀을 <b>지워도</b> 뜻이 같아요! (✂️ 명사 바로 뒤에 주어+동사가 오면 생략된 거예요)",x:[["This is the cake <m>(that)</m> I made.","이것은 내가 만든 케이크예요."],["The boy <m>(whom)</m> I met is Tom.","내가 만난 소년은 Tom이에요."],["The book <m>(which)</m> you read is fun.","네가 읽은 책은 재미있어요."],["Here is the dog <m>(that)</m> we like.","여기 우리가 좋아하는 개가 있어요."],["The apple <m>(which)</m> she ate was red.","그녀가 먹은 사과는 빨갰어요."]]}];
+const $=document.getElementById('app'),S={};
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+function home(){$.innerHTML=`<h1>관계대명사 연습</h1><p class="ko">초등 기초 단어 · 주격 / 목적격 / 목적격 생략</p>
+<button class="btn main" onclick="learn(0)">📖 먼저 쉽게 배우기</button>
+${[1,2,3,4].map(n=>`<button class="btn" onclick="go(${n})">${SEC[n][0]} (${SEC[n][1].length}문제)</button>`).join('')}`}
+function learn(i){const p=L[i];let h=`<p class="ko">배우기 ${i+1} / ${L.length}</p><div class="card"><h2>${p.h}</h2>${p.b||''}`;
+if(p.x)h+=`<p>${p.r}</p>`+p.x.map((x,k)=>`<div class="ex">${k+1}. ${x[0]}<span class="ko">${x[1]}</span></div>`).join('');
+h+=`</div>`+(i<L.length-1?`<button class="btn main" onclick="learn(${i+1})">다음</button>`:`<button class="btn main" onclick="go(1)">✏️ 문제 풀러 가기</button>`)+(i?`<button class="btn" onclick="learn(${i-1})">이전</button>`:'')+`<button class="btn" onclick="home()">🏠 처음 화면</button>`;$.innerHTML=h;scrollTo(0,0)}
+function go(sec,list){Object.assign(S,{sec,q:sh(list||SEC[sec][1]),i:0,w:[],ok:0});show()}
+function show(){const q=S.q[S.i],n=S.q.length;
+$.innerHTML=`<p class="ko">${SEC[S.sec][0]} · ${S.i+1} / ${n}</p><div class="bar"><i style="width:${S.i/n*100}%"></i></div><div class="card"><p class="ko">${q.p}</p><div class="q">${q.s.replace('___','<m>＿＿＿</m>')}</div><p class="ko">${q.ko}</p></div><div class="opts">${q.o.map((o,k)=>`<button class="btn" data-k="${k}" onclick="ans(${k})">${o}</button>`).join('')}</div><div id="fb"></div>`}
+function ans(k){const q=S.q[S.i],v=q.o[k],good=v==q.a;good?S.ok++:S.w.push(q);
+document.querySelectorAll('.opts .btn').forEach(b=>{b.disabled=true;const o=q.o[b.dataset.k];if(o==q.a)b.classList.add('ok');else if(o==v)b.classList.add('no')});
+const last=S.i==S.q.length-1;
+document.getElementById('fb').innerHTML=`<div class="fb ${good?'ok':'no'}"><b>${good?'⭕ 정답!':'❌ 아쉬워요'}</b><br>정답: <b>${q.a}</b><br>💡 ${q.e}</div><button class="btn main" onclick="${last?'result()':'S.i++;show()'}">${last?'결과 보기':'다음 문제'}</button>`;
+document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'end'})}
+function result(){const n=S.q.length,w=S.w;
+let h=`<h1>결과</h1><div class="card"><div class="big">${S.ok} / ${n}</div><p style="text-align:center">${w.length?'틀린 문제를 다시 풀어 볼까요?':'🎉 모두 맞혔어요! 대단해요!'}</p></div>`;
+if(w.length)h+=`<button class="btn main" onclick="go(S.sec,S.w)">❌ 틀린 문제만 다시 풀기 (${w.length}개)</button><div class="card"><h2>틀린 문제 복습</h2>`+w.map(q=>`<div class="rv">${q.s.replace('___','<m>'+q.a+'</m>')}<br><span class="ko">${q.ko}</span><br>정답: <b>${q.a}</b><br>💡 ${q.e}</div>`).join('')+'</div>';
+h+=`<button class="btn main" onclick="go(S.sec)">🔄 처음부터 다시 풀기</button>`+(S.sec<4?`<button class="btn" onclick="go(${S.sec+1})">다음 섹션 →</button>`:'')+`<button class="btn" onclick="home()">🏠 처음 화면</button>`;$.innerHTML=h;scrollTo(0,0)}
+home();
+</script></body></html>
