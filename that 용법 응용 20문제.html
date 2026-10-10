@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>that 용법 응용 20문제</title>
+<style>
+:root{--bg:#fff;--fg:#1f2937;--card:#f3f4f6;--bd:#d1d5db;--ac:#4f46e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111827;--fg:#f3f4f6;--card:#1f2937;--bd:#374151;--ac:#818cf8}}
+:root[data-theme="dark"]{--bg:#111827;--fg:#f3f4f6;--card:#1f2937;--bd:#374151;--ac:#818cf8}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6}
+.w{max-width:640px;margin:0 auto;padding:12px}
+h1{font-size:20px;margin:4px 0 10px}
+details{margin:10px 0;background:var(--card);border-radius:10px;padding:8px 12px;font-size:14px}summary{font-weight:700}
+.bar{height:8px;background:var(--card);border-radius:4px;margin:10px 0}.bar i{display:block;height:100%;background:var(--ac);border-radius:4px}
+.q{background:var(--card);border-radius:12px;padding:14px;font-size:19px;line-height:1.8;margin-top:8px}
+u{font-weight:800;text-decoration-color:#a855f7;text-decoration-thickness:3px}
+.opts{display:grid;gap:8px;margin:12px 0}.opts button{padding:12px;text-align:left;font-size:16px;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--fg)}
+.opts button.ok{border-color:#22c55e;background:rgba(34,197,94,.2)}.opts button.no{border-color:#ef4444;background:rgba(239,68,68,.2)}
+.fb{border:2px solid var(--bd);border-radius:12px;padding:12px}.res{font-weight:800;font-size:18px;margin-bottom:6px}
+.ex{background:var(--card);border-radius:8px;padding:8px 10px;font-size:14px;margin-top:6px}.ex.k{border-left:5px solid #22c55e}
+.go{width:100%;margin-top:10px;padding:12px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-size:16px;font-weight:700}
+.sc{text-align:center;font-size:22px;font-weight:800;margin:20px 0}
+</style></head><body><div class="w">
+<h1>🔍 that 용법 찾기 응용 20문제</h1>
+<details><summary>💡 that 구분 5가지 (눌러서 보기)</summary>
+ⓐ <b>that+명사</b> = 저~ / that만 있으면 = 저것 (지시)<br>
+ⓑ 앞에 명사 없음 + 뒤가 <b>완전</b> = ~라는 것 (명사절)<br>
+ⓒ fact·news·idea 뒤 + 뒤가 <b>완전</b> = 동격<br>
+ⓓ 앞에 명사 + 뒤가 <b>불완전</b>(주어/목적어 없음) = 관계대명사<br>
+ⓔ day·reason 뒤 + 뒤가 <b>완전</b> = 관계부사</details>
+<div id="app"></div></div>
+<script>
+var TY={a:"ⓐ 지시대명사/형용사",b:"ⓑ 명사절 접속사",c:"ⓒ 동격의 접속사",d:"ⓓ 관계대명사",e:"ⓔ 관계부사"},N=["①","②","③","④","⑤"];
+// 앞 12개 = 프린트 1~12번, 뒤는 보기용 추가 문장
+var R=[
+["I still remember the day [that] we first met at the library.","e","day(때) + 완전한 문장 → 관계부사"],
+["The scientist proved [that] light travels faster than sound.","b","앞에 명사 없음 + 완전한 문장 → 명사절 ('~라는 것')"],
+["Look at [that] tall building over there.","a","that + 명사 → '저 ~' (지시형용사)"],
+["She accepts the fact [that] everyone makes mistakes sometimes.","c","fact의 내용을 설명 + 완전한 문장 → 동격"],
+["This is the book [that] I borrowed from the school library yesterday.","d","borrowed의 목적어가 없음(불완전) → 관계대명사"],
+["Do you know the exact reason [that] he was absent from class yesterday?","e","reason(이유) + 완전한 문장 → 관계부사"],
+["The police are investigating the evidence [that] was found at the scene.","d","that 뒤에 주어가 없음(불완전) → 관계대명사"],
+["I didn't realize [that] the final exam schedule had already been changed.","b","명사 없이 that + 완전한 문장 → 명사절 ('~라는 것')"],
+["[That] red backpack on the chair belongs to the new transfer student.","a","that + 명사 → '저 ~' (지시형용사)"],
+["The movie [that] we watched together last weekend was really impressive.","d","watched의 목적어가 없음(불완전) → 관계대명사"],
+["[That] she solved the complex physics problem by herself surprised everyone.","b","문장 맨 앞 that + 완전한 문장 → 명사절 (주어)"],
+["Who is [that] standing by the entrance?","a","that = 저 사람 (뒤에 명사 없음) → 지시대명사"],
+["I like [that] song.","a","that + 명사(song) → '저 ~' (지시형용사)"],
+["Is [that] your bag?","a","that = 저것 (뒤에 명사 없음) → 지시대명사"],
+["I think [that] he is kind.","b","앞에 명사 없음 + 완전한 문장 → 명사절 ('~라는 것')"],
+["She said [that] she was tired.","b","앞에 명사 없음 + 완전한 문장 → 명사절 ('~라는 것')"],
+["I heard the news [that] he won the prize.","c","news의 내용을 설명 + 완전한 문장 → 동격"],
+["I like the idea [that] we have a party.","c","idea의 내용을 설명 + 완전한 문장 → 동격"],
+["We believe the rumor [that] he is a hero.","c","rumor의 내용을 설명 + 완전한 문장 → 동격"],
+["I know the girl [that] sits next to me.","d","that 뒤에 주어가 없음(불완전) → 관계대명사"],
+["The cake [that] she made was great.","d","made의 목적어가 없음(불완전) → 관계대명사"],
+["The reason [that] she cried was clear.","e","reason(이유) + 완전한 문장 → 관계부사"],
+["Monday is the day [that] the shop is closed.","e","day(때) + 완전한 문장 → 관계부사"],
+["I remember the moment [that] he came in.","e","moment(때) + 완전한 문장 → 관계부사"]];
+var G={},Q=[],n,m,j;
+R.forEach(function(x,i){(G[x[1]]=G[x[1]]||[]).push(i)});
+for(n=0;n<12;n++){var t=R[n][1],c=G[t].filter(function(x){return x!=n}),ok=c[n%c.length],o=[];
+ "abcde".split("").forEach(function(u){if(u!=t){var g=G[u];o.push(g[(n*2+1)%g.length])}});
+ var p=(n*3+1)%5;o.splice(p,0,ok);Q.push({st:n,o:o,ok:p,t:t})}
+var SQ="abcdedab".split("");
+for(m=0;m<8;m++){var t2=SQ[m],g2=G[t2],o2=[];for(j=0;j<4;j++)o2.push(g2[(m*2+j)%g2.length]);
+ var ot="abcde".replace(t2,"").split(""),u2=ot[m%4],od=G[u2][m%G[u2].length],p2=(m*2+2)%5;o2.splice(p2,0,od);Q.push({st:-1,o:o2,ok:p2,t:t2,u:u2})}
+var $=function(i){return document.getElementById(i)},S=mk();
+function mk(){var a=[];for(var i=0;i<20;i++)a.push(i);return{q:a,i:0,sc:0,w:[],a:null}}
+function H(s){return s.replace(/\[(\w+)\]/g,"<u>$1</u>")}
+function pick(c){var d=Q[S.q[S.i]];if(S.a!==null)return;S.a=c;if(c==d.ok)S.sc++;else S.w.push(S.q[S.i]);render()}
+function next(){S.i++;S.a=null;render();scrollTo(0,0)}
+function retry(f){S=f?{q:S.w.slice(),i:0,sc:0,w:[],a:null}:mk();render()}
+function render(){var app=$("app"),s=S;
+if(s.i>=s.q.length){app.innerHTML='<div class="sc">'+(s.sc==s.q.length?"🎉 ":"")+s.q.length+"문제 중 "+s.sc+"개 정답!</div>"+(s.w.length?'<button class="go" onclick="retry(1)">❌ 틀린 문제 '+s.w.length+'개 다시 풀기</button>':"")+'<button class="go" style="background:#6b7280" onclick="retry(0)">처음부터 다시</button>';return}
+var qi=s.q[s.i],d=Q[qi],h='<div class="bar"><i style="width:'+(s.i/s.q.length*100)+'%"></i></div><b>'+(qi+1)+"번</b> ("+(s.i+1)+"/"+s.q.length+")";
+if(d.st>=0)h+="<div style='margin-top:6px'>밑줄 친 that과 쓰임이 <b>같은 것</b>은?</div><div class=q>"+H(R[d.st][0])+"</div>";
+else h+="<div style='margin-top:6px'>다음 중 밑줄 친 that의 쓰임이 <b>다른 하나</b>는?</div>";
+h+='<div class="opts">';
+d.o.forEach(function(x,k){var c="";if(s.a!==null){if(k==d.ok)c="ok";else if(k==s.a)c="no"}h+='<button class="'+c+'" onclick="pick('+k+')">'+N[k]+" "+H(R[x][0])+"</button>"});
+h+="</div>";
+if(s.a!==null){var ok=s.a==d.ok;h+='<div class="fb"><div class="res">'+(ok?"⭕ 정답!":"❌ 정답은 "+N[d.ok]+"번")+"</div>";
+h+=d.st>=0?"<b>문제의 that</b> = "+TY[d.t]+" ("+R[d.st][2]+")":"<b>4개는 "+TY[d.t]+"</b>, 정답 "+N[d.ok]+"번만 "+TY[d.u]+" 이에요.";
+h+="<div style='margin-top:6px'><b>🔎 보기 풀이</b></div>";
+d.o.forEach(function(x,k){h+='<div class="ex'+(k==d.ok?" k":"")+'">'+N[k]+" <b>"+TY[R[x][1]]+"</b> — "+R[x][2]+"</div>"});
+h+='<button class="go" onclick="next()">'+(s.i+1<s.q.length?"다음 문제 ▶":"결과 보기")+"</button></div>"}
+app.innerHTML=h}
+render();
+</script></body></html>
