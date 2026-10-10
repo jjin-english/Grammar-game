@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>다양한 쓰임의 that 연습</title>
+<style>
+:root{--bg:#fff;--fg:#1f2937;--card:#f3f4f6;--bd:#d1d5db;--ac:#4f46e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111827;--fg:#f3f4f6;--card:#1f2937;--bd:#374151;--ac:#818cf8}}
+:root[data-theme="dark"]{--bg:#111827;--fg:#f3f4f6;--card:#1f2937;--bd:#374151;--ac:#818cf8}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6}
+.w{max-width:640px;margin:0 auto;padding:12px}
+h1{font-size:20px;margin:4px 0 10px}
+.tabs{display:flex;gap:8px}.tabs button{flex:1;padding:10px;border:2px solid var(--bd);border-radius:10px;background:var(--card);color:var(--fg);font-size:15px;font-weight:700}
+.tabs button.on{border-color:var(--ac);background:var(--ac);color:#fff}
+details{margin:10px 0;background:var(--card);border-radius:10px;padding:8px 12px;font-size:14px}summary{font-weight:700}
+.bar{height:8px;background:var(--card);border-radius:4px;margin:10px 0}.bar i{display:block;height:100%;background:var(--ac);border-radius:4px}
+.q{background:var(--card);border-radius:12px;padding:14px;font-size:20px;line-height:1.8}
+.q u{font-weight:800;text-decoration-color:#a855f7;text-decoration-thickness:3px}
+.opts{display:grid;gap:8px;margin:12px 0}.opts button{padding:12px;text-align:left;font-size:16px;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--fg)}
+.opts button.ok{border-color:#22c55e;background:rgba(34,197,94,.2)}.opts button.no{border-color:#ef4444;background:rgba(239,68,68,.2)}
+.fb{border:2px solid var(--bd);border-radius:12px;padding:12px}
+.res{font-weight:800;font-size:18px}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.ch{display:inline-flex;flex-direction:column;align-items:center;padding:3px 8px;border-radius:8px;border:2px solid rgb(var(--c));background:rgba(var(--c),.18);font-size:16px}
+.ch i{font-style:normal;font-size:11px;font-weight:700;opacity:.9}.ch.in{border-style:dashed}
+.lg{font-size:12px;display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.lg .ch{font-size:12px;padding:1px 6px;flex-direction:row}
+.ex{background:var(--bg);border-radius:8px;padding:8px 10px;font-size:15px}
+.go{width:100%;margin-top:10px;padding:12px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-size:16px;font-weight:700}
+.sc{text-align:center;font-size:22px;font-weight:800;margin:20px 0}
+</style></head><body><div class="w">
+<h1>🎯 다양한 쓰임의 that</h1>
+<div class="tabs"><button id="t0" onclick="tab(0)">1️⃣ 쉬운 연습 12문제</button><button id="t1" onclick="tab(1)">2️⃣ 프린트 12문제</button></div>
+<details><summary>💡 that 구분 5가지 (눌러서 보기)</summary>
+ⓐ <b>that+명사</b> = 저~ / that만 있으면 = 저것 (지시)<br>
+ⓑ 앞에 명사 없음 + 뒤가 <b>완전</b> = ~라는 것 (명사절)<br>
+ⓒ fact·news·idea 뒤 + 뒤가 <b>완전</b> = 동격<br>
+ⓓ 앞에 명사 + 뒤가 <b>불완전</b>(주어/목적어 없음) = 관계대명사<br>
+ⓔ day·reason·place 뒤 + 뒤가 <b>완전</b> = 관계부사</details>
+<div id="app"></div></div>
+<script>
+var TY={a:"ⓐ 지시대명사/지시형용사",b:"ⓑ 명사절 접속사",c:"ⓒ 동격의 접속사",d:"ⓓ 관계대명사",e:"ⓔ 관계부사"};
+var RL={S:["주어","누가·무엇이","59,130,246"],V:["동사","한다·이다","239,68,68"],O:["목적어","~을/를","34,197,94"],C:["보어","설명해 주는 말","249,115,22"],M:["꾸밈말","언제·어디서","148,163,184"],T:["that","핵심!","168,85,247"],A:["도우미","물음표 문장 도우미","20,184,166"]};
+// 형식: 덩어리/역할 (앞에 _ = that 뒤 작은 문장 안), =뒤는 설명표시
+var A=[
+["I/S|remember/V|the day/O|that/T=관계부사|we/_S|met/_V|at the park./_M","e","day(날) 바로 뒤에 that이 있어요. that 뒤 'we met at the park'는 빠진 말이 없는 완전한 문장이에요. 때·장소·이유 말 뒤에 완전한 문장이 오면 관계부사 that! '우리가 만난 그날'이라고 읽어요."],
+["I/S|know/V|that/T=~라는 것|you/_S|like/_V|dogs./_O","b","that 앞에 꾸며 줄 명사가 없어요. know(알다) 뒤에서 'you like dogs(너는 개를 좋아해)'를 한 덩어리로 묶어 '~라는 것'이라고 해요. 그래서 명사절 접속사! 이 덩어리가 know의 목적어예요."],
+["Look at/V|that/T=저 ~|big dog./O","a","that 바로 뒤에 big dog(큰 개)처럼 명사가 따라와요. 'that+명사 = 저 ~'. 그래서 '저 큰 개'! 이름은 지시형용사예요."],
+["She/S|likes/V|the news/O|that/T=동격|we/_S|won/_V|the game./_O","c","the news(소식) 뒤 that 문장은 완전해요. 그리고 '어떤 소식?' → '우리가 이겼다는 소식'처럼 news의 내용을 설명해 줘요. 이럴 땐 동격의 접속사! (fact, news, idea 뒤에 자주 나와요)"],
+["This/S|is/V|the pen/C|that/T=관계대명사|I/_S|bought/_V|yesterday./_M","d","that 뒤 'I bought yesterday'에는 bought(샀다)의 목적어(~을)가 없어요. 그 빠진 자리가 the pen이에요. 빠진 말이 있으면 관계대명사! '내가 어제 산 펜'"],
+["Do/A|you/S|know/V|the reason/O|that/T=관계부사|he/_S|was/_V|late?/_C","e","the reason(이유) 뒤 that이에요. 뒤 문장 'he was late'는 빠진 말이 없는 완전한 문장이죠. 이유 + 완전한 문장 = 관계부사 that! '그가 늦은 이유'"],
+["I/S|have/V|a friend/O|that/T=관계대명사|likes/_V|music./_O","d","that 뒤 'likes music'에는 주어(누가)가 없어요. 누가 음악을 좋아해? a friend! that이 주어 자리를 대신해요. 빠진 말이 있으니 관계대명사! '음악을 좋아하는 친구'"],
+["I/S|didn't know/V|that/T=~라는 것|the store/_S|was closed./_V","b","that 앞에 명사가 없고, 뒤 'the store was closed'는 완전해요. '가게가 문을 닫았다는 것'을 한 덩어리로 묶었어요. 명사절 접속사! (know의 목적어)"],
+["That/T=저 ~|blue bag/S|on the desk/M|is/V|mine./C","a","that 바로 뒤에 blue bag(파란 가방)처럼 명사가 따라와요. 'that+명사 = 저 ~'. '저 파란 가방'! 지시형용사예요."],
+["The movie/S|that/T=관계대명사|we/_S|saw/_V|last week/_M|was/V|fun./C","d","the movie 뒤 that이에요. that 뒤 'we saw last week'에 saw(봤다)의 목적어가 없어요. 그 자리가 the movie! 빠진 말이 있으니 관계대명사. '우리가 지난주에 본 영화'"],
+["That/T=~라는 것은|he/_S|can swim/_V|well/_M|surprised/V|me./O","b","문장 맨 앞 That은 '~라는 것은'이에요. 'he can swim well(그는 수영을 잘해)'을 묶어 문장의 주어로 써요. 명사 없이 시작하고 뒤가 완전하니까 명사절 접속사!"],
+["What/C|is/V|that/T=저것|on the table?/M","a","'What is that?'의 that은 '저것'이에요. that 뒤에 명사가 안 따라와요 (on the table은 '어디에'). that = 저것/그것이면 지시대명사예요."]];
+var B=[
+["I/S|still/M|remember/V|the day/O|that/T=관계부사|we/_S|first/_M|met/_V|at the library./_M","e","day(때) + that + 완전한 문장 → 관계부사"],
+["The scientist/S|proved/V|that/T=~라는 것|light/_S|travels/_V|faster than sound./_M","b","앞에 꾸밀 명사 없음 + 완전한 문장 → 명사절 (proved의 목적어)"],
+["Look at/V|that/T=저 ~|tall building/O|over there./M","a","that + 명사(building) → '저 ~' 지시형용사"],
+["She/S|accepts/V|the fact/O|that/T=동격|everyone/_S|makes/_V|mistakes/_O|sometimes./_M","c","fact(사실) 뒤 that + 완전한 문장 → fact의 내용을 설명 = 동격"],
+["This/S|is/V|the book/C|that/T=목적격 관계대명사|I/_S|borrowed/_V|from the school library/_M|yesterday./_M","d","borrowed의 목적어가 없음(불완전) → 관계대명사"],
+["Do/A|you/S|know/V|the exact reason/O|that/T=관계부사|he/_S|was/_V|absent/_C|from class/_M|yesterday?/_M","e","reason(이유) + 완전한 문장 → 관계부사"],
+["The police/S|are investigating/V|the evidence/O|that/T=주어 역할|was found/_V|at the scene./_M","d","that 뒤에 주어가 없음(불완전) → 주격 관계대명사"],
+["I/S|didn't realize/V|that/T=~라는 것|the final exam schedule/_S|had already been changed./_V","b","명사 없이 that + 완전한 문장 → 명사절 (realize의 목적어)"],
+["That/T=저 ~|red backpack/S|on the chair/M|belongs to/V|the new transfer student./O","a","that + 명사(backpack) → '저 ~' 지시형용사"],
+["The movie/S|that/T=목적격 관계대명사|we/_S|watched/_V|together/_M|last weekend/_M|was/V|really/M|impressive./C","d","watched의 목적어가 없음(불완전) → 관계대명사"],
+["That/T=~라는 것은 (주어 덩어리)|she/_S|solved/_V|the complex physics problem/_O|by herself/_M|surprised/V|everyone./O","b","문장 맨 앞 that + 완전한 문장 → 명사절 (주어 역할)"],
+["Who/C|is/V|that/T=저 사람 (주어)|standing by the entrance?/M","a","that = 저 사람 (뒤에 명사 없음) → 지시대명사"]];
+var $=function(i){return document.getElementById(i)},k=0,S=[mk(),mk()];
+function mk(){return{q:[0,1,2,3,4,5,6,7,8,9,10,11],i:0,sc:0,w:[],a:null}}
+function P(c){var n=c.lastIndexOf("/"),r=c.slice(n+1).split("="),k=r[0],inn=k[0]=="_";if(inn)k=k.slice(1);return{t:c.slice(0,n),k:k,in:inn,l:r[1]||(inn?"↳":"")+RL[k][0]}}
+function plain(s){return s.split("|").map(function(c){var p=P(c);return p.k=="T"?"<u>"+p.t+"</u>":p.t}).join(" ")}
+function parts(s){return '<div class="parts">'+s.split("|").map(function(c){var p=P(c);return '<span class="ch'+(p.in?" in":"")+'" style="--c:'+RL[p.k][2]+'"><b style="font-weight:600">'+p.t+"</b><i>"+(p.in&&p.k!="T"?"↳ ":"")+p.l.replace("↳","")+"</i></span>"}).join("")+"</div>"}
+function lg(){return '<div class="lg">'+Object.keys(RL).map(function(x){return '<span class="ch" style="--c:'+RL[x][2]+'"><i>'+RL[x][0]+" = "+RL[x][1]+"</i></span>"}).join("")+'</div><div class="lg">↳ 점선 = that 뒤 작은 문장 안에서의 역할</div>'}
+function tab(n){k=n;$("t0").className=n?"":"on";$("t1").className=n?"on":"";render()}
+function pick(c){var s=S[k],D=k?B:A,qi=s.q[s.i];if(s.a)return;s.a=c;if(c==D[qi][1])s.sc++;else s.w.push(qi);render()}
+function next(){var s=S[k];s.i++;s.a=null;render();scrollTo(0,0)}
+function retry(f){var s=S[k];s.q=f?s.w.slice():[0,1,2,3,4,5,6,7,8,9,10,11];s.w=[];s.i=0;s.sc=0;s.a=null;render()}
+function render(){var s=S[k],D=k?B:A,app=$("app");
+if(s.i>=s.q.length){var n=s.q.length;app.innerHTML='<div class="sc">'+(s.sc==n?"🎉 ":"")+n+"문제 중 "+s.sc+"개 정답!</div>"+(s.w.length?'<button class="go" onclick="retry(1)">❌ 틀린 문제 '+s.w.length+'개 다시 풀기</button>':"")+'<button class="go" style="background:#6b7280" onclick="retry(0)">처음부터 다시</button>';return}
+var qi=s.q[s.i],d=D[qi],h='<div class="bar"><i style="width:'+(s.i/s.q.length*100)+'%"></i></div><b>'+(k?"프린트 ":"")+(qi+1)+"번</b> ("+(s.i+1)+"/"+s.q.length+')<div class="q">'+plain(d[0])+'</div><div class="opts">';
+Object.keys(TY).forEach(function(x){var c="";if(s.a){if(x==d[1])c="ok";else if(x==s.a)c="no"}h+='<button class="'+c+'" onclick="pick(\''+x+'\')">'+TY[x]+"</button>"});
+h+="</div>";
+if(s.a){var ok=s.a==d[1];h+='<div class="fb"><div class="res">'+(ok?"⭕ 정답!":"❌ 정답은 "+TY[d[1]])+'</div><b>🔎 문장 성분</b>'+parts(d[0])+lg()+'<div class="ex" style="margin-top:8px">'+(k?"👉 ":"🧒 ")+d[2]+'</div><button class="go" onclick="next()">'+(s.i+1<s.q.length?"다음 문제 ▶":"결과 보기")+"</button></div>"}
+app.innerHTML=h}
+tab(0);
+</script></body></html>
