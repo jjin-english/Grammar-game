@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>재귀대명사 -self 연습</title>
+<style>
+:root{--bg:#f3f8ff;--card:#fff;--ink:#1f2a44;--sub:#5b6785;--line:#d3def2;--em:#e8512f;--emb:#ffe9e2;--rf:#2563d6;--rfb:#e3edff;--hl:#ffe36e;--ok:#14804a;--okb:#dcf4e6;--no:#c42a45;--nob:#ffe3e7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a2b;--card:#1c2740;--ink:#eaf0ff;--sub:#a3b0cf;--line:#34425f;--em:#ff8a6b;--emb:#43261f;--rf:#8db3ff;--rfb:#1f3159;--hl:#7a6a10;--ok:#6fe0a2;--okb:#16382a;--no:#ff8da0;--nob:#46212a}}
+:root[data-theme="dark"]{--bg:#121a2b;--card:#1c2740;--ink:#eaf0ff;--sub:#a3b0cf;--line:#34425f;--em:#ff8a6b;--emb:#43261f;--rf:#8db3ff;--rfb:#1f3159;--hl:#7a6a10;--ok:#6fe0a2;--okb:#16382a;--no:#ff8da0;--nob:#46212a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif}
+#app{max-width:640px;margin:0 auto;padding:14px 14px 40px}
+h1{font-size:25px;margin:8px 0 4px}h2{font-size:19px;margin:0 0 8px}
+.sub{color:var(--sub);margin:0 0 14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px;margin:0 0 12px}
+.card.em{border-color:var(--em)}.card.rf{border-color:var(--rf)}
+.badge{display:inline-block;color:#fff;font-weight:700;border-radius:8px;padding:1px 10px;margin-bottom:6px}
+.em .badge{background:var(--em)}.rf .badge{background:var(--rf)}
+.h{background:var(--hl);border-radius:4px;padding:0 3px;font-weight:800}
+.menu{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 10px;cursor:pointer}
+.menu b{display:block;font-size:17px}.menu span{color:var(--sub);font-size:14px}
+.menu:active,.o:active,.nx:active{transform:scale(.98)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--sub);font-size:14px}
+.bk{font:inherit;background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:4px 10px}
+.bar{height:8px;background:var(--line);border-radius:6px;margin:8px 0 14px;overflow:hidden}.bar i{display:block;height:100%;background:var(--rf)}
+.tag{background:var(--rfb);color:var(--rf);font-weight:700;border-radius:8px;padding:3px 10px;margin-bottom:8px;font-size:14px}
+.ins{color:var(--sub);margin:0 0 6px;font-size:15px}
+.sen{font-size:20px;font-weight:600;margin:4px 0}.ko{color:var(--sub);margin:0 0 10px}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid var(--rf);text-align:center;color:var(--rf);font-weight:800}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.o{font:inherit;font-weight:700;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:9px 13px;cursor:pointer;min-height:44px}
+.o:disabled{opacity:.55}
+input[type=text]{width:100%;box-sizing:border-box;font:inherit;font-size:18px;padding:10px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);margin:6px 0}
+.ans{min-height:48px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.go{font:inherit;font-weight:700;color:#fff;background:var(--rf);border:0;border-radius:12px;padding:11px 20px;margin:6px 6px 0 0;cursor:pointer;min-height:44px}
+.go.g{background:var(--sub)}
+.nx{font:inherit;font-weight:700;color:#fff;background:var(--rf);border:0;border-radius:12px;padding:11px 24px;margin-top:10px;cursor:pointer;min-height:44px}
+.fb{border-radius:12px;padding:10px 12px;margin-top:10px}.fb.ok{background:var(--okb);color:var(--ok)}.fb.no{background:var(--nob);color:var(--no)}
+.fb div{color:var(--ink)}
+table{border-collapse:collapse;width:100%;text-align:center}td,th{border:1px solid var(--line);padding:5px}th{background:var(--rfb)}
+.big{font-size:44px;text-align:center}.sc{font-size:26px;font-weight:800;text-align:center}
+:focus-visible{outline:3px solid var(--rf);outline-offset:2px}
+</style></head><body><div id="app"></div>
+<script>
+const R=['myself','yourself','himself','herself','itself','ourselves','themselves'];
+const $=s=>document.querySelector(s);
+const hl=s=>s.replace(/\[\[(.+?)\]\]/g,'<b class="h">$1</b>').replace(/\{\{(.+?)\}\}/g,'<u>$1</u>');
+const norm=s=>s.toLowerCase().replace(/[.,!?"]/g,'').replace(/\s+/g,' ').trim();
+const view=h=>{$('#app').innerHTML=h;window.scrollTo(0,0)};
+const EM=[["She [[herself]] cooked the meal.","그녀가 [[직접]] 식사를 준비했다."],["I repaired the bicycle [[myself]].","내가 [[직접]] 자전거를 수리했다."],["Did you see the bear [[itself]] or its tracks in the snow?","너는 곰 [[자체]]를 봤니, 아니면 눈 속의 발자국을 봤니?"]];
+const RF=[["She cut [[herself]] while cooking.","그녀는 요리하다가 [[스스로]] 손을 베었다."],["The man talked about [[himself]].","그 남자는 [[자신]]에 관하여 이야기했다."],["I looked at [[myself]] in the mirror.","나는 거울 속 [[나 자신]]을 쳐다보았다."]];
+const SEC={
+em:{t:'강조 용법 연습',q:[
+{t:'pick',s:'Tom ___ fixed the toy.',k:'톰이 직접 장난감을 고쳤다.',a:'himself',e:'Tom은 남자 한 명 → himself. "직접"이라는 뜻으로 힘을 주는 강조 용법이에요.'},
+{t:'pick',s:'We painted the wall ___.',k:'우리가 직접 벽을 칠했다.',a:'ourselves',e:'We(우리)의 -self는 ourselves. 문장 끝에 와서 "직접"을 강조해요.'},
+{t:'pick',s:'Mina ___ drew this picture.',k:'미나가 직접 이 그림을 그렸다.',a:'herself',e:'Mina는 여자 한 명 → herself. 주어 바로 뒤에서 강조해요.'},
+{t:'pick',s:'You did your homework ___.',k:'너는 숙제를 직접 했다.',a:'yourself',e:'You(너, 한 명)의 -self는 yourself.'},
+{t:'pick',s:'The cat ___ opened the door.',k:'그 고양이가 스스로 문을 열었다.',a:'itself',e:'동물·사물 하나는 itself. 빼도 문장이 되니까 강조 용법!'}]},
+rf:{t:'재귀 용법 연습',q:[
+{t:'pick',s:'I looked at ___ in the mirror.',k:'나는 거울 속 나 자신을 보았다.',a:'myself',e:'보는 사람(I)과 보이는 사람이 같아요. 그래서 me가 아니라 myself! 빼면 안 돼요.'},
+{t:'pick',s:'Tom taught ___ English.',k:'톰은 영어를 독학했다(스스로 가르쳤다).',a:'himself',e:'가르친 사람 = 배운 사람(Tom). 같은 사람이라 himself.'},
+{t:'pick',s:'She is proud of ___.',k:'그녀는 자기 자신이 자랑스럽다.',a:'herself',e:'proud of(~이 자랑스러운)의 대상이 She 자신 → herself.'},
+{t:'pick',s:'The cat washed ___.',k:'그 고양이는 (자기) 몸을 씻었다.',a:'itself',e:'씻기는 것도 씻는 것도 고양이! 같으니까 itself.'},
+{t:'pick',s:'They enjoyed ___ at the party.',k:'그들은 파티에서 즐거운 시간을 보냈다.',a:'themselves',e:'enjoy oneself = 즐거운 시간을 보내다. They → themselves.'}]},
+sc:{t:'학교문제 실전',q:[
+{p:'A-1 밑줄 친 부분을 어법상 바르게 고쳐 쓰시오.',t:'fix',s:'They {{them}} organized the event.',k:'그들이 직접 행사를 준비했다.',a:['themselves'],e:'"직접"을 강조하는 말이라 them이 아니라 themselves (강조 용법).'},
+{p:'A-2 밑줄 친 부분을 어법상 바르게 고쳐 쓰시오.',t:'fix',s:'Group projects encourage collaboration between students {{them}}.',k:'모둠 과제는 학생들 자신들 간의 협력을 장려한다.',a:['themselves'],e:'students를 강조하는 말 바로 뒤 → themselves.'},
+{p:'A-3 밑줄 친 부분을 어법상 바르게 고쳐 쓰시오.',t:'fix',s:'I {{have been learned}} to play the guitar for a year now.',k:'나는 1년째 기타 치는 법을 배우고 있다.',a:['have been learning'],e:'현재완료 진행형은 have been + -ing. learned가 아니라 learning!'},
+{p:'A-4 밑줄 친 부분을 어법상 바르게 고쳐 쓰시오.',t:'fix',s:'The chef {{have been prepared}} tonight\'s special since morning.',k:'그 요리사는 아침부터 오늘 저녁 특선 요리를 준비해 오고 있다.',a:['has been preparing'],e:'The chef는 한 명 → has. 그리고 been 뒤에는 -ing → preparing.'},
+{p:'B-1 우리말과 일치하도록 알맞게 배열하시오.',t:'order',k:'학생들 자신들 간의 의사소통이 그룹 활동에 필수적이다.',tiles:['between','communication','essential','is','students','themselves'],a:'communication between students themselves is essential',post:'for group work.',e:'between students themselves(학생들 자신들 간의)가 communication 뒤에서 꾸며줘요.'},
+{p:'B-2 우리말과 일치하도록 알맞게 배열하시오.',t:'order',k:'그녀는 여가 시간에 소설을 써오고 있다.',tiles:['a','been','has','novel','she','writing'],a:'she has been writing a novel',post:'in her spare time.',e:'she(주어) + has been + writing(-ing) + a novel.'},
+{p:'B-3 우리말과 일치하도록 알맞게 배열하시오.',t:'order',k:'그 운동선수들은 시합을 위해 열심히 훈련해오고 있는 중이다.',tiles:['been','the competition','for','hard','have','training'],a:'have been training hard for the competition',pre:'The athletes',e:'The athletes(복수) → have been training. hard는 training 뒤, for the competition은 맨 끝.'},
+{p:'C-1 괄호 안의 단어로 영작하시오. (필요 시 형태 변경)',t:'write',k:'그 정비사는 오후 내내 자동차 엔진을 수리하고 있는 중이다.',w:'all afternoon / the mechanic / repair / the car engine',a:['the mechanic has been repairing the car engine all afternoon','all afternoon the mechanic has been repairing the car engine'],e:'the mechanic(한 명) → has been repairing. all afternoon은 문장 끝.'},
+{p:'C-2 괄호 안의 단어로 영작하시오. (필요 시 형태 변경)',t:'write',k:'학생들은 몇 주 동안 발표를 준비해 오고 있는 중이다.',w:'prepare / their presentation / for weeks / the students',a:['the students have been preparing their presentation for weeks','for weeks the students have been preparing their presentation'],e:'the students(복수) → have been preparing. for weeks = 몇 주 동안.'},
+{p:'C-3 괄호 안의 단어로 영작하시오. (필요 시 형태 변경)',t:'write',k:'그녀가 교장 선생님 본인에게 직접 소포를 전달했다.',w:'the principal / the package / deliver / him / she',a:['she delivered the package to the principal himself'],e:'"교장 선생님 본인에게" → the principal himself. him을 himself로 바꾸는 강조 용법!'}]}
+};
+const AP=[["She [[herself]] cooked the meal.","그녀가 직접 식사를 준비했다.","em"],["She cut [[herself]] while cooking.","그녀는 요리하다가 손을 베었다.","rf"],["I repaired the bicycle [[myself]].","내가 직접 자전거를 수리했다.","em"],["The man talked about [[himself]].","그 남자는 자신에 관하여 이야기했다.","rf"],["Did you see the bear [[itself]] or its tracks?","너는 곰 자체를 봤니, 아니면 발자국을 봤니?","em"],["I saw [[myself]] in the window.","나는 창문에 비친 나를 보았다.","rf"],["The teacher [[himself]] made the test.","선생님이 직접 시험지를 만드셨다.","em"],["Be careful, or you will hurt [[yourself]].","조심해, 안 그러면 다칠 거야.","rf"],["We cleaned the park [[ourselves]].","우리가 직접 공원을 청소했다.","em"],["The children enjoyed [[themselves]] at the zoo.","아이들은 동물원에서 즐거운 시간을 보냈다.","rf"],["The singer [[herself]] wrote this song.","그 가수가 직접 이 노래를 썼다.","em"],["The cat is washing [[itself]].","그 고양이는 (자기) 몸을 씻고 있다.","rf"],["You must finish the work [[yourself]].","너는 그 일을 직접 끝내야 한다.","em"],["We taught [[ourselves]] to swim.","우리는 수영을 독학했다.","rf"],["The students [[themselves]] planned the party.","학생들이 직접 파티를 계획했다.","em"],["He blamed [[himself]] for the mistake.","그는 그 실수로 자신을 탓했다.","rf"],["I met the mayor [[himself]] yesterday.","나는 어제 시장님 본인을 만났다.","em"],["She introduced [[herself]] to the class.","그녀는 반 친구들에게 자기소개를 했다.","rf"],["The movie [[itself]] was boring, but the music was great.","영화 자체는 지루했지만 음악은 훌륭했다.","em"],["They are proud of [[themselves]].","그들은 자기 자신들이 자랑스럽다.","rf"]]
+.map(([s,k,a])=>({t:'two',s,k,a,e:a=='em'?'빼도 문장이 돼요 → 강조 용법 ("직접, 스스로, 자체")':'빼면 문장이 이상해져요 (주어=목적어) → 재귀 용법'}));
+SEC.ap={t:'응용 20문제',q:AP,shuf:1};
+let cur=[],i=0,wrong=[],score=0,locked=false,title='',pick=[];
+function menu(){view(`<h1>🪞 재귀대명사 -self</h1><p class="sub">myself, yourself, himself … 쉽게 배우고 연습해요!</p>
+<button class="menu" onclick="learn()"><b>1. 쉬운 설명 보기</b><span>강조 용법 · 재귀 용법 · 예문 3개씩</span></button>
+<button class="menu" onclick="go('em')"><b>2. 강조 용법 연습</b><span>"직접, 스스로" 5문제</span></button>
+<button class="menu" onclick="go('rf')"><b>3. 재귀 용법 연습</b><span>"자신을" 5문제</span></button>
+<button class="menu" onclick="go('sc')"><b>4. 학교문제 실전</b><span>학교 워크시트 A · B · C 10문제</span></button>
+<button class="menu" onclick="go('ap')"><b>5. 용법 구분 응용 20문제</b><span>강조일까, 재귀일까?</span></button>`)}
+function ex(l){return l.map(([e,k])=>`<p style="margin:6px 0"><span style="font-size:18px;font-weight:600">${hl(e)}</span><br><span class="sub" style="margin:0">${hl(k)}</span></p>`).join('')}
+function learn(){view(`<div class="top"><button class="bk" onclick="menu()">← 메뉴</button></div><h1>쉬운 설명</h1>
+<div class="card"><h2>재귀대명사는 -self / -selves 로 끝나요</h2><table><tr><th>I</th><th>you</th><th>he</th><th>she</th><th>it</th><th>we</th><th>they</th></tr><tr><td>myself</td><td>yourself</td><td>himself</td><td>herself</td><td>itself</td><td>ourselves</td><td>themselves</td></tr></table><p class="sub" style="margin:8px 0 0">나 → myself, 우리 → ourselves처럼 "자기 자신"을 가리켜요. (you가 여러 명이면 yourselves)</p></div>
+<div class="card em"><span class="badge">강조 용법</span><h2>"내가 직접!" 힘주어 말해요</h2><p>-self를 <b>빼도 문장이 돼요</b>. 강조하는 말 <b>바로 뒤</b>나 <b>문장 끝</b>에 오고, "직접, 스스로, 자체"라고 해석해요.</p>${ex(EM)}</div>
+<div class="card rf"><span class="badge">재귀 용법</span><h2>"나 자신을" 행동이 나에게 돌아와요</h2><p>하는 사람(주어)과 당하는 사람(목적어)이 <b>같은 사람</b>일 때 써요. -self를 <b>빼면 안 돼요!</b> "자신을, 스스로"라고 해석해요.</p>${ex(RF)}</div>
+<div class="card"><h2>💡 구분하는 비법</h2><p style="margin:0"><b>-self를 빼 보세요!</b><br>• 빼도 말이 된다 → <b style="color:var(--em)">강조 용법</b><br>• 빼면 이상하다 → <b style="color:var(--rf)">재귀 용법</b><br>She cut. ❌ (뭘 베었지?) → She cut herself. ⭕</p></div>
+<button class="go" onclick="go('em')">연습하러 가기</button>`)}
+function go(k){const s=SEC[k];let q=s.q.slice();if(s.shuf)q.sort(()=>Math.random()-.5);start(q,s.t)}
+function start(q,t){cur=q;i=0;wrong=[];score=0;title=t;show()}
+const sen=s=>hl(s).replace('___','<span class="blank" id="bl">_____</span>');
+function show(){
+if(i>=cur.length)return end();
+const q=cur[i];locked=false;pick=[];let b='';
+if(q.p)b+=`<div class="tag">${q.p}</div>`;
+if(q.t=='pick')b+=`<p class="ins">빈칸에 알맞은 말을 고르세요.</p><div class="sen">${sen(q.s)}</div><div class="ko">${q.k}</div><div class="opts">`+R.map(r=>`<button class="o" onclick="ans('${r}')">${r}</button>`).join('')+'</div>';
+if(q.t=='two')b+=`<p class="ins">노란색 재귀대명사는 어떤 용법일까요?</p><div class="sen">${hl(q.s)}</div><div class="opts"><button class="o" onclick="ans('em')">강조 용법 (직접)</button><button class="o" onclick="ans('rf')">재귀 용법 (자신을)</button></div>`;
+if(q.t=='fix')b+=`<div class="sen">${hl(q.s)}</div><div class="ko">${q.k}</div>${inp('고쳐 쓴 말')}`;
+if(q.t=='write')b+=`<div class="ko" style="font-size:18px;color:var(--ink)">${q.k}</div><p class="ins">( ${q.w} )</p>${inp('영어 문장을 써 보세요')}`;
+if(q.t=='order')b+=`<div class="ko" style="font-size:18px;color:var(--ink)">${q.k}</div><p class="ins">단어를 눌러 순서대로 놓으세요.</p><div class="sen" style="font-size:18px">${q.pre||''}</div><div class="ans" id="ans"></div><div class="sen" style="font-size:18px">${q.post||''}</div><div class="opts" id="tl"></div><button class="go" onclick="sub()">확인</button><button class="go g" onclick="pick=[];ord()">지우기</button>`;
+view(`<div class="top"><button class="bk" onclick="menu()">← 메뉴</button><span>${title} ${i+1}/${cur.length}</span></div><div class="bar"><i style="width:${i/cur.length*100}%"></i></div><div class="card">${b}<div id="fb"></div></div>`);
+if(q.t=='order')ord();
+const f=$('#in');if(f)f.focus()}
+const inp=p=>`<input type="text" id="in" placeholder="${p}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key=='Enter')sub()"><button class="go" onclick="sub()">확인</button>`;
+function ord(){const q=cur[i];$('#ans').innerHTML=pick.map(x=>`<button class="o" onclick="pick.splice(pick.indexOf(${x}),1);ord()">${q.tiles[x]}</button>`).join('');$('#tl').innerHTML=q.tiles.map((t,x)=>`<button class="o" ${pick.includes(x)?'disabled':''} onclick="pick.push(${x});ord()">${t}</button>`).join('')}
+function sub(){const q=cur[i];if(locked)return;let v;if(q.t=='order'){if(!pick.length)return;v=pick.map(x=>q.tiles[x]).join(' ')}else{v=$('#in').value;if(!v.trim())return}ans(v)}
+function ans(v){
+if(locked)return;locked=true;const q=cur[i];let ok,cor;
+if(q.t=='pick'||q.t=='two'){ok=v==q.a;cor=q.t=='two'?(q.a=='em'?'강조 용법':'재귀 용법'):q.a}
+else if(q.t=='order'){ok=norm(v)==norm(q.a);cor=(q.pre?q.pre+' ':'')+q.a+(q.post?' '+q.post:'')}
+else{ok=q.a.some(a=>norm(a)==norm(v));cor=q.a[0]}
+if(ok)score++;else wrong.push(q);
+document.querySelectorAll('.o,.go,input').forEach(e=>e.disabled=true);
+const bl=$('#bl');if(bl)bl.textContent=q.a;
+$('#fb').innerHTML=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'⭕ 정답!':'❌ 다시 확인해요'}</b><div>정답: <b>${cor}</b>${q.t=='two'?'<br>'+q.k:''}<br>${q.e}</div></div><button class="nx" onclick="i++;show()">${i+1<cur.length?'다음 문제':'결과 보기'}</button>`;
+$('.nx').focus()}
+function end(){const p=Math.round(score/cur.length*100);
+view(`<div class="card"><div class="big">${p>=80?'🏆':p>=50?'👍':'💪'}</div><div class="sc">${score} / ${cur.length}</div><p class="sub" style="text-align:center">${p>=80?'훌륭해요!':p>=50?'좋아요! 틀린 문제를 다시 풀어 볼까요?':'설명을 다시 보고 도전해요!'}</p>
+${wrong.length?`<button class="go" onclick="start(wrong.slice(),'틀린 문제 다시')">틀린 문제만 다시 (${wrong.length})</button>`:''}
+<button class="go g" onclick="start(cur===wrong?wrong:cur.slice(),title)">처음부터</button><button class="go g" onclick="menu()">메뉴</button></div>`)}
+menu();
+</script></body></html>
