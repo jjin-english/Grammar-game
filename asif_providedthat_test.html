@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>as if · provided that 테스트</title>
+<style>
+:root{--ink:#1d2b4f;--mut:#667389;--red:#d62f3f;--hl:#ffe45e;--green:#1f9d63;--line:#d6e2ee}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;line-height:1.6;-webkit-text-size-adjust:100%;
+ background-color:#f2f7fb;
+ background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+ background-size:24px 24px}
+#app{max-width:620px;margin:0 auto;padding:16px 14px 48px;padding-bottom:calc(48px + env(safe-area-inset-bottom,0px))}
+.t1{--c:#2368b4;--l:#e6f0fb}.t2{--c:#1f8a5b;--l:#e4f5ec}.t3{--c:#c2610f;--l:#fdeedd}.t4{--c:#6b3fa0;--l:#f0e8f8}
+h1{font-size:26px;line-height:1.25;margin:6px 0 4px;letter-spacing:-.5px}
+h1 mark{background:linear-gradient(transparent 55%,var(--hl) 55%);color:inherit;padding:0 2px}
+.sub{color:var(--mut);margin:0 0 16px;font-size:15px}
+.card{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px;margin:12px 0;box-shadow:4px 4px 0 var(--ink)}
+.sec{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--ink);border-left:10px solid var(--c);border-radius:12px;padding:12px 14px;margin:12px 0;font:inherit;color:inherit;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.sec:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.sec b{font-size:18px;display:block}
+.sec span{color:var(--mut);font-size:14px}
+details{background:#fff;border:2px dashed var(--ink);border-radius:12px;padding:10px 14px;margin:12px 0}
+summary{font-weight:700;cursor:pointer;font-size:16px}
+.rule{margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--l);border-left:6px solid var(--c)}
+.rule b{display:block;margin-bottom:2px}
+.rule p{margin:2px 0;font-size:15px}
+.rule .eg{font-weight:600;font-size:15px;margin-top:4px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ghost{background:none;border:0;font:inherit;color:var(--mut);padding:8px 4px;cursor:pointer;font-size:15px}
+.sc{font-weight:700}
+.prog{height:10px;border:2px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden;margin-bottom:12px}
+.prog i{display:block;height:100%;background:var(--c);transition:width .3s}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{font-size:13px;padding:2px 10px;border-radius:99px;border:1.5px solid var(--ink);background:#fff}
+.chip.c2{background:var(--c);border-color:var(--c);color:#fff}
+.chip.c3{background:var(--hl)}
+.inst{color:var(--mut);font-size:14px;margin:0 0 6px}
+.q{font-size:20px;line-height:1.7;margin:6px 0 4px;font-weight:600}
+.q u{text-decoration:none;border-bottom:3px solid var(--red)}
+.ko{color:var(--mut);font-size:15px;margin:2px 0 10px}
+.hint{display:inline-block;background:var(--hl);border-radius:6px;padding:1px 8px;font-size:14px;margin-bottom:8px}
+.blank{display:inline-block;min-width:3.4em;text-align:center;border-bottom:3px solid var(--ink);color:var(--c);padding:0 4px}
+.blank.good{color:var(--green);background:var(--hl)}
+.blank.bad{color:var(--red);text-decoration:line-through}
+.ch{display:block;width:100%;text-align:left;padding:13px 14px;margin:8px 0;border:2px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-size:17px;color:inherit;cursor:pointer;min-height:50px}
+.ch.sel{background:var(--l);border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c)}
+.ch.good{background:#e4f6ec;border-color:var(--green)}
+.ch.bad{background:#fdebec;border-color:var(--red)}
+.ch[disabled]{cursor:default}
+input.ti{font:inherit;font-size:20px;font-weight:600;width:7.5em;border:0;border-bottom:3px solid var(--ink);background:transparent;color:var(--c);text-align:center;padding:0 2px;border-radius:0;outline:none}
+input.ti:focus{border-bottom-color:var(--c);background:var(--l)}
+input.ti.good{color:var(--green);background:var(--hl)}
+input.ti.bad{color:var(--red);text-decoration:line-through}
+#ans{min-height:64px;border:2px dashed var(--ink);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;background:#fff;margin:8px 0}
+#bank{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.tile{font:inherit;font-size:17px;padding:8px 12px;border:2px solid var(--ink);border-radius:10px;background:#fff;color:inherit;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+#ans .tile{background:var(--l)}
+.tile.ghosted{opacity:.25;box-shadow:none;border-style:dashed}
+.ph{color:var(--mut);font-size:15px;padding:8px}
+.btn{display:block;width:100%;margin-top:14px;padding:14px;border:2px solid var(--ink);border-radius:12px;background:var(--c);color:#fff;font:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.btn[disabled]{background:#cfd8e3;color:#7b8794;box-shadow:none;cursor:default}
+.btn.alt{background:#fff;color:var(--ink)}
+.fb{margin-top:14px;border-radius:12px;padding:12px 14px;border:2px solid var(--ink);background:#fff}
+.fb.ok{border-color:var(--green)}
+.fb.ng{border-color:var(--red)}
+.fbh{font-weight:800;font-size:18px;margin-bottom:6px}
+.ok .fbh{color:var(--green)}.ng .fbh{color:var(--red)}
+.row{margin:4px 0;font-size:16px}
+.row b{display:inline-block;min-width:3.2em;color:var(--mut);font-size:14px;font-weight:700}
+.row .wrongtxt{color:var(--red);text-decoration:line-through}
+.row .righttxt{background:var(--hl);font-weight:700;padding:0 4px}
+.easy{margin-top:10px;background:#fff8d6;border-left:6px solid var(--red);border-radius:8px;padding:10px 12px}
+.easy .t{font-weight:800;margin-bottom:2px}
+.easy p{margin:3px 0;font-size:16px}
+.tip{margin-top:8px;font-size:14px;color:var(--mut)}
+.big{font-size:54px;font-weight:800;line-height:1.1;margin:4px 0}
+.center{text-align:center}
+.wl{margin:8px 0;padding:8px 10px;border-left:5px solid var(--red);background:#fff;border-radius:6px;font-size:15px}
+.wl small{color:var(--mut)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===== 쉬운 설명 카드 ===== */
+var RULES={
+asif_def:{t:"as if = 마치 ~인 것처럼",b:"진짜가 아닌 일을 ‘진짜인 것처럼’ 상상할 때 써요. 연극에서 왕 역할을 맡은 친구는 진짜 왕이 아니지만 왕처럼 말하죠? 그럴 때 as if를 써요.",e:"He talks as if he were a king. (그는 마치 왕인 것처럼 말해요.)"},
+asif_past:{t:"as if 뒤에는 동사를 한 칸 과거로!",b:"상상은 현실에서 한 걸음 멀리 있는 이야기라서, 동사도 한 걸음 뒤(과거)로 물러나요. know→knew, have→had, can→could, own→owned. 지금 이야기여도 과거형을 써요!",e:"She talks as if she knew the answer. (마치 답을 아는 것처럼)"},
+asif_were:{t:"as if 뒤 be동사는 모두 were!",b:"as if 뒤에 be동사가 오면 I, he, she, it 모두 were를 써요. am, is, are, was가 아니에요. ‘as if + 누구든 + were’ 하나로 외워요!",e:"I feel as if I were a bird. (마치 새인 것처럼)"},
+asif_pp:{t:"이미 지나간 일을 상상하면 had + p.p.",b:"끝난 일을 상상할 때는 시간을 한 번 더 뒤로 돌려서 ‘had + 과거분사’를 써요. happen→had happened, see→had seen, meet→had met.",e:"He acts as if nothing had happened. (마치 아무 일도 없었던 것처럼)"},
+asif_fact:{t:"as if 문장의 진짜 모습은 반대!",b:"as if 문장은 상상이라서 진짜 사실은 반대예요. were a king → 진짜는 왕이 아니에요. had seen → 진짜는 보지 못했어요.",e:"She talks as if she had seen it. (진짜는 못 봤어요.)"},
+asif_order:{t:"어순은 「as if + 주어 + 과거형」",b:"as if는 한 덩어리로 붙여 쓰고, 바로 뒤에 주어(he, she…)와 동사(were, knew…)를 이어요. 앞에는 ‘하는 행동’ 문장이 와요.",e:"She sings / as if / she / were / a star."},
+pt_def:{t:"provided that = 만약 ~라면 (조건)",b:"‘이 조건만 지키면 돼!’ 하고 약속이나 허락을 할 때 써요. if와 비슷한데 조건을 더 강조해요. 엄마가 ‘숙제를 다 하면 게임해도 돼’ 하는 것과 같아요.",e:"You can play games provided that you finish your homework."},
+pt_present:{t:"조건 부분은 현재 시제! will은 안 써요",b:"앞으로 일어날 일이어도 provided that 뒤에는 will을 쓰지 않고 현재형으로 써요. 주어가 he, she, it이면 동사 끝에 s를 붙이고, be동사는 is예요.",e:"I will help you provided that you tell the truth."},
+pt_that:{t:"that은 빼도 돼요",b:"provided that은 that을 생략하고 provided만 써도 돼요. 뒤는 똑같이 ‘주어 + 현재형 동사’예요. provided와 if를 같이 쓰지는 않아요.",e:"You can go provided you come back by nine."},
+pt_front:{t:"문장 맨 앞에 쓰면 쉼표(,)!",b:"provided that 조건 부분을 문장 맨 앞으로 보낼 수 있어요. 그럴 때는 조건 부분이 끝나는 곳에 쉼표(,)를 찍어요.",e:"Provided that the weather is nice, we will go out."},
+pt_order:{t:"어순은 「할 일 + provided that + 조건」",b:"먼저 ‘할 일(허락·약속)’ 문장을 쓰고, provided that 뒤에 ‘조건 문장’을 이어요. 조건 문장은 현재 시제로 써요.",e:"We can play / provided that / it is sunny."},
+pt_vs:{t:"비슷한 말과 구별하기",b:"although = ~이지만, because = ~때문에, but = 그러나. provided that만 ‘만약 ~라면(조건)’이에요. 해석해 보고 ‘조건’이면 provided that!",e:"I will go provided that you come with me."},
+mix_if:{t:"if와 as if는 달라요!",b:"if = 만약 ~라면 (일어날 수도 있는 일). as if = 마치 ~인 것처럼 (사실과 반대인 상상). as if는 두 단어가 한 덩어리예요.",e:"If it rains, I stay home. / He talks as if he were a king."},
+mix_which:{t:"as if vs provided that",b:"as if → ‘마치 ~처럼’ 상상. provided that → ‘만약 ~라면’ 조건. 해석해서 ‘마치’가 어울리면 as if, ‘만약’이 어울리면 provided that!",e:"as if he were rich (마치 부자인 것처럼) / provided that he is rich (그가 부자라면)"}
+};
+
+/* ===== 문제 만들기 도우미 ===== */
+function C(tag,q,ch,a,ko,ex,r,sh){return{t:"c",tag:tag,q:q,ch:ch,a:a,ko:ko,ex:ex,r:r,sh:sh!==false};}
+function T(tag,q,ans,hint,ko,ex,r){return{t:"t",tag:tag,q:q,ans:ans,hint:hint,ko:ko,ex:ex,r:r};}
+function O(ko,sent,dec,ex,r){return{t:"o",tag:"어순 배열",ko:ko,words:sent.split(" "),dec:dec,ex:ex,r:r};}
+var FIX="<br>밑줄 친 부분을 바르게 고치면?",OXQ="<br>이 문장은 맞을까요?",FACT="<br>진짜 사실은?",MEAN="<br>뜻은?";
+var OX=["O 맞아요","X 틀려요"];
+
+/* ===== as if (24) ===== */
+var ASIF=[
+C("고르기","My uncle talks as if he (____) a lot about space.",["know","knew"],1,"우리 삼촌은 마치 우주에 대해 많이 아는 것처럼 말한다.","「마치 ~인 것처럼」은 상상 이야기예요. 지금 이야기여도 know가 아니라 한 칸 뒤인 knew를 써요.","asif_past"),
+C("고르기","The little girl walks as if she (____) a ballerina.",["is","were"],1,"그 어린 소녀는 마치 발레리나인 것처럼 걷는다.","as if 뒤 be동사는 she여도 were예요. is는 진짜일 때 쓰는 말이라 상상에는 안 맞아요.","asif_were"),
+C("고르기","They shout as if we (____) hear them.",["can't","couldn't"],1,"그들은 마치 우리가 자기들 말을 들을 수 없는 것처럼 소리친다.","can의 과거형은 could예요. 그래서 can't가 아니라 couldn't!","asif_past"),
+C("고르기","I feel as if I (____) on a cloud.",["am","were"],1,"나는 마치 구름 위에 있는 것처럼 느낀다.","진짜 구름 위에 있는 건 아니죠? 상상이니까 I여도 were를 써요.","asif_were"),
+C("고르기","He looked at the cake as if he (____) one before.",["never saw","had never seen"],1,"그는 마치 그런 케이크를 전에 한 번도 본 적이 없는 것처럼 쳐다봤다.","‘전에’는 이미 지나간 일이에요. 그래서 had + p.p.인 had never seen!","asif_pp"),
+T("빈칸 쓰기","Mina acts as if she ____ (be) the boss.",["were"],"","미나는 마치 사장인 것처럼 행동한다.","as if 뒤 be동사는 주어가 she여도 were예요.","asif_were"),
+T("빈칸 쓰기","The cat sleeps as if it ____ (own) the sofa.",["owned"],"","고양이는 마치 소파를 가진 것처럼 잔다.","own을 한 칸 과거로 바꿔서 owned!","asif_past"),
+T("빈칸 쓰기","My brother talks as if he ____ (have) a lot of money.",["had"],"","내 동생은 마치 돈이 많은 것처럼 말한다.","have를 한 칸 과거로 바꿔서 had!","asif_past"),
+T("빈칸 쓰기","She smiled as if nothing ____ (happen).",["had happened"],"지나간 일 → had + p.p.","그녀는 마치 아무 일도 없었던 것처럼 웃었다.","이미 지나간 일(아무 일도 없었던)이라서 had happened!","asif_pp"),
+T("빈칸 쓰기","Tom ran as if he ____ (be) a racing car.",["were"],"","톰은 마치 경주용 자동차인 것처럼 달렸다.","상상 이야기니까 were!","asif_were"),
+T("빈칸 쓰기","She told the story as if she ____ (see) it herself.",["had seen"],"지나간 일 → had + p.p.","그녀는 마치 직접 본 것처럼 그 이야기를 했다.","직접 ‘봤던’ 일은 지나간 일이에요. see - saw - seen이라서 had seen!","asif_pp"),
+O("그는 마치 가수인 것처럼 노래한다.","He sings as if he were a singer.",["was","is"],"as if 바로 뒤에 「주어 + were」를 이어요.","asif_order"),
+O("그 소년은 마치 왕자인 것처럼 걷는다.","The boy walks as if he were a prince.",["was","are"],"as if he were 순서로 붙여요. was나 are는 쓰지 않아요.","asif_order"),
+O("그녀는 마치 영화 속에 있는 것처럼 느낀다.","She feels as if she were in a movie.",["is","was"],"as if she were 다음에 ‘in a movie(영화 속에)’를 이어요.","asif_order"),
+O("그들은 마치 서로 만난 적이 없는 것처럼 행동했다.","They acted as if they had never met.",["have","meet"],"만난 적이 ‘없던’ 건 지나간 일이라 had never met (had + never + p.p.).","asif_pp"),
+O("그녀는 마치 모든 비밀을 아는 것처럼 웃는다.","She smiles as if she knew all the secrets.",["know","is"],"know를 한 칸 과거로 바꾼 knew를 as if she 뒤에 써요.","asif_past"),
+C("오류 고치기","He talks as if he <u>is</u> a pilot."+FIX,["were","are","be","being"],0,"그는 마치 조종사인 것처럼 말한다.","as if 뒤 be동사는 모두 were로 바꿔요.","asif_were"),
+C("오류 고치기","She behaves as if she <u>know</u> everything."+FIX,["knew","knows","known","knowing"],0,"그녀는 마치 모든 걸 아는 것처럼 행동한다.","한 칸 과거로 바꿔서 knew!","asif_past"),
+C("오류 고치기","Dad drives as if he <u>has</u> a sports car."+FIX,["had","have","is having","will have"],0,"아빠는 마치 스포츠카를 가진 것처럼 운전한다.","has를 한 칸 과거로 바꿔서 had!","asif_past"),
+C("O/X","She looks as if she are a model."+OXQ,OX,1,"그녀는 마치 모델인 것처럼 보인다.","are가 아니라 were! as if 뒤 be동사는 were로 통일이에요.","asif_were",false),
+C("O/X","My sister acts as if she were ten years old."+OXQ,OX,0,"내 여동생은 마치 열 살인 것처럼 행동한다.","as if + she + were. 아주 잘 만든 문장이에요!","asif_were",false),
+C("사실 찾기","Jisu dances as if she were a star."+FACT,["지수는 스타다","지수는 스타가 아니다"],1,"지수는 마치 스타인 것처럼 춤춘다.","as if는 사실과 반대예요. ‘스타인 것처럼’이니까 진짜는 스타가 아니에요.","asif_fact",false),
+C("사실 찾기","The boy acted as if he had finished the homework."+FACT,["숙제를 끝냈다","숙제를 끝내지 않았다"],1,"그 소년은 마치 숙제를 끝낸 것처럼 행동했다.","had finished(끝냈던 것처럼) → 진짜는 끝내지 않았어요.","asif_fact",false),
+C("뜻 고르기","He runs as if a dog were chasing him."+MEAN,["개가 쫓아와서 달린다","마치 개가 쫓아오는 것처럼 달린다","개를 쫓아서 달린다"],1,"그는 마치 개가 자기를 쫓고 있는 것처럼 달린다.","as if = 마치 ~인 것처럼. 진짜 개는 없고 상상이에요.","asif_def")
+];
+
+/* ===== provided that (24) ===== */
+var PT=[
+C("고르기","You can use my computer (____) you ask me first.",["provided that","although"],0,"네가 먼저 내게 물어본다면 내 컴퓨터를 써도 돼.","‘물어본다면’이라는 조건이니까 provided that! although는 ‘~이지만’이라 뜻이 안 맞아요.","pt_vs"),
+C("고르기","We will go swimming (____) the water is warm.",["although","provided that"],1,"물이 따뜻하다면 우리는 수영하러 갈 거야.","해석이 ‘따뜻하다면’ → 조건이에요. 그래서 provided that!","pt_vs"),
+C("뜻 고르기","I will call you provided that I have time."+MEAN,["시간이 있다면","시간이 있어서","시간이 있지만"],0,"시간이 있다면 내가 너에게 전화할게.","provided that = 만약 ~라면. 시간이 있어야 전화한다는 조건이에요.","pt_def"),
+C("뜻 고르기","Mom will buy us pizza provided that we clean the kitchen."+MEAN,["부엌을 청소한다면","부엌을 청소했지만","부엌을 청소하기 때문에"],0,"우리가 부엌을 청소한다면 엄마가 피자를 사 주실 거야.","‘청소하면 피자를 사 줄게’처럼 조건을 걸었어요. provided that = 만약 ~라면.","pt_def"),
+C("개념","provided that은 어떤 뜻일까요?",["만약 ~라면 (조건)","~ 때문에","~이지만","~하기 전에"],0,"provided that = 만약 ~라면","‘이 조건만 지키면 돼!’ 할 때 쓰는 말이에요. if와 비슷해요.","pt_def"),
+T("빈칸 쓰기","I will lend you my umbrella provided that you ____ (bring) it back.",["bring"],"앞으로의 일이어도 will은 NO!","네가 우산을 다시 가져온다면 빌려줄게.","조건 부분은 현재형! will bring이 아니라 bring이에요.","pt_present"),
+T("빈칸 쓰기","She can join the team provided that she ____ (practice) every day.",["practices"],"주어가 she → 동사 끝에 s","그녀가 매일 연습한다면 팀에 들어올 수 있다.","현재형인데 주어가 she라서 practice에 s를 붙여 practices!","pt_present"),
+T("빈칸 쓰기","We will have the party outside provided that it ____ (be) sunny.",["is"],"","날씨가 화창하다면 우리는 밖에서 파티를 할 거야.","현재형 be동사 중 it에는 is를 써요. will be는 쓰지 않아요.","pt_present"),
+T("빈칸 쓰기","He can ride my bike provided that he ____ (wear) a helmet.",["wears"],"주어가 he → 동사 끝에 s","그가 헬멧을 쓴다면 내 자전거를 타도 돼.","he가 주어인 현재형이라 wear에 s를 붙여 wears!","pt_present"),
+T("빈칸 쓰기","Provided that the bus ____ (come) soon, we will not be late.",["comes"],"주어가 the bus(한 대) → 동사 끝에 s","버스가 곧 온다면 우리는 늦지 않을 거야.","the bus는 3인칭 하나라서 comes! 앞으로의 일이어도 will come은 쓰지 않아요.","pt_present"),
+T("빈칸 쓰기","They will visit us provided that they ____ (have) free time.",["have"],"","그들이 시간이 있다면 우리를 찾아올 거야.","they는 여러 명이라 s가 없는 have! 현재형이에요.","pt_present"),
+O("네가 일찍 온다면 우리는 그 영화를 볼 수 있어.","We can see the movie provided that you come early.",["will","comes"],"할 일(We can see the movie) 뒤에 provided that + 조건(you come early)을 이어요.","pt_order"),
+O("가격이 싸다면 나는 그 신발을 살 것이다.","I will buy the shoes provided that the price is cheap.",["was","are"],"조건 부분 the price is cheap은 현재형이에요.","pt_order"),
+O("모두가 조용하다면 선생님은 이야기를 읽어 주실 것이다.","The teacher will read a story provided that everyone is quiet.",["are","because"],"everyone은 한 명처럼 취급해서 is를 써요.","pt_order"),
+O("날씨가 좋다면, 우리는 소풍을 갈 것이다.","Provided that the weather is nice, we will go on a picnic.",["was","if"],"조건 부분이 앞에 오면 끝에 쉼표(,)를 붙여요.","pt_front"),
+O("네가 약속을 지킨다면 나는 너를 도울 것이다.","I will help you provided you keep your promise.",["keeps","because"],"that을 생략한 문장이에요. provided 바로 뒤에 you keep을 이어요.","pt_that"),
+C("오류 고치기","You can go out provided that you <u>will finish</u> your homework."+FIX,["finish","finished","finishing","to finish"],0,"숙제를 끝낸다면 밖에 나가도 돼.","provided that 뒤에는 will을 쓰지 않아요. 현재형 finish!","pt_present"),
+C("오류 고치기","He can use my phone provided that he <u>are</u> careful."+FIX,["is","am","be","were"],0,"그가 조심한다면 내 전화기를 써도 돼.","주어가 he니까 are가 아니라 is예요. (현재 시제)","pt_present"),
+C("오류 고치기","We will go hiking provided that it <u>will be</u> sunny."+FIX,["is","was","being","be"],0,"날씨가 화창하다면 우리는 등산을 갈 거야.","조건 부분에 will be는 NO! 현재형 is로 바꿔요.","pt_present"),
+C("오류 고치기","I will help him provided that he <u>ask</u> me politely."+FIX,["asks","asked","asking","will ask"],0,"그가 공손하게 부탁한다면 내가 그를 도와줄 거야.","주어가 he인 현재형이라 ask에 s를 붙여 asks!","pt_present"),
+C("O/X","You can eat the cake provided that you wash your hands."+OXQ,OX,0,"손을 씻는다면 케이크를 먹어도 돼.","조건(손을 씻는다) + 현재형 wash. 완벽해요!","pt_present",false),
+C("O/X","She will come provided that she will finish her work."+OXQ,OX,1,"그녀가 일을 끝낸다면 올 거야.","provided that 뒤에는 will을 쓰지 않아요. will finish → finishes로 고쳐야 해요.","pt_present",false),
+C("어법","다음 중 올바른 문장은?",["I will join you provided you will come.","I will join you provided you come.","I will join you provided if you come.","I will join you provided you to come."],1,"네가 온다면 나는 너와 함께할게.","that은 생략할 수 있고(provided you come), 뒤에는 will 없이 현재형 come을 써요. provided와 if는 같이 쓰지 않아요.","pt_that"),
+C("어법","We can start provided that everyone is ready.<br>= (____), we can start. 맨 앞으로 보내면?",["Provided that everyone is ready","Provided that everyone will be ready","Provided that is everyone ready"],0,"모두가 준비된다면 우리는 시작할 수 있다.","조건 부분을 통째로 앞으로 보내고, 쉼표(,)를 붙여요. 현재형 is ready 그대로예요.","pt_front")
+];
+
+/* ===== 구별 도전 (16) ===== */
+var MIX=[
+C("구별하기","(____) it rains tomorrow, we will stay home.",["If","As if"],0,"내일 비가 온다면 우리는 집에 있을 거야.","비가 올 수도 있는 조건이에요 → If! as if는 ‘마치 ~처럼’ 상상할 때 써요.","mix_if"),
+C("구별하기","He talks (____) he were a star.",["if","as if"],1,"그는 마치 스타인 것처럼 말한다.","‘마치 스타인 것처럼’은 상상이에요 → as if! 뒤의 were가 힌트예요.","mix_if"),
+C("구별하기","(____) she is ready, we can leave.",["Provided that","As if"],0,"그녀가 준비된다면 우리는 떠날 수 있다.","‘준비된다면’은 조건이에요 → Provided that!","mix_which"),
+C("구별하기","She looks (____) she were a princess.",["provided that","as if"],1,"그녀는 마치 공주인 것처럼 보인다.","‘마치 공주인 것처럼’은 상상 → as if!","mix_which"),
+C("개념","다음 설명 중 맞는 것은?",["as if = 만약 ~라면","provided that = 마치 ~인 것처럼","as if = 마치 ~인 것처럼","provided that = ~이지만"],2,"as if는 마치 ~인 것처럼, provided that은 만약 ~라면","as if는 ‘마치’(상상), provided that은 ‘만약’(조건)이에요.","mix_which"),
+T("빈칸 쓰기","I will lend you money provided that you ____ (pay) it back.",["pay"],"조건 부분은 현재형","네가 갚는다면 돈을 빌려줄게.","provided that 뒤라서 will pay가 아니라 현재형 pay!","pt_present"),
+T("빈칸 쓰기","The baby looks at me as if he ____ (know) me.",["knew"],"","아기는 마치 나를 아는 것처럼 나를 본다.","as if 뒤에서는 know를 한 칸 과거로 → knew!","asif_past"),
+O("네가 도와준다면 나는 오늘 끝낼 수 있다.","I can finish today provided that you help me.",["helps","if"],"할 일 뒤에 provided that + 조건(you help me)을 이어요.","pt_order"),
+O("그는 마치 아무것도 듣지 못한 것처럼 앉아 있었다.","He sat as if he had heard nothing.",["has","hear"],"지나간 일을 상상하니까 as if he had heard 순서예요.","asif_pp"),
+C("O/X","He eats as if he is a king."+OXQ,OX,1,"그는 마치 왕인 것처럼 먹는다.","as if 뒤 be동사는 were! is → were로 고쳐야 해요.","asif_were",false),
+C("O/X","I will go provided that it is not raining."+OXQ,OX,0,"비가 오지 않는다면 나는 갈 거야.","조건 부분이 현재 시제(is not raining)라서 맞는 문장이에요.","pt_present",false),
+C("오류 고치기","She sings as if she <u>will be</u> a star."+FIX,["were","is","was being","be"],0,"그녀는 마치 스타인 것처럼 노래한다.","as if 뒤에는 will을 쓰지 않아요. 상상이니까 were!","asif_were"),
+C("사실 찾기","He spends money as if he were rich."+FACT,["그는 부자다","그는 부자가 아니다"],1,"그는 마치 부자인 것처럼 돈을 쓴다.","as if는 사실과 반대! 진짜는 부자가 아니에요.","asif_fact",false),
+C("조건 찾기","You can borrow my book provided that you return it.<br>꼭 지켜야 하는 조건은?",["책을 빌린다","책을 돌려준다","내 책이다"],1,"책을 돌려준다면 내 책을 빌려도 돼.","provided that 뒤에 나오는 말이 조건이에요. return it(돌려준다)이 조건!","pt_def"),
+C("어법","다음 중 as if 뒤에 올 수 있는 말은?",["he were","he will be","he is going to","he be"],0,"as if 뒤에는 「주어 + 과거형/were」","as if 뒤에는 will이나 is going to를 쓰지 않고, ‘주어 + were’처럼 과거형을 써요.","asif_were"),
+C("어법","다음 중 provided that 뒤에 올 수 없는 것은?",["you finish","he comes","it will rain","she is kind"],2,"provided that 뒤에는 현재 시제","조건 부분에는 will을 쓰지 않아요. it will rain은 올 수 없어요.","pt_present")
+];
+
+/* ===== 앱 ===== */
+var SECS={
+ asif:{name:"as if 가정법",desc:"마치 ~인 것처럼 · "+ASIF.length+"문제",cls:"t1",qs:function(){return ASIF.slice();}},
+ pt:{name:"provided that",desc:"만약 ~라면(조건) · "+PT.length+"문제",cls:"t2",qs:function(){return PT.slice();}},
+ mix:{name:"구별 도전",desc:"as if와 provided that 헷갈리지 않기 · "+MIX.length+"문제",cls:"t3",qs:function(){return MIX.slice();}},
+ all:{name:"전체 섞어 풀기",desc:"세 코너에서 20문제 랜덤",cls:"t4",qs:function(){return shuffle(ASIF.concat(PT,MIX)).slice(0,20);}}
+};
+var app=document.getElementById("app"),S={};
+function $(s){return document.querySelector(s);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function norm(s){return String(s).toLowerCase().replace(/[.!?]+$/,"").replace(/\s+/g," ").trim();}
+function qhtml(q){return q.replace("(____)",'<span class="blank" id="bl">&nbsp;&nbsp;&nbsp;</span>');}
+function ruleBlock(k){var r=RULES[k];return '<div class="rule"><b>'+r.t+'</b><p>'+r.b+'</p><p class="eg">예) '+r.e+'</p></div>';}
+
+function home(){
+ S={};
+ var h='<h1><mark>as if</mark> &amp; <mark>provided that</mark></h1><p class="sub">쉬운 설명을 읽고, 문제를 풀어 보세요. 틀려도 괜찮아요. 왜 틀렸는지 같이 알려 줄게요!</p>';
+ h+='<details><summary>먼저 읽어요: 쉬운 설명 보기</summary><div class="t1">'+ruleBlock("asif_def")+ruleBlock("asif_past")+ruleBlock("asif_were")+ruleBlock("asif_pp")+'</div><div class="t2">'+ruleBlock("pt_def")+ruleBlock("pt_present")+ruleBlock("pt_that")+ruleBlock("pt_front")+'</div></details>';
+ ["asif","pt","mix","all"].forEach(function(k){var s=SECS[k];h+='<button class="sec '+s.cls+'" data-act="start" data-key="'+k+'"><b>'+s.name+'</b><span>'+s.desc+'</span></button>';});
+ app.innerHTML=h;window.scrollTo(0,0);
+}
+function start(key){
+ var s=SECS[key];var qs=shuffle(s.qs());
+ S={key:key,sec:s,pool:qs,idx:0,score:0,wrong:[],retry:false};
+ renderQ();
+}
+function renderQ(){
+ var q=S.pool[S.idx];S.q=q;S.answered=false;S.sel=null;S.cur={};
+ var h='<div class="'+S.sec.cls+'"><div class="top"><button class="ghost" data-act="home">← 처음으로</button><span class="sc">맞힌 개수 '+S.score+'</span></div>';
+ h+='<div class="prog"><i style="width:'+(S.idx/S.pool.length*100)+'%"></i></div><div class="card"><div class="meta"><span class="chip">'+(S.idx+1)+' / '+S.pool.length+'</span><span class="chip c2">'+q.tag+'</span>'+(S.retry?'<span class="chip c3">틀린 문제 다시</span>':'')+'</div>';
+ var hideKo=(q.tag==="뜻 고르기"||q.tag==="사실 찾기"||q.tag==="O/X"||q.tag==="개념"||q.tag==="어법"||q.tag==="조건 찾기");
+ if(q.t==="c"){
+  var order=[];for(var i=0;i<q.ch.length;i++)order.push(i);
+  S.cur.order=q.sh?shuffle(order):order;
+  h+='<div class="q">'+qhtml(q.q)+'</div>';
+  if(!hideKo&&q.ko)h+='<div class="ko">'+q.ko+'</div>';
+  S.cur.order.forEach(function(oi,p){h+='<button class="ch" data-act="pick" data-p="'+p+'">'+esc(q.ch[oi])+'</button>';});
+ }else if(q.t==="t"){
+  h+='<p class="inst">빈칸에 알맞은 말을 쓰세요. 괄호 안의 단어를 바꿔 써요.</p>';
+  h+='<div class="q">'+q.q.replace("____",'<input id="ti" class="ti" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">')+'</div>';
+  if(q.hint)h+='<div class="hint">힌트: '+q.hint+'</div>';
+  h+='<div class="ko">'+q.ko+'</div>';
+ }else{
+  S.cur.tiles=shuffle(q.words.concat(q.dec).map(function(w,i){return{w:w};}));S.cur.picked=[];
+  h+='<p class="inst">단어를 눌러 우리말에 맞는 문장을 만드세요.</p><div class="q" style="font-size:18px">'+q.ko+'</div><div id="ans"></div><div id="bank"></div>';
+ }
+ h+='<div id="fb"></div><button class="btn" id="ck" data-act="check" disabled>정답 확인</button><button class="btn alt" id="nx" data-act="next" style="display:none">'+(S.idx+1>=S.pool.length?'결과 보기':'다음 문제')+'</button></div></div>';
+ app.innerHTML=h;window.scrollTo(0,0);
+ if(q.t==="o")tiles();
+ if(q.t==="t"){var ti=$("#ti");ti.addEventListener("input",function(){$("#ck").disabled=!ti.value.trim();});}
+}
+function tiles(){
+ var c=S.cur;
+ $("#ans").innerHTML=c.picked.length?c.picked.map(function(id,p){return'<button class="tile" data-act="untile" data-p="'+p+'">'+c.tiles[id].w+'</button>';}).join(""):'<span class="ph">여기에 문장이 만들어져요</span>';
+ $("#bank").innerHTML=c.tiles.map(function(t,id){return c.picked.indexOf(id)>=0?'<span class="tile ghosted">'+t.w+'</span>':'<button class="tile" data-act="tile" data-id="'+id+'">'+t.w+'</button>';}).join("");
+ $("#ck").disabled=!c.picked.length;
+}
+function ansText(q){return q.t==="c"?q.ch[q.a]:q.t==="t"?q.ans[0]:q.words.join(" ");}
+function check(){
+ if(S.answered)return;var q=S.q,ok,user,corr=ansText(q);
+ if(q.t==="c"){
+  if(S.sel===null)return;var oi=S.cur.order[S.sel];ok=oi===q.a;user=q.ch[oi];
+  var bs=document.querySelectorAll(".ch");
+  for(var i=0;i<bs.length;i++){bs[i].disabled=true;var o=S.cur.order[i];if(o===q.a)bs[i].className="ch good";else if(i===S.sel)bs[i].className="ch bad";}
+  var bl=$("#bl");if(bl){bl.textContent=corr;bl.className="blank "+(ok?"good":"bad");if(!ok){bl.textContent=user;}}
+ }else if(q.t==="t"){
+  var ti=$("#ti");user=ti.value.trim();if(!user)return;
+  ok=q.ans.some(function(a){return norm(a)===norm(user);});ti.disabled=true;ti.className="ti "+(ok?"good":"bad");
+ }else{
+  if(!S.cur.picked.length)return;
+  user=S.cur.picked.map(function(id){return S.cur.tiles[id].w;}).join(" ");ok=user===corr;
+ }
+ S.answered=true;if(ok)S.score++;else S.wrong.push(q);
+ var f='<div class="fb '+(ok?"ok":"ng")+'"><div class="fbh">'+(ok?"🎉 정답이에요!":"😅 아쉬워요! 같이 다시 볼까요?")+'</div>';
+ if(!ok)f+='<div class="row"><b>내 답</b> <span class="wrongtxt">'+esc(user)+'</span></div>';
+ f+='<div class="row"><b>정답</b> <span class="righttxt">'+esc(corr)+'</span></div>';
+ f+='<div class="row"><b>해석</b> '+q.ko+'</div><div class="row"><b>설명</b> '+q.ex+'</div>';
+ if(ok){f+='<div class="tip">📌 기억해요: '+RULES[q.r].t+'</div>';}
+ else{var r=RULES[q.r];f+='<div class="easy"><div class="t">🧒 쉽게 다시 설명해 줄게요</div><p><b>'+r.t+'</b></p><p>'+r.b+'</p><p>예) '+r.e+'</p></div>';}
+ f+='</div>';
+ $("#fb").innerHTML=f;$("#ck").style.display="none";$("#nx").style.display="block";
+ $("#fb").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function result(){
+ var n=S.pool.length,pct=Math.round(S.score/n*100);
+ var msg=pct===100?"🏆 완벽해요!":pct>=80?"👏 아주 잘했어요!":pct>=60?"💪 좋아요, 조금만 더!":"🌱 괜찮아요, 다시 도전해 봐요!";
+ var h='<div class="'+S.sec.cls+'"><div class="card center"><div>'+msg+'</div><div class="big">'+S.score+' / '+n+'</div><div class="sub">정답률 '+pct+'%</div></div>';
+ if(S.wrong.length){
+  h+='<div class="card"><b>틀린 문제 ('+S.wrong.length+'개)</b>';
+  S.wrong.forEach(function(q){h+='<div class="wl"><small>'+q.tag+'</small><br>정답: <b>'+esc(ansText(q))+'</b><br><small>'+q.ko+'</small></div>';});
+  h+='</div><button class="btn" data-act="retry">틀린 문제만 다시 풀기</button>';
+ }
+ h+='<button class="btn alt" data-act="restart">같은 코너 처음부터</button><button class="btn alt" data-act="home">다른 코너 고르기</button></div>';
+ app.innerHTML=h;window.scrollTo(0,0);
+}
+app.addEventListener("click",function(e){
+ var b=e.target.closest("[data-act]");if(!b)return;var a=b.getAttribute("data-act");
+ if(a==="start")start(b.getAttribute("data-key"));
+ else if(a==="home")home();
+ else if(a==="restart")start(S.key);
+ else if(a==="retry"){S.pool=shuffle(S.wrong);S.wrong=[];S.idx=0;S.score=0;S.retry=true;renderQ();}
+ else if(a==="pick"&&!S.answered){
+  S.sel=parseInt(b.getAttribute("data-p"),10);
+  var bs=document.querySelectorAll(".ch");for(var i=0;i<bs.length;i++)bs[i].className="ch"+(i===S.sel?" sel":"");
+  var bl=$("#bl");if(bl)bl.textContent=S.q.ch[S.cur.order[S.sel]];
+  $("#ck").disabled=false;
+ }
+ else if(a==="tile"&&!S.answered){S.cur.picked.push(parseInt(b.getAttribute("data-id"),10));tiles();}
+ else if(a==="untile"&&!S.answered){S.cur.picked.splice(parseInt(b.getAttribute("data-p"),10),1);tiles();}
+ else if(a==="check")check();
+ else if(a==="next"){S.idx++;if(S.idx>=S.pool.length)result();else renderQ();}
+});
+app.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target&&e.target.id==="ti"){e.preventDefault();check();}});
+home();
+</script>
+</body>
+</html>
