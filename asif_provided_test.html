@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>as if · provided that 테스트</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4efe3;color:#14213d;font-family:"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;line-height:1.55}
+#app{max-width:560px;margin:0 auto;padding:14px}
+h1{font-size:21px;margin:8px 0 2px}.sub{color:#6b6b6b;font-size:13px;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 2px 6px #0001}
+button{font:inherit;cursor:pointer;border:2px solid #14213d;background:#fff;color:#14213d;border-radius:10px;padding:10px 12px;margin:4px 0}
+button.big{display:block;width:100%;text-align:left;background:#14213d;color:#fff;font-weight:700}
+button.big small{display:block;font-weight:400;color:#e8c766}
+button.opt{display:block;width:100%;text-align:left}button.opt:active{background:#f4e7b8}
+.go{background:#d4a017;border-color:#d4a017;font-weight:700}.lk{border:0;background:none;padding:4px;color:#b5472a}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.bar{height:6px;background:#ddd;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:#d4a017}
+.lv{padding:2px 10px;border-radius:10px;color:#fff;font-size:12px;font-weight:700}.l하{background:#4a8a5a}.l중{background:#d4a017}.l상{background:#b5472a}
+.ko{font-weight:700;margin-bottom:6px}.en{font-size:19px;margin:8px 0;word-break:keep-all}.blank{color:#b5472a;font-weight:700}
+.chip{display:inline-block;padding:6px 10px;margin:3px;border:2px solid #14213d;border-radius:8px;background:#fff}
+.ansbox{min-height:50px;border:2px dashed #aaa;border-radius:10px;padding:4px;margin:6px 0}
+input[type=text]{width:100%;font:inherit;font-size:18px;padding:10px;border:2px solid #14213d;border-radius:10px}
+.ok{border-left:6px solid #4a8a5a}.no{border-left:6px solid #b5472a}
+.rule{background:#fff6d6;border-radius:10px;padding:10px;margin-top:8px;font-size:14px}
+.sel{background:#f4e7b8}details summary{cursor:pointer;font-weight:700}
+.sc{font-size:42px;font-weight:800;text-align:center;color:#b5472a}
+</style></head><body><div id="app"></div>
+<script>
+const R={a:"💡 <b>as if = 마치 ~인 것처럼</b> (사실과 달라요!)<br>① 지금/같은 때의 상상 → <b>as if + 과거형</b> (be동사는 <b>were</b>)<br>② 더 앞선 때의 상상 → <b>as if + had + p.p.</b><br>예) He talks as if he <b>were</b> rich. (부자가 아님)",
+p:"💡 <b>provided (that) = 만약 ~라면 (조건)</b>, <b>if</b>와 같은 뜻!<br>① 조건 안에서는 미래도 <b>현재형</b> (will ✕)<br>② as long as, providing that도 같은 뜻<br>③ <b>unless는 if not</b>이라 뜻이 반대예요.<br>예) I'll go <b>provided that</b> it <b>is</b> sunny."};
+/* [유형, 한글, 영어, 보기/오답칩, 정답, 해설, (섞기용 태그)] */
+const A=[
+["mc","아이인데 어른처럼 말한다 (실제는 어른이 아님).","The boy talks as if he ___ an adult.",["were","is","be","has been"],0,"사실이 아닌 상상이므로 as if 뒤에 were를 써요."],
+["ox","그녀는 마치 모든 걸 아는 것처럼 말한다.","She talks as if she knew everything.",null,0,"as if 뒤 과거형(knew)은 '사실과 다른 느낌'이에요. 올바른 문장!"],
+["mc","그는 나를 모르면서 마치 아는 것처럼 쳐다봤다.","He looked at me as if he ___ me.",["knows","knew","will know","known"],1,"쳐다본 때와 같은 시점의 상상이라 과거형 knew예요."],
+["typ","우리 고양이는 사람인 것처럼 행동한다.","Our cat acts as if it ___ a person. (be)",null,["were"],"as if 뒤 be동사는 were를 써요."],
+["mc","그는 아무것도 모르면서 다 아는 것처럼 말한다.","He speaks ___ he knew everything.",["as if","even if","so that","in case"],0,"'마치 ~인 것처럼'은 as if예요."],
+["ord","그녀는 마치 새처럼 노래한다.","She sings as if she were a bird.",["was","is"],null,"as if she were ~ 순서로 써요."],
+["ox","그는 왕이 아닌데 왕인 것처럼 말한다.","He talks as if he is a king.",null,1,"왕이 아니므로 is → were로 고쳐야 해요."],
+["mc","그는 마치 유령을 본 것처럼 보인다.","He looks as if he ___ a ghost.",["sees","had seen","has see","seeing"],1,"이미 지나간 일을 상상할 땐 had + p.p. → had seen."],
+["mc","그녀는 아무 일도 없었던 것처럼 말했다.","She talked as if nothing ___ yesterday.",["happen","had happened","happens","has happened"],1,"말한 때보다 더 앞선 일 → had + p.p."],
+["err","그는 백만장자가 아닌데 백만장자처럼 돈을 쓴다.","He spends money|as if|he was|a millionaire.",null,2,"was → were. 상상의 as if는 were를 써요."],
+["typ","그는 파리에 가 본 적이 있는 것처럼 말한다 (안 가 봄).","He talks as if he ___ to Paris. (be)",null,["had been"],"지나간 경험을 상상 → had been."],
+["ord","그 아기는 장난감을 잃어버린 것처럼 울었다.","The baby cried as if she had lost her toy.",["has","lose"],null,"as if + had + p.p.(had lost) 순서예요."],
+["mc","어법상 올바른 문장을 고르세요.","",["He acts as if he are a doctor.","He acts as if he were a doctor.","He acts as if he will be a doctor.","He acts as if he be a doctor."],1,"as if 뒤에는 were를 써요."],
+["ox","그녀는 눈을 한 번도 본 적 없는 것처럼 보인다.","She looks as if she had never seen snow before.",null,0,"지난 경험은 had + p.p.로 써서 올바른 문장이에요."],
+["mc","그는 사실을 알면서 모르는 척 행동했다.","He acted as if he ___ the truth.",["doesn't know","didn't know","hadn't known","won't know"],1,"행동한 때와 같은 시점 → 과거형 didn't know."],
+["mc","그는 어제 사고를 못 봤는데 본 것처럼 흥분해 말한다.","He talks excitedly as if he ___ the accident yesterday.",["witnesses","had witnessed","witness","is witnessing"],1,"yesterday는 더 앞선 과거 → had + p.p."],
+["err","그 남자는 괴물을 본 것처럼 소리쳤다.","The man shouted|as if|he has seen|a monster.",null,2,"has seen → had seen. 주절이 과거(shouted)이면 had + p.p.예요."],
+["typ","그녀는 아무것도 듣지 못했던 것처럼 행동했다.","She acted as if she ___ anything. (hear)",null,["had not heard","hadn't heard"],"더 앞선 일의 부정 → had not heard."],
+["ord","선생님은 학생들의 비밀을 이미 알았던 것처럼 쳐다보셨다.","The teacher looked at the students as if she had known their secret.",["knew","has"],null,"as if she had known ~ 순서로 써요."],
+["mc","어법상 틀린 문장을 고르세요.","",["He talks as if he were a pilot.","She smiled as if nothing had happened.","It looks as if it will rain soon.","He spoke as if he has met her before."],3,"has met → had met. (3번처럼 일어날 법한 일은 as if 뒤에 will도 쓸 수 있어요.)"]];
+const B=[
+["mc","비가 오지 않는다면 우리는 소풍을 간다.","We will go on a picnic ___ it doesn't rain.",["provided that","unless","because of","although"],0,"'~라는 조건이면'은 provided that. unless는 이미 부정 뜻이라 doesn't와 겹쳐요."],
+["ox","숙제를 끝낸다면 나가도 좋다.","You can go out provided that you finish your homework.",null,0,"provided that = if. 올바른 문장!"],
+["mc","네가 일찍 온다면 도와줄게.","I'll help you provided that you ___ early.",["come","will come","came","coming"],0,"조건절에선 미래도 현재형: come."],
+["typ","날씨가 좋다면 우리는 축구를 할 거야.","___ that the weather is nice, we will play soccer. (provided / providing)",null,["provided","providing"],"provided (that), providing (that)이 '~라면'이에요."],
+["ord","내 책을 돌려준다면 빌려가도 돼.","You can borrow my book provided that you return it.",["will","returned"],null,"provided that + 주어 + 현재형 순서예요."],
+["mc","다음 문장과 뜻이 같은 것은?","You can use my phone provided that you give it back soon.",["if you give it back soon","unless you give it back soon","even if you give it back soon","because you give it back soon"],0,"provided that은 if와 같아요."],
+["ox","내일 맑다면 갈 거야.","I will go provided that it will be sunny tomorrow.",null,1,"조건절에는 will을 쓰지 않아요. will be → is."],
+["mc","5시까지 일을 끝낸다면 그녀도 합류할 수 있다.","She can join us provided that she ___ her work by five.",["finishes","will finish","finished","finishing"],0,"주어가 she(3인칭) → 현재형 finishes."],
+["err","갚는다면 돈을 빌려줄게.","I will lend you money|provided that|you will pay|it back.",null,2,"will pay → pay. 조건절엔 현재형을 써요."],
+["mc","provided that과 바꿔 쓸 수 없는 것은?","",["as long as","so long as","providing that","unless"],3,"unless는 '~하지 않으면(if not)'이라 뜻이 반대예요."],
+["typ","네가 조용히 한다면 여기 있어도 돼.","You can stay here provided that you ___ quiet. (be)",null,["are"],"조건절 현재형, you → are."],
+["ord","싸다면 그 재킷을 살 거야.","Providing that it is cheap, I will buy the jacket.",["will","was"],null,"Providing that + 조건(현재형), 주절 순서예요."],
+["mc","우리가 늦지 않는다면 영화를 볼 수 있다. 알맞은 영작은?","",["We can see the movie provided that we aren't late.","We can see the movie provided that we won't be late.","We can see the movie unless we aren't late.","We can see the movie provided that we weren't late."],0,"provided that + 현재형(aren't). unless와 not은 같이 쓰지 않아요."],
+["ox","조심한다면 내 차를 운전해도 돼.","Provided that you will be careful, you can drive my car.",null,1,"will be → are. 조건절엔 현재형을 써요."],
+["mc","내년에 매출이 오른다면 회사는 직원을 더 뽑을 것이다.","The company will hire more workers provided that sales ___ next year.",["increase","will increase","increased","increasing"],0,"next year가 있어도 조건절은 현재형 increase."],
+["err","날씨가 좋다면 축제를 야외에서 열겠다.","Providing that|the weather will be good,|we will hold the festival|outside.",null,1,"will be → is. 조건절엔 will을 쓰지 않아요."],
+["typ","그가 약속을 지킨다는 조건에서만 그를 믿겠다.","I will trust him only ___ that he keeps his promise. (provided / providing)",null,["provided","providing"],"only provided that ~ = 오직 ~라는 조건에서만."],
+["ord","제때 일을 끝내면 일찍 퇴근해도 돼요.","Provided that you finish your work on time, you can leave early.",["will","finished"],null,"Provided that + 현재형 조건절 + 주절 순서예요."],
+["mc","어법상 올바른 문장은?","",["Provided that he will come, I will wait.","Providing that he comes, I will wait.","Provided that he came tomorrow, I will wait.","Providing that he coming, I will wait."],1,"조건절 현재형(comes)이 맞아요."],
+["mc","어법상 틀린 문장은?","",["You can borrow it provided that you return it tomorrow.","Providing that it is sunny, we'll have lunch outside.","I'll go provided that I will have time.","You can stay as long as you keep quiet."],2,"will have → have. 조건절엔 현재형을 써요."]];
+const C=[
+["mc","톰은 이 거리의 주인이 아닌데 주인처럼 걷는다.","Tom walks as if he ___ the owner of this street.",["were","are","be","being"],0,"사실이 아닌 상상 → were.","a"],
+["mc","모두가 제시간에 온다면 회의를 시작할 수 있다.","We can start the meeting ___ everyone arrives on time.",["provided that","as if","in spite of","even though"],0,"'~라는 조건이면' → provided that.","p"],
+["ox","조용히 한다면 늦게까지 안 자도 된다.","You may stay up late provided that you are quiet.",null,0,"조건절 현재형(are)이라 올바른 문장!","p"],
+["ox","미나는 요리사가 아닌데 요리사처럼 요리한다.","Mina cooks as if she were a chef.",null,0,"사실과 다른 상상 → were. 올바른 문장!","a"],
+["ord","시간이 있으면 전화할게.","I will call you provided that I have time.",["will","had"],null,"provided that + 현재형 순서예요.","p"],
+["typ","지호는 슬프지만 행복한 것처럼 웃는다.","Jiho smiles as if he ___ happy, but he is sad. (be)",null,["were"],"사실과 다른 상상 → were.","a"],
+["mc","열심히 공부한다면 시험에 통과할 수 있다.","You can pass the test provided that you ___ hard.",["study","will study","studied","studying"],0,"조건절은 현재형 study.","p"],
+["mc","그는 영어를 오래 공부했던 것처럼 말한다 (안 했음).","He speaks English as if he ___ it for many years.",["studies","had studied","will study","studying"],1,"지난 일을 상상 → had + p.p.","a"],
+["mc","그녀는 가장 친한 친구를 잃은 것처럼 보였다.","She looked ___ she had lost her best friend.",["as if","provided that"],0,"'마치 ~한 것처럼'은 as if. provided that은 조건이에요.","a"],
+["mc","헬멧을 쓴다면 내 자전거를 빌려줄게.","I will lend you my bike ___ you wear a helmet.",["as if","provided that"],1,"'~한다면(조건)'은 provided that.","p"],
+["err","그 아이는 슈퍼히어로가 아닌데 슈퍼히어로처럼 말한다.","The kid talks|as if|he is|a superhero, but he isn't.",null,2,"is → were. 상상의 as if는 were를 써요.","a"],
+["err","내일 맑다면 하이킹을 갈 것이다.","Provided that|it will be sunny|tomorrow,|we will go hiking.",null,1,"will be → is. 조건절엔 will을 쓰지 않아요.","p"],
+["ord","그녀는 나를 한 번도 만난 적 없는 것처럼 쳐다봤다.","She stared at me as if she had never met me.",["has","meet"],null,"as if she had never met ~ 순서예요.","a"],
+["typ","나중에 청소한다면 그 방을 써도 돼.","You can use the room ___ that you clean it afterward. (provided / providing)",null,["provided","providing"],"provided (that) = ~라면.","p"],
+["mc","그는 그 계획을 이미 알았던 것처럼 반응했다 (사실은 몰랐음).","He reacted as if he ___ about the plan already.",["knows","had known","will know","knowing"],1,"already = 더 앞선 때 → had + p.p.","a"],
+["mc","어법상 올바른 문장은?","",["You can go out provided that it will stop raining.","You can go out providing that it stops raining.","You can go out provided that it stopped raining tomorrow.","You can go out providing that it stopping raining."],1,"조건절 현재형(stops)이 맞아요.","p"],
+["mc","어법상 틀린 문장은?","",["He talks as if he were rich.","She smiled as if nothing had happened.","It looks as if it will snow.","He acted as if he has been a king."],3,"has been → had been. 주절이 과거면 had + p.p.예요.","a"],
+["ord","비밀을 지킨다면 모든 걸 말해 줄게.","Provided that you keep it secret, I will tell you everything.",["will","kept"],null,"Provided that + 현재형 조건절 + 주절 순서예요.","p"],
+["ox","표가 있어야만 방에 들어갈 수 있다.","You can enter the room unless you have a ticket.",null,1,"unless는 'if not'이라 반대 뜻! provided that you have a ticket이 맞아요.","p"],
+["ox","그녀는 그 그림을 처음 봤는데 전에 본 것처럼 쳐다봤다.","She looked at the painting as if she had seen it before.",null,0,"'전에 본 것처럼'은 as if + had seen. 올바른 문장!","a"]];
+const PART={A:{n:"Part A · as if",d:A,g:"a",t:"as if 가정법 20문제"},B:{n:"Part B · provided that",d:B,g:"p",t:"provided that 조건 20문제"},C:{n:"Part C · 섞어서",d:C,g:"a",t:"새 문장으로 섞은 종합 20문제"}};
+const app=document.getElementById("app"),S={};
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=v=>v.toLowerCase().replace(/[’‘]/g,"'").replace(/[.]+$/,"").replace(/\s+/g," ").trim();
+const speak=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u)}catch(e){}};
+const full=r=>{const[t,,s,o,a]=r;if(t=="mc")return s?s.replace("___",o[a]):o[a];if(t=="typ")return s.replace("___",a[0]);if(t=="err")return s.split("|").join(" ");return s};
+const corr=r=>{const[t,,s,o,a]=r;if(t=="mc")return o[a];if(t=="ox")return a?"X (틀린 문장)":"O (맞는 문장)";if(t=="err")return s.split("|").map((x,j)=>j==a?"["+x+"]":x).join(" ");if(t=="typ")return a[0];return s};
+const best=k=>{try{return localStorage.getItem("aipt_"+k)}catch(e){return null}};
+function home(){app.innerHTML="";
+app.append(el("h1","","📝 as if · provided that 테스트"),el("div","sub","고2 영어2 천재(조수경) 3과 핵심 문법 · 쉬운 문장 → 어려운 문장 (하 → 중 → 상)"));
+app.append(el("details","card",`<summary>📌 문법 규칙 먼저 보기</summary><div class="rule">${R.a}</div><div class="rule">${R.p}</div>`));
+for(const k in PART){const b=el("button","big",`${PART[k].n}<small>${PART[k].t}${best(k)?" · 최고 "+best(k)+"/20":""}</small>`);b.onclick=()=>start(k);app.append(b)}
+app.append(el("div","sub","💡 보기 순서는 매번 바뀌어요. 난이도: 1~7번 하 · 8~14번 중 · 15~20번 상"))}
+function start(k,idx){S.k=k;const d=PART[k].d;S.qs=(idx||d.map((_,i)=>i)).map(i=>({i,r:d[i],lv:i<7?"하":i<14?"중":"상",g:d[i][6]||PART[k].g}));S.n=0;S.res=[];show()}
+function show(){const q=S.qs[S.n],r=q.r,[t,ko,s,o,a]=r;S.lock=0;app.innerHTML="";
+const top=el("div","top",`<button class="lk">← 홈</button><span>${PART[S.k].n} · ${S.n+1}/${S.qs.length}</span><span class="lv l${q.lv}">${q.lv}</span>`);top.firstChild.onclick=home;
+app.append(top,el("div","bar",`<i style="width:${S.n/S.qs.length*100}%"></i>`));
+const c=el("div","card");app.append(c);c.append(el("div","ko",ko));
+const fb=el("div");app.append(fb);
+const fin=(ok,u)=>{if(S.lock)return;S.lock=1;S.res.push({q,ok,u});
+let h=`<b>${ok?"⭕ 정답!":"❌ 오답"}</b>${ok?"":"<br>내 답: "+u}<br>정답: <b>${corr(r)}</b>`;
+const f=full(r);if(t!="ox"||a==0)h+=`<br><span class="en" style="font-size:16px">${f}</span>`;
+h+=`<br>${r[5]}`;if(!ok)h+=`<div class="rule">${R[q.g]}</div>`;
+const box=el("div","card "+(ok?"ok":"no"),h);const sp=el("button","","🔊 문장 듣기");sp.onclick=()=>speak(f);
+const nx=el("button","go",S.n+1<S.qs.length?"다음 문제 →":"결과 보기");nx.onclick=()=>{S.n++;S.n<S.qs.length?show():end()};
+box.append(el("br"),sp," ",nx);fb.append(box);box.scrollIntoView({behavior:"smooth",block:"nearest"})};
+if(t=="mc"){if(s)c.append(el("div","en",s.replace("___",'<span class="blank">＿＿＿</span>')));
+const op=shuf(o.map((x,j)=>({x,ok:j==a})));op.forEach(p=>{const b=el("button","opt",p.x);b.onclick=()=>fin(p.ok,p.x);c.append(b)})}
+else if(t=="ox"){c.append(el("div","en",s),el("div","sub","이 문장은 어법상 올바른가요?"));["O","X"].forEach((x,j)=>{const b=el("button","opt",x=="O"?"⭕ 올바르다":"❌ 틀렸다");b.onclick=()=>fin(j==a,x);c.append(b)})}
+else if(t=="err"){c.append(el("div","sub","어법상 틀린 부분을 고르세요."));s.split("|").forEach((x,j)=>{const b=el("button","opt",x);b.onclick=()=>fin(j==a,x);c.append(b)})}
+else if(t=="typ"){c.append(el("div","en",s.replace("___",'<span class="blank">＿＿＿</span>')));const i=el("input");i.type="text";i.autocomplete="off";i.autocapitalize="off";i.placeholder="정답 입력";
+const go=()=>{if(S.lock||!i.value.trim())return;const v=norm(i.value);fin(a.some(x=>norm(x)==v),i.value.trim())};i.onkeydown=e=>{if(e.key=="Enter")go()};
+const b=el("button","go","확인");b.onclick=go;c.append(i,el("br"),b)}
+else{c.append(el("div","sub","단어를 눌러 순서대로 문장을 만드세요. (눌러서 빼기도 가능)"));const ab=el("div","ansbox"),bb=el("div");
+const bank=shuf(s.split(" ").concat(o||[]).map(w=>({w,u:0}))),pk=[];
+const draw=()=>{ab.innerHTML="";bb.innerHTML="";pk.forEach(p=>{const x=el("span","chip sel",p.w);x.onclick=()=>{if(S.lock)return;p.u=0;pk.splice(pk.indexOf(p),1);draw()};ab.append(x)});
+bank.forEach(p=>{if(p.u)return;const x=el("span","chip",p.w);x.onclick=()=>{if(S.lock)return;p.u=1;pk.push(p);draw()};bb.append(x)})};draw();
+const b=el("button","go","확인");b.onclick=()=>{if(S.lock||!pk.length)return;const v=pk.map(p=>p.w).join(" ");fin(v==s,v)};c.append(ab,bb,b)}}
+function end(){app.innerHTML="";const n=S.res.filter(r=>r.ok).length,tot=S.res.length,d=PART[S.k].d;
+if(tot==d.length){try{if(n>(+best(S.k)||0))localStorage.setItem("aipt_"+S.k,n)}catch(e){}}
+app.append(el("h1","",PART[S.k].n+" 결과"),el("div","sc",`${n} / ${tot}`),el("div","sub",n==tot?"🎉 완벽해요!":n>=tot*.8?"👍 아주 잘했어요!":"틀린 문제를 복습하고 다시 도전해 봐요!"));
+const w=S.res.filter(r=>!r.ok);
+w.forEach(x=>{const r=x.q.r;const bx=el("div","card no",`<b>${x.q.i+1}번 (${x.q.lv})</b> ${r[1]}<br><span class="en" style="font-size:16px">${r[2]||""}</span>내 답: ${x.u}<br>정답: <b>${corr(r)}</b><br>${r[5]}<div class="rule">${R[x.q.g]}</div>`);app.append(bx)});
+if(w.length){const b=el("button","go","틀린 문제만 다시 풀기 ("+w.length+")");b.onclick=()=>start(S.k,w.map(x=>x.q.i));app.append(b)}
+const b2=el("button","","처음부터 다시"),b3=el("button","","홈으로");b2.onclick=()=>start(S.k);b3.onclick=home;app.append(el("br"),b2," ",b3)}
+home();
+</script></body></html>
